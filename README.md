@@ -1,35 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+```markdown
+# DUCSO — Dhaka University Christian Students' Organisation
 
-## Getting Started
+A fully responsive, animated website built for a university student organization. Includes multi-page navigation, image galleries, event listings, testimonials, contact form, and legal pages.
 
-First, run the development server:
+## 🔗 Live Demo
+[ducso.org](#) *(replace with your deployed URL)*
+
+## 📌 About This Project
+
+I designed and developed this project end-to-end to give DUCSO a modern digital presence. The site is built with a focus on clean architecture, reusable components, and smooth animations throughout.
+
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Animation**: Framer Motion
+- **Icons**: React Icons
+- **Deployment**: Vercel
+
+## ✨ Features
+
+- Multi-page website (Home, About, Events, Gallery, Alumni, Contact, Privacy, Terms)
+- Fully responsive across mobile, tablet, and desktop
+- Image gallery with lightbox and keyboard navigation
+- Event listings with detail modal and scroll lock
+- Auto-advancing testimonial carousel
+- Contact form with validation and social links
+- Reusable button component supporting both links and form submissions
+- Framer Motion animations (staggered entrances, hover states, modal transitions)
+- TypeScript throughout with strongly-typed props and data
+- Accessible focus states, alt text, and ARIA labels
+- Optimized images via `next/image`
+
+## 🚀 Running Locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/          → routes and pages
+components/   → reusable UI components
+public/       → static assets
+```
 
-## Learn More
+## 📈 What I Learned
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
+- Built a scalable, reusable component architecture
+- Implemented advanced Framer Motion animations across a multi-page site
+- Shipped a complete production-ready website from design to deployment
+- Handled responsive layouts and cross-device accessibility
+- Created keyboard-navigable modals and image lightbox interactions
+```
