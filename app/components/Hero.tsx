@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect, useState } from "react";
+import Button from "./Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -153,18 +154,12 @@ const Hero = () => {
               transition={{ duration: 0.7, ease: EASE, delay: 0.55 }}
               className="mt-10 flex flex-wrap items-center gap-4"
             >
-              <Link
-                href="/join"
-                className="group relative overflow-hidden bg-yellow-400 -skew-x-[20deg] shadow-[6px_6px_0_0_#ffffff]"
-              >
-                <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-300 group-hover:scale-x-100" />
-                <span className="relative inline-flex items-center gap-2 px-8 py-4 text-sm font-black uppercase tracking-wider text-blue-900 skew-x-[20deg]">
-                  Join Us
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
+              <Button href="/join" variant="primary" size="md" onBlue={true}>
+                Join Us
+                <span className="transition-transform duration-300 group-hover:translate-x-1">
+                  →
                 </span>
-              </Link>
+              </Button>
 
               <Link
                 href="/events"

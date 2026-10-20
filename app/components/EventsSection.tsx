@@ -3,10 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import SectionHeader from "./SectionHeader";
+import Button from "./Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const CUT = 40; // Reduced from 48 for a slightly sharper, smaller cut
+const CUT = 40;
 
 const mainEvent = {
   id: 1,
@@ -42,7 +44,6 @@ const sideEvents = [
   },
 ];
 
-/* Full diagonal corner: cuts top-left AND bottom-right */
 const cutShape = `polygon(${CUT}px 0, 100% 0, 100% calc(100% - ${CUT}px), calc(100% - ${CUT}px) 100%, 0 100%, 0 ${CUT}px)`;
 const cutShapeInner = `polygon(${CUT - 2}px 0, 100% 0, 100% calc(100% - ${CUT - 2}px), calc(100% - ${CUT - 2}px) 100%, 0 100%, 0 ${CUT - 2}px)`;
 
@@ -58,27 +59,14 @@ const EventsSection = () => {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 md:pl-24 lg:px-10 lg:pl-28">
+      <div className="section-container">
         {/* ── HEADER ── */}
-        <div className="grid items-end gap-6 border-b-2 border-white/20 pb-8 md:grid-cols-12">
-          <motion.div
-            initial={{ x: -40, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.9, ease: EASE }}
-            className="md:col-span-8"
-          >
-            <div className="flex items-center gap-3">
-              <span className="relative inline-block h-4 w-3" aria-hidden>
-                <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
-                <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
-              </span>
-              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-yellow-400">
-                Our Events
-              </span>
-            </div>
-
-            <h2 className="mt-5 text-5xl font-black leading-[0.9] tracking-tight text-white sm:text-6xl md:text-7xl">
+        <SectionHeader
+          dark={true}
+          label="Our Events"
+          description="Four rhythms shape our year — worship, study, outreach, and celebration. Here's a glimpse into the moments that define DUSCO."
+          title={
+            <>
               THE NIGHTS
               <br />
               WE&apos;LL
@@ -92,45 +80,29 @@ const EventsSection = () => {
                   remember.
                 </span>
               </span>
-            </h2>
-          </motion.div>
+            </>
+          }
+        />
 
-          <motion.div
-            initial={{ x: 40, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
-            className="md:col-span-4"
-          >
-            <p className="text-sm leading-relaxed text-white/70">
-              Four rhythms shape our year — worship, study, outreach, and
-              celebration. Here&apos;s a glimpse into the moments that define
-              DUSCO.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* ── MAIN EVENT (Slightly reduced padding) ── */}
+        {/* ── MAIN EVENT ── */}
+        {/* FIX: Changed group to group/card */}
         <motion.div
           initial={{ y: 40, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-          className="group relative mt-12 md:mt-16"
+          className="group/card relative mt-12 md:mt-16"
         >
-          {/* yellow shadow layer */}
           <span
             aria-hidden
-            className="absolute inset-0 translate-x-3 translate-y-3 bg-yellow-400 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"
+            className="absolute inset-0 translate-x-3 translate-y-3 bg-yellow-400 transition-transform duration-300 group-hover/card:translate-x-4 group-hover/card:translate-y-4"
             style={{ clipPath: cutShape }}
           />
-          {/* white border layer (was blue, now white for contrast on blue bg) */}
           <span
             aria-hidden
             className="absolute inset-0 bg-white"
             style={{ clipPath: cutShape }}
           />
-          {/* white face */}
           <div
             className="relative grid overflow-hidden bg-white md:grid-cols-12"
             style={{ clipPath: cutShapeInner }}
@@ -140,7 +112,7 @@ const EventsSection = () => {
                 src={mainEvent.image}
                 alt={mainEvent.title}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover transition-transform duration-700 group-hover/card:scale-105"
               />
               <span className="absolute inset-0 bg-blue-900/25 mix-blend-multiply" />
 
@@ -169,99 +141,101 @@ const EventsSection = () => {
                 {mainEvent.highlight}
               </div>
 
-              <Link
+              <Button
                 href={`/events/${mainEvent.id}`}
-                className="group/btn relative mt-6 inline-flex w-fit overflow-hidden bg-blue-900 -skew-x-[20deg] shadow-[4px_4px_0_0_#facc15]"
+                variant="secondary"
+                size="sm"
+                onBlue={false}
+                className="mt-6 w-fit"
               >
-                <span className="absolute inset-0 origin-left scale-x-0 bg-yellow-400 transition-transform duration-300 group-hover/btn:scale-x-100" />
-                <span className="relative inline-flex items-center gap-2 px-6 py-2.5 text-[11px] font-black uppercase tracking-wider text-yellow-400 transition-colors duration-300 group-hover/btn:text-blue-900 skew-x-[20deg]">
-                  Learn More
-                  <span className="transition-transform duration-300 group-hover/btn:translate-x-1">
-                    →
-                  </span>
+                Learn More
+                <span className="transition-transform duration-300 group-hover:translate-x-1">
+                  →
                 </span>
-              </Link>
+              </Button>
             </div>
           </div>
         </motion.div>
 
-       {/* ── SIDE EVENTS ── */}
-<div className="mt-6 grid gap-6 md:mt-8 md:grid-cols-2 md:gap-8">
-  {sideEvents.map((ev, i) => (
-    <motion.div
-      key={ev.id}
-      initial={{ y: 40, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.8, ease: EASE, delay: 0.1 + i * 0.12 }}
-      className="group relative"
-    >
-      <span
-        aria-hidden
-        className="absolute inset-0 translate-x-3 translate-y-3 bg-yellow-400 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"
-        style={{ clipPath: cutShape }}
-      />
-      <span
-        aria-hidden
-        className="absolute inset-0 bg-white"
-        style={{ clipPath: cutShape }}
-      />
-      <div
-        className="relative overflow-hidden bg-white"
-        style={{ clipPath: cutShapeInner }}
-      >
-        {/* Image height reduced here (16/7 instead of 16/9) */}
-        <div className="relative aspect-[16/7] w-full overflow-hidden">
-          <Image
-            src={ev.image}
-            alt={ev.title}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          <span className="absolute inset-0 bg-blue-900/25 mix-blend-multiply" />
-
-          <div className="absolute left-5 top-5 bg-yellow-400 px-3 py-1.5 -skew-x-[20deg] shadow-[3px_3px_0_0_#1e3a8a]">
-            <span className="block text-[9px] font-black uppercase tracking-widest text-blue-900 skew-x-[20deg]">
-              {ev.season}
-            </span>
-          </div>
-        </div>
-
-        <div className="p-5 md:p-6">
-          <div className="flex items-baseline justify-between gap-3">
-            <h3 className="text-xl font-black leading-tight text-blue-900 transition-colors duration-300 group-hover:text-yellow-600 md:text-2xl">
-              {ev.title}
-            </h3>
-            <span className="shrink-0 text-[9px] font-black uppercase tracking-[0.25em] text-blue-900/40">
-              {ev.label}
-            </span>
-          </div>
-
-          <p className="mt-2 text-sm leading-relaxed text-blue-900/60">
-            {ev.desc}
-          </p>
-
-          <div className="mt-4 flex items-center justify-between border-t border-blue-900/10 pt-4">
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-blue-900/50">
-              <span className="h-[2px] w-4 bg-yellow-400" />
-              {ev.highlight}
-            </div>
-
-            <Link
-              href={`/events/${ev.id}`}
-              className="group/link inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-blue-900 transition-colors hover:text-yellow-600"
+        {/* ── SIDE EVENTS ── */}
+        <div className="mt-6 grid gap-6 md:mt-8 md:grid-cols-2 md:gap-8">
+          {sideEvents.map((ev, i) => (
+            <motion.div
+              key={ev.id}
+              initial={{ y: 40, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.1 + i * 0.12 }}
+              // FIX: Changed group to group/card
+              className="group/card relative"
             >
-              Details
-              <span className="transition-transform duration-300 group-hover/link:translate-x-1">
-                →
-              </span>
-            </Link>
-          </div>
+              <span
+                aria-hidden
+                className="absolute inset-0 translate-x-3 translate-y-3 bg-yellow-400 transition-transform duration-300 group-hover/card:translate-x-4 group-hover/card:translate-y-4"
+                style={{ clipPath: cutShape }}
+              />
+              <span
+                aria-hidden
+                className="absolute inset-0 bg-white"
+                style={{ clipPath: cutShape }}
+              />
+              <div
+                className="relative overflow-hidden bg-white"
+                style={{ clipPath: cutShapeInner }}
+              >
+                <div className="relative aspect-[16/7] w-full overflow-hidden">
+                  <Image
+                    src={ev.image}
+                    alt={ev.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover/card:scale-105"
+                  />
+                  <span className="absolute inset-0 bg-blue-900/25 mix-blend-multiply" />
+
+                  <div className="absolute left-5 top-5 bg-yellow-400 px-3 py-1.5 -skew-x-[20deg] shadow-[3px_3px_0_0_#1e3a8a]">
+                    <span className="block text-[9px] font-black uppercase tracking-widest text-blue-900 skew-x-[20deg]">
+                      {ev.season}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-5 md:p-6">
+                  <div className="flex items-baseline justify-between gap-3">
+                    {/* FIX: Changed group-hover to group-hover/card */}
+                    <h3 className="text-xl font-black leading-tight text-blue-900 transition-colors duration-300 group-hover/card:text-yellow-600 md:text-2xl">
+                      {ev.title}
+                    </h3>
+                    <span className="shrink-0 text-[9px] font-black uppercase tracking-[0.25em] text-blue-900/40">
+                      {ev.label}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-sm leading-relaxed text-blue-900/60">
+                    {ev.desc}
+                  </p>
+
+                  <div className="mt-4 flex items-center justify-between border-t border-blue-900/10 pt-4">
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-blue-900/50">
+                      <span className="h-[2px] w-4 bg-yellow-400" />
+                      {ev.highlight}
+                    </div>
+
+                    <Link
+                      href={`/events/${ev.id}`}
+                      // FIX: This remains group/link, so it only triggers on the link itself
+                      className="group/link inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-blue-900 transition-colors hover:text-yellow-600"
+                    >
+                      Details
+                      <span className="transition-transform duration-300 group-hover/link:translate-x-1">
+                        →
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </div>
-    </motion.div>
-  ))}
-</div>
 
         {/* ── BOTTOM CTA ── */}
         <motion.div
@@ -275,18 +249,18 @@ const EventsSection = () => {
             Every moment is a chance to encounter God — and each other.
           </p>
 
-          <Link
+          <Button
             href="/events"
-            className="group relative inline-flex overflow-hidden bg-yellow-400 -skew-x-[20deg] shadow-[4px_4px_0_0_#ffffff]"
+            variant="primary"
+            size="sm"
+            onBlue={true}
+            className="relative z-10"
           >
-            <span className="absolute inset-0 origin-left scale-x-0 bg-white transition-transform duration-300 group-hover:scale-x-100" />
-            <span className="relative inline-flex items-center gap-2 px-6 py-3 text-[11px] font-black uppercase tracking-wider text-blue-900 transition-colors duration-300 skew-x-[20deg]">
-              See All Events
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
+            See All Events
+            <span className="transition-transform duration-300 group-hover:translate-x-1">
+              →
             </span>
-          </Link>
+          </Button>
         </motion.div>
       </div>
     </section>

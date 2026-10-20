@@ -12,6 +12,7 @@ const links: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Events", href: "/events" },
+  { label: "Alumni", href: "/alumni" },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
 ];
@@ -105,7 +106,7 @@ const Navbar = () => {
           damping: 26,
           mass: 0.9,
         }}
-        className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3"
+        className="fixed inset-x-0 top-0 z-[9999] flex justify-center px-4 pt-3"
       >
         <div
           className="relative w-full max-w-5xl"

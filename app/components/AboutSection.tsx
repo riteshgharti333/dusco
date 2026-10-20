@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import SectionHeader from "./SectionHeader";
+import Button from "./Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -45,28 +47,12 @@ const AboutSection = () => {
         </div>
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 md:pl-24 lg:px-10 lg:pl-28">
-        {/* ── HEADLINE ROW ── */}
-        <div className="grid items-end gap-6 md:grid-cols-12">
-          <motion.div
-            initial={{ x: -40, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.9, ease: EASE }}
-            className="md:col-span-8"
-          >
-            <div className="flex items-center gap-3">
-            <span className="relative inline-block h-4 w-3" aria-hidden>
-  {/* vertical beam */}
-  <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
-  {/* horizontal crossbar — sits 30% from top, not centered */}
-  <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
-</span>
-              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-blue-900">
-                Who We Are
-              </span>
-            </div>
-            <h2 className="mt-5 text-5xl font-black leading-[0.95] tracking-tight text-blue-900 sm:text-6xl md:text-7xl">
+      <div className="section-container">
+        <SectionHeader
+          label="Who We Are"
+          description="DUSCO is the Dahaka University Student Christian Organization — a family of believers pursuing God together on campus. Different backgrounds. One faith."
+          title={
+            <>
               WE ARE
               <br />
               <span className="relative inline-block">
@@ -78,23 +64,9 @@ const AboutSection = () => {
               </span>
               <br />
               <span className="text-blue-900">MANY STORIES</span>
-            </h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ x: 40, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.15 }}
-            className="md:col-span-4"
-          >
-            <p className="text-sm leading-relaxed text-blue-900/70">
-              DUSCO is the Dahaka University Student Christian Organization — a
-              family of believers pursuing God together on campus. Different
-              backgrounds. One faith.
-            </p>
-          </motion.div>
-        </div>
+            </>
+          }
+        />
 
         {/* ── IMAGE GRID + STORY ── */}
         <div className="mt-16 grid gap-10 md:mt-20 md:grid-cols-12 md:gap-14">
@@ -241,18 +213,17 @@ const AboutSection = () => {
               transition={{ duration: 0.7, ease: EASE, delay: 0.45 }}
               className="mt-10"
             >
-              <Link
+              <Button
                 href="/about"
-                className="group relative inline-flex overflow-hidden bg-blue-900 -skew-x-[20deg] shadow-[5px_5px_0_0_#facc15]"
+                variant="secondary"
+                size="md"
+                onBlue={false}
               >
-                <span className="absolute inset-0 origin-left scale-x-0 bg-yellow-400 transition-transform duration-300 group-hover:scale-x-100" />
-                <span className="relative inline-flex items-center gap-2 px-7 py-3.5 text-sm font-black uppercase tracking-wider text-yellow-400 transition-colors duration-300 group-hover:text-blue-900 skew-x-[20deg]">
-                  Our Full Story
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
+                Our Full Story
+                <span className="transition-transform duration-300 group-hover:translate-x-1">
+                  →
                 </span>
-              </Link>
+              </Button>
             </motion.div>
           </div>
         </div>
