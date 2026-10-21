@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -97,8 +97,7 @@ const SHAPES = [
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export default function SingleGalleryPage() {
-  const params = useParams<{ slug: string }>();
+export default function SingleGalleryPage({ params }: { params: { slug: string } }) {
   const idx = galleries.findIndex((g) => g.id === params?.slug);
   const [open, setOpen] = useState<number | null>(null);
   const [dir, setDir] = useState(1);
