@@ -186,7 +186,7 @@ const Testimonials = () => {
             {/* Off-White Quote Mark (No Slant) */}
             <span
               aria-hidden
-              className="pointer-events-none absolute -top-8 -left-5 select-none font-serif text-[10rem] leading-none text-white/20 md:-top-12 md:-left-3 md:text-[16rem]"
+              className="pointer-events-none absolute -top-8 -left-2 select-none font-serif text-[10rem] leading-none text-white/20 md:-top-12 md:-left-3 md:text-[16rem]"
             >
               “
             </span>

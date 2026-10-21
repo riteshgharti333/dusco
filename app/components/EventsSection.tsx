@@ -85,74 +85,78 @@ const EventsSection = () => {
         />
 
         {/* ── MAIN EVENT ── */}
-        {/* FIX: Changed group to group/card */}
         <motion.div
           initial={{ y: 40, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-          className="group/card relative mt-12 md:mt-16"
+          className="group/card relative mt-12 pr-2 pb-2 md:mt-16"
         >
+          {/* Yellow shadow — fills the padded area (peeks 12px bottom-right) */}
           <span
             aria-hidden
-            className="absolute inset-0 translate-x-3 translate-y-3 bg-yellow-400 transition-transform duration-300 group-hover/card:translate-x-4 group-hover/card:translate-y-4"
+            className="absolute inset-0 bg-yellow-400 ml-3 mt-3"
             style={{ clipPath: cutShape }}
           />
-          <span
-            aria-hidden
-            className="absolute inset-0 bg-white"
-            style={{ clipPath: cutShape }}
-          />
-          <div
-            className="relative grid overflow-hidden bg-white md:grid-cols-12"
-            style={{ clipPath: cutShapeInner }}
-          >
-            <div className="relative aspect-[16/9] md:col-span-6 md:aspect-auto md:min-h-[360px]">
-              <Image
-                src={mainEvent.image}
-                alt={mainEvent.title}
-                fill
-                className="object-cover transition-transform duration-700 group-hover/card:scale-105"
-              />
-              <span className="absolute inset-0 bg-blue-900/25 mix-blend-multiply" />
 
-              <div className="absolute left-6 top-6 bg-yellow-400 px-3 py-1.5 -skew-x-[20deg] shadow-[3px_3px_0_0_#1e3a8a]">
-                <span className="block text-[9px] font-black uppercase tracking-[0.25em] text-blue-900 skew-x-[20deg]">
-                  {mainEvent.label}
-                </span>
-              </div>
-            </div>
+          {/* Card frame — sits inside the padding */}
+          <div className="relative">
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-white"
+              style={{ clipPath: cutShape }}
+            />
+            <div
+              className="relative grid overflow-hidden bg-white md:grid-cols-12"
+              style={{ clipPath: cutShapeInner }}
+            >
+              <div className="relative aspect-[16/9] md:col-span-6 md:aspect-auto md:min-h-[360px]">
+                <Image
+                  src={mainEvent.image}
+                  alt={mainEvent.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover/card:scale-105"
+                />
+                <span className="absolute inset-0 bg-blue-900/25 mix-blend-multiply" />
 
-            <div className="flex flex-col justify-center p-6 md:col-span-6 md:p-8">
-              <span className="text-[10px] font-black uppercase tracking-[0.35em] text-yellow-600">
-                {mainEvent.season}
-              </span>
-
-              <h3 className="mt-2 text-2xl font-black leading-[1.05] text-blue-900 md:text-3xl">
-                {mainEvent.title}
-              </h3>
-
-              <p className="mt-3 text-sm leading-relaxed text-blue-900/70">
-                {mainEvent.desc}
-              </p>
-
-              <div className="mt-5 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-blue-900/60">
-                <span className="h-[2px] w-5 bg-yellow-400" />
-                {mainEvent.highlight}
+                <div className="absolute left-6 top-6 bg-yellow-400 px-3 py-1.5 -skew-x-[20deg] shadow-[3px_3px_0_0_#1e3a8a]">
+                  <span className="block text-[9px] font-black uppercase tracking-[0.25em] text-blue-900 skew-x-[20deg]">
+                    {mainEvent.label}
+                  </span>
+                </div>
               </div>
 
-              <Button
-                href={`/events/${mainEvent.id}`}
-                variant="secondary"
-                size="sm"
-                onBlue={false}
-                className="mt-6 w-fit"
-              >
-                Learn More
-                <span className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
+              <div className="flex flex-col justify-center p-6 md:col-span-6 md:p-8">
+                <span className="text-[10px] font-black uppercase tracking-[0.35em] text-yellow-600">
+                  {mainEvent.season}
                 </span>
-              </Button>
+
+                <h3 className="mt-2 text-2xl font-black leading-[1.05] text-blue-900 md:text-3xl">
+                  {mainEvent.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-relaxed text-blue-900/70">
+                  {mainEvent.desc}
+                </p>
+
+                <div className="mt-5 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-blue-900/60">
+                  <span className="h-[2px] w-5 bg-yellow-400" />
+                  {mainEvent.highlight}
+                </div>
+
+                <Button
+                  href={`/events/${mainEvent.id}`}
+                  variant="secondary"
+                  size="sm"
+                  onBlue={false}
+                  className="mt-6 w-fit"
+                >
+                  Learn More
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </Button>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -166,70 +170,72 @@ const EventsSection = () => {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8, ease: EASE, delay: 0.1 + i * 0.12 }}
-              // FIX: Changed group to group/card
-              className="group/card relative"
+              className="group/card relative pr-2 pb-2"
             >
+              {/* Yellow shadow — fills the padded area */}
               <span
                 aria-hidden
-                className="absolute inset-0 translate-x-3 translate-y-3 bg-yellow-400 transition-transform duration-300 group-hover/card:translate-x-4 group-hover/card:translate-y-4"
+                className="absolute inset-0 bg-yellow-400 ml-3 mt-3"
                 style={{ clipPath: cutShape }}
               />
-              <span
-                aria-hidden
-                className="absolute inset-0 bg-white"
-                style={{ clipPath: cutShape }}
-              />
-              <div
-                className="relative overflow-hidden bg-white"
-                style={{ clipPath: cutShapeInner }}
-              >
-                <div className="relative aspect-[16/7] w-full overflow-hidden">
-                  <Image
-                    src={ev.image}
-                    alt={ev.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover/card:scale-105"
-                  />
-                  <span className="absolute inset-0 bg-blue-900/25 mix-blend-multiply" />
 
-                  <div className="absolute left-5 top-5 bg-yellow-400 px-3 py-1.5 -skew-x-[20deg] shadow-[3px_3px_0_0_#1e3a8a]">
-                    <span className="block text-[9px] font-black uppercase tracking-widest text-blue-900 skew-x-[20deg]">
-                      {ev.season}
-                    </span>
-                  </div>
-                </div>
+              {/* Card frame — sits inside the padding */}
+              <div className="relative">
+                <span
+                  aria-hidden
+                  className="absolute inset-0 bg-white"
+                  style={{ clipPath: cutShape }}
+                />
+                <div
+                  className="relative overflow-hidden bg-white"
+                  style={{ clipPath: cutShapeInner }}
+                >
+                  <div className="relative aspect-[16/7] w-full overflow-hidden">
+                    <Image
+                      src={ev.image}
+                      alt={ev.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover/card:scale-105"
+                    />
+                    <span className="absolute inset-0 bg-blue-900/25 mix-blend-multiply" />
 
-                <div className="p-5 md:p-6">
-                  <div className="flex items-baseline justify-between gap-3">
-                    {/* FIX: Changed group-hover to group-hover/card */}
-                    <h3 className="text-xl font-black leading-tight text-blue-900 transition-colors duration-300 group-hover/card:text-yellow-600 md:text-2xl">
-                      {ev.title}
-                    </h3>
-                    <span className="shrink-0 text-[9px] font-black uppercase tracking-[0.25em] text-blue-900/40">
-                      {ev.label}
-                    </span>
+                    <div className="absolute left-5 top-5 bg-yellow-400 px-3 py-1.5 -skew-x-[20deg] shadow-[3px_3px_0_0_#1e3a8a]">
+                      <span className="block text-[9px] font-black uppercase tracking-widest text-blue-900 skew-x-[20deg]">
+                        {ev.season}
+                      </span>
+                    </div>
                   </div>
 
-                  <p className="mt-2 text-sm leading-relaxed text-blue-900/60">
-                    {ev.desc}
-                  </p>
-
-                  <div className="mt-4 flex items-center justify-between border-t border-blue-900/10 pt-4">
-                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-blue-900/50">
-                      <span className="h-[2px] w-4 bg-yellow-400" />
-                      {ev.highlight}
+                  <div className="p-5 md:p-6">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <h3 className="text-xl font-black leading-tight text-blue-900 transition-colors duration-300 group-hover/card:text-yellow-600 md:text-2xl">
+                        {ev.title}
+                      </h3>
+                      <span className="shrink-0 text-[9px] font-black uppercase tracking-[0.25em] text-blue-900/40">
+                        {ev.label}
+                      </span>
                     </div>
 
-                    <Link
-                      href={`/events/${ev.id}`}
-                      // FIX: This remains group/link, so it only triggers on the link itself
-                      className="group/link inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-blue-900 transition-colors hover:text-yellow-600"
-                    >
-                      Details
-                      <span className="transition-transform duration-300 group-hover/link:translate-x-1">
-                        →
-                      </span>
-                    </Link>
+                    <p className="mt-2 text-sm leading-relaxed text-blue-900/60">
+                      {ev.desc}
+                    </p>
+
+                    <div className="mt-4 flex items-center justify-between border-t border-blue-900/10 pt-4">
+                      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-blue-900/50">
+                        <span className="h-[2px] w-4 bg-yellow-400" />
+                        {ev.highlight}
+                      </div>
+
+                      <Link
+                        href={`/events/${ev.id}`}
+                        className="group/link inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-blue-900 transition-colors hover:text-yellow-600"
+                      >
+                        Details
+                        <span className="transition-transform duration-300 group-hover/link:translate-x-1">
+                          →
+                        </span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

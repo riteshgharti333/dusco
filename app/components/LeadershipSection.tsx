@@ -72,12 +72,12 @@ const LeadershipSection = () => {
           transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
           className="group/president relative mt-12 md:mt-16 flex flex-col md:flex-row md:items-center md:gap-12 lg:gap-16"
         >
-          {/* Left: Image with Background Frame */}
-          <div className="relative w-full md:w-[45%]">
-            {/* Yellow offset block behind image */}
-            <div className="absolute inset-0 translate-x-4 translate-y-4 bg-yellow-400" />
+          {/* Left: Image with Background Frame — pr-4 pb-4 reserves space for the yellow */}
+          <div className="relative w-full md:w-[45%] pr-2 pb-2">
+            {/* Yellow offset block — fills the padded area (peeks 16px bottom-right) */}
+            <div className="absolute inset-0 bg-yellow-400 ml-3 mt-3" />
             
-            {/* Reduced aspect ratio to 1/1 for a smaller, tighter card */}
+            {/* Image sits inside the padding at the original dimensions */}
             <div className="relative aspect-square w-full overflow-hidden bg-blue-900">
               <Image
                 src={president.image}
@@ -105,7 +105,7 @@ const LeadershipSection = () => {
               Leading the student body this year, Payel is passionate about creating a space where every student can encounter God and find a true community on campus.
             </p>
 
-            {/* The Slanted Name & Role Tags (Reduced sizing) */}
+            {/* The Slanted Name & Role Tags */}
             <div className="mt-8 flex flex-col items-start pl-2">
               <div className="inline-grid gap-2">
                 {/* Name Tag */}
@@ -123,7 +123,6 @@ const LeadershipSection = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </motion.div>
 
@@ -138,9 +137,12 @@ const LeadershipSection = () => {
               transition={{ duration: 0.8, ease: EASE, delay: 0.15 + i * 0.1 }}
               className="group/team flex flex-col"
             >
-              {/* Image with Offset Block (Smaller aspect ratio) */}
-              <div className="relative w-full">
-                <div className="absolute inset-0 translate-x-4 translate-y-4 bg-yellow-400" />
+              {/* Image with Offset Block — pr-4 pb-4 reserves space */}
+              <div className="relative w-full pr-2 pb-2">
+                {/* Yellow offset block — fills the padded area */}
+                <div className="absolute inset-0 bg-yellow-400 ml-3 mt-3" />
+
+                {/* Image sits inside the padding */}
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-blue-900">
                   <Image
                     src={member.image}
@@ -158,7 +160,7 @@ const LeadershipSection = () => {
                   {member.quote}
                 </span>
                 
-                {/* The Slanted Name & Role Tags (Reduced sizing) */}
+                {/* The Slanted Name & Role Tags */}
                 <div className="mt-4 pl-2">
                   <div className="inline-grid gap-1.5">
                     {/* Name Tag */}

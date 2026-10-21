@@ -42,27 +42,27 @@ const OurStory = () => {
             <span className="absolute inset-0 bg-blue-900/30 mix-blend-multiply" />
           </motion.div>
 
-          {/* Overlapping Quote Block — NEW CONTENT */}
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
-            className="relative z-10 mx-auto -mt-16 w-[90%] max-w-2xl bg-yellow-400 p-8 shadow-2xl md:-mt-24 md:p-12"
+            className="relative z-10 mx-auto -mt-16 w-[90%] max-w-2xl bg-yellow-400 p-8 text-center shadow-2xl md:-mt-24 md:p-12"
           >
             <span className="relative inline-block h-5 w-4" aria-hidden>
               <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-blue-900" />
               <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-blue-900" />
             </span>
-            <p className="mt-6 text-2xl font-black italic leading-tight text-blue-900 md:text-3xl">
+            <p className="mt-6 text-xl font-black italic leading-tight text-blue-900 md:text-3xl">
               &ldquo;You were never meant to walk through university
               alone.&rdquo;
             </p>
-            <div className="mt-6 flex items-center gap-3">
+            <div className="mt-6 flex items-center justify-center gap-2 md:gap-3">
               <span className="h-[2px] w-8 bg-blue-900" />
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-900">
                 The Heart of DUCSO
               </span>
+              <span className="h-[2px] w-8 bg-blue-900" />
             </div>
           </motion.div>
         </div>
@@ -84,23 +84,23 @@ const OurStory = () => {
             </div>
 
             <h2 className="mx-auto max-w-4xl text-4xl font-black leading-[1.05] tracking-tight text-blue-900 sm:text-5xl md:text-6xl lg:text-7xl">
-              MORE THAN A CLUB.
+              MORE THAN A
               <br />
-              <span className="relative inline-block mt-2">
+              <span className="relative mt-2 inline-block">
                 <span
                   aria-hidden
                   className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
                 />
                 <span className="relative z-10 px-1 italic uppercase text-blue-900">
-                  a family of faith.
+                  CLUB.
                 </span>
               </span>
             </h2>
           </motion.div>
         </div>
 
-        {/* ═══ BOTTOM: 3-Column Editorial Text — NEW CONTENT ═══ */}
-        <div className="grid gap-10 md:grid-cols-3 md:gap-12">
+        {/* ═══ BOTTOM: 3-Column Editorial Text ═══ */}
+        <div className="grid gap-10 text-center md:grid-cols-3 md:gap-12 md:text-left">
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -214,8 +214,9 @@ const MissionVision = () => {
                 whileInView={{ x: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.9, ease: EASE }}
+                className="text-center md:text-left"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center gap-3 md:justify-start">
                   <span className="relative inline-block h-4 w-3" aria-hidden>
                     <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
                     <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
@@ -241,7 +242,7 @@ const MissionVision = () => {
                   </span>
                 </h2>
 
-                <p className="mt-8 max-w-xs text-sm leading-relaxed text-blue-900/60">
+                <p className="mx-auto mt-8 max-w-xs text-sm leading-relaxed text-blue-900/60 md:mx-0">
                   Every community has a heartbeat. Ours is simple: to know
                   Christ, and to make Him known.
                 </p>
@@ -272,7 +273,7 @@ const MissionVision = () => {
                   }`}
                 />
 
-                {/* Slanted background plane — TOP-RIGHT (yellow on dark, blue on yellow) */}
+                {/* Slanted background plane — TOP-RIGHT */}
                 <span
                   aria-hidden
                   className={`pointer-events-none absolute -right-32 -top-24 h-[140%] w-72 -skew-x-[20deg] transition-transform duration-700 group-hover:-translate-x-8 ${
@@ -280,7 +281,7 @@ const MissionVision = () => {
                   }`}
                 />
 
-                {/* Slanted background plane — BOTTOM-LEFT (subtle) */}
+                {/* Slanted background plane — BOTTOM-LEFT */}
                 <span
                   aria-hidden
                   className={`pointer-events-none absolute -left-24 -bottom-24 h-[80%] w-48 -skew-x-[20deg] transition-transform duration-700 group-hover:translate-x-6 ${
@@ -330,7 +331,6 @@ const MissionVision = () => {
                     {card.desc}
                   </p>
 
-                  {/* Bottom label */}
                   <div
                     className={`mt-10 flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] ${
                       card.dark ? "text-white/40" : "text-blue-900/40"
@@ -391,22 +391,21 @@ const Timeline = () => {
         </div>
       </div>
 
-      {/* Subtle slanted accent — top right */}
       <span
         aria-hidden
         className="pointer-events-none absolute -right-32 top-0 h-full w-96 bg-yellow-400/[0.04] -skew-x-[20deg]"
       />
 
       <div className="section-container">
-        {/* Header */}
+        {/* Header — centered on mobile */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.9, ease: EASE }}
-          className="max-w-2xl"
+          className="mx-auto max-w-2xl text-center md:mx-0 md:text-left"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3 md:justify-start">
             <span className="relative inline-block h-4 w-3" aria-hidden>
               <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
               <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
@@ -430,7 +429,7 @@ const Timeline = () => {
             </span>
           </h2>
 
-          <p className="mt-6 max-w-md text-sm leading-relaxed text-white/60">
+          <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-white/60 md:mx-0">
             Five years of God&apos;s faithfulness — from a dorm room prayer to a
             campus-wide family.
           </p>
@@ -438,12 +437,10 @@ const Timeline = () => {
 
         {/* Timeline items */}
         <div className="relative mt-16 md:mt-24">
-          {/* Vertical rail */}
           <span
             aria-hidden
             className="absolute left-4 top-0 h-full w-[2px] bg-white/10 md:left-8"
           />
-          {/* Yellow filled rail on top (simulates progress) */}
           <motion.span
             aria-hidden
             initial={{ scaleY: 0 }}
@@ -462,7 +459,6 @@ const Timeline = () => {
               transition={{ duration: 0.8, ease: EASE, delay: i * 0.12 }}
               className="group relative pb-20 pl-14 last:pb-0 md:pl-28"
             >
-              {/* Rail dot */}
               <span
                 aria-hidden
                 className="absolute left-4 top-4 flex h-5 w-5 -translate-x-1/2 items-center justify-center md:left-8"
@@ -471,7 +467,6 @@ const Timeline = () => {
                 <span className="relative h-3 w-3 rounded-full border-2 border-yellow-400 bg-blue-900 transition-all duration-500 group-hover:bg-yellow-400" />
               </span>
 
-              {/* Giant ghost year — behind everything */}
               <span
                 aria-hidden
                 className="pointer-events-none absolute -top-8 right-0 select-none text-[9rem] font-black leading-none tracking-tighter text-white/[0.03] transition-all duration-500 group-hover:text-yellow-400/10 md:-top-12 md:text-[14rem]"
@@ -479,9 +474,7 @@ const Timeline = () => {
                 {m.year}
               </span>
 
-              {/* Content */}
               <div className="relative">
-                {/* Kicker row */}
                 <div className="flex items-center gap-3">
                   <span className="text-[10px] font-black uppercase tracking-[0.35em] text-yellow-400">
                     Chapter 0{i + 1}
@@ -489,7 +482,6 @@ const Timeline = () => {
                   <span className="h-[1px] w-8 bg-yellow-400/40 transition-all duration-500 group-hover:w-16" />
                 </div>
 
-                {/* Year + Title */}
                 <div className="mt-3 flex flex-col gap-2 md:flex-row md:items-baseline md:gap-8">
                   <span className="text-4xl font-black leading-none text-white transition-colors duration-500 group-hover:text-yellow-400 md:text-5xl md:w-32">
                     {m.year}
@@ -499,12 +491,10 @@ const Timeline = () => {
                   </h3>
                 </div>
 
-                {/* Description */}
                 <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/60 md:text-base">
                   {m.desc}
                 </p>
 
-                {/* Yellow slanted accent — slides in on hover */}
                 <span
                   aria-hidden
                   className="mt-6 block h-[3px] w-0 -skew-x-[20deg] bg-yellow-400 transition-all duration-500 group-hover:w-16"
@@ -519,7 +509,7 @@ const Timeline = () => {
 };
 
 /* ═══════════════════════════════════════════════
-   5. VERSE BANNER
+   5. IMPACT IN NUMBERS
 ═══════════════════════════════════════════════ */
 const ImpactInNumbers = () => {
   const stats = [
@@ -551,7 +541,6 @@ const ImpactInNumbers = () => {
 
   return (
     <section className="relative w-full overflow-hidden bg-blue-900 py-24 md:py-32">
-      {/* Rotated side rail */}
       <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
         <div className="flex h-full items-center justify-center">
           <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-white/20">
@@ -560,7 +549,6 @@ const ImpactInNumbers = () => {
         </div>
       </div>
 
-      {/* Giant faded background word */}
       <span
         aria-hidden
         className="pointer-events-none absolute -bottom-10 right-0 select-none whitespace-nowrap text-[22vw] font-black leading-none tracking-tighter text-white/[0.03]"
@@ -568,22 +556,21 @@ const ImpactInNumbers = () => {
         IMPACT
       </span>
 
-      {/* Slanted yellow plane accent */}
       <span
         aria-hidden
         className="pointer-events-none absolute -right-40 top-0 h-full w-96 bg-yellow-400/[0.05] -skew-x-[20deg]"
       />
 
       <div className="section-container relative">
-        {/* Header */}
+        {/* Header — centered on mobile */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.9, ease: EASE }}
-          className="max-w-2xl"
+          className="mx-auto max-w-2xl text-center md:mx-0 md:text-left"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center gap-3 md:justify-start">
             <span className="relative inline-block h-4 w-3" aria-hidden>
               <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
               <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
@@ -607,13 +594,13 @@ const ImpactInNumbers = () => {
             </span>
           </h2>
 
-          <p className="mt-8 max-w-md text-sm leading-relaxed text-white/60 md:text-base">
+          <p className="mx-auto mt-8 max-w-md text-sm leading-relaxed text-white/60 md:mx-0 md:text-base">
             A movement is only as strong as the people inside it. Here is what
             God has done through DUCSO over the last five years.
           </p>
         </motion.div>
 
-        {/* Stats Grid — YELLOW cards, compact */}
+        {/* Stats Grid */}
         <div className="mt-16 grid gap-5 md:mt-24 md:grid-cols-2 md:gap-6">
           {stats.map((stat, i) => (
             <motion.div
@@ -624,21 +611,17 @@ const ImpactInNumbers = () => {
               transition={{ duration: 0.8, ease: EASE, delay: i * 0.12 }}
               className="group relative flex flex-col overflow-hidden bg-yellow-400 p-6 md:p-8"
             >
-              {/* Premium gradient overlay */}
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-500 opacity-60 transition-opacity duration-700 group-hover:opacity-100"
               />
 
-              {/* Slanted accent plane — bottom left */}
               <span
                 aria-hidden
                 className="pointer-events-none absolute -left-24 -bottom-24 h-[80%] w-48 -skew-x-[20deg] bg-blue-900/[0.06] transition-transform duration-700 group-hover:translate-x-6"
               />
 
-              {/* Content */}
               <div className="relative z-10">
-                {/* Big number + suffix */}
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-5xl font-black leading-none tracking-tighter text-blue-900 md:text-6xl">
                     {stat.number}
@@ -648,7 +631,6 @@ const ImpactInNumbers = () => {
                   </span>
                 </div>
 
-                {/* Kicker label */}
                 <div className="mt-4 flex items-center gap-3">
                   <span className="h-[2px] w-6 bg-blue-900" />
                   <span className="text-[10px] font-black uppercase tracking-[0.35em] text-blue-900">
@@ -656,7 +638,6 @@ const ImpactInNumbers = () => {
                   </span>
                 </div>
 
-                {/* Description */}
                 <p className="mt-3 max-w-sm text-sm leading-relaxed text-blue-900/70">
                   {stat.desc}
                 </p>
@@ -665,7 +646,6 @@ const ImpactInNumbers = () => {
           ))}
         </div>
 
-        {/* Bottom note */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}

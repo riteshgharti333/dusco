@@ -88,7 +88,7 @@ const JoinCTA = () => {
 
               {/* CTA Button */}
               <div className="mt-10">
-                <Button href="/join" variant="primary" size="lg" onBlue={true}>
+                <Button href="/contact" variant="primary" size="lg" onBlue={true}>
                   Join Us
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     →

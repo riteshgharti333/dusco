@@ -31,7 +31,7 @@ body {
 
 @layer components {
   .section-container {
-    @apply relative mx-auto max-w-7xl px-6 md:pl-24 lg:px-10 lg:pl-28;
+    @apply relative mx-auto max-w-7xl px-2 md:pl-24 lg:px-10 lg:pl-28;
   }
 }
 
@@ -48,4 +48,10 @@ body {
 /* Pause on hover (optional but recommended) */
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+@layer utilities {
+  .slant {
+    clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+  }
 }

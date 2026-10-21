@@ -31,7 +31,7 @@ const Footer = () => {
         DUCSO
       </span>
 
-      <div className="section-container relative z-10">
+      <div className="relative mx-auto max-w-7xl px-6 md:pl-24 lg:px-10 lg:pl-28 z-10">
         
         {/* ── TOP SECTION: Editorial Split ── */}
         <div className="grid gap-16 border-b border-white/10 pb-16 md:grid-cols-12 md:gap-12">
@@ -191,7 +191,7 @@ const Footer = () => {
       {/* ── BOTTOM: Yellow Strip ── */}
       <div className="relative mt-4 bg-yellow-400 px-6 py-5 md:px-12">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-blue-900 md:flex-row">
-          <p>© {new Date().getFullYear()} DUCSO. All Rights Reserved.</p>
+          <p>© 2026 DUCSO. All Rights Reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
             <Link href="/terms" className="hover:underline">Terms of Use</Link>

@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import SectionHeader from "./SectionHeader";
 import Button from "./Button";
@@ -90,68 +89,68 @@ const AboutSection = () => {
                     ease: EASE,
                     delay: 0.15 + i * 0.1,
                   }}
-                  className={`relative aspect-[3/4] w-full ${img.offset}`}
+                  className={`relative w-full pr-2 pb-2 ${img.offset}`}
                 >
-                  {/* yellow shadow layer */}
+                  {/* Yellow shadow — fills the padded area (peeks 8px bottom-right) */}
                   <span
                     aria-hidden
-                    className="absolute inset-0 translate-x-2 translate-y-2 bg-yellow-400"
+                    className="absolute inset-0 bg-yellow-400 ml-3 mt-3"
                     style={{
                       clipPath:
                         "polygon(28px 0, 100% 0, 100% 100%, 0 100%, 0 28px)",
                     }}
                   />
-                  {/* blue border layer */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 bg-blue-900"
-                    style={{
-                      clipPath:
-                        "polygon(28px 0, 100% 0, 100% 100%, 0 100%, 0 28px)",
-                    }}
-                  />
-                  {/* image face */}
-                  <div
-                    className="relative h-full w-full overflow-hidden"
-                    style={{
-                      clipPath:
-                        "polygon(26px 0, 100% 0, 100% 100%, 0 100%, 0 26px)",
-                    }}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.caption}
-                      fill
-                      className="object-cover"
-                    />
-                    {/* bottom gradient */}
+
+                  {/* Card frame — sized to the aspect ratio, sits inside the padding */}
+                  <div className="relative aspect-[3/4] w-full">
+                    {/* Blue border layer */}
                     <span
                       aria-hidden
-                      className="absolute inset-x-0 bottom-0 h-1/2"
+                      className="absolute inset-0 bg-blue-900"
                       style={{
-                        background:
-                          "linear-gradient(180deg, transparent 0%, rgba(30,58,138,0.92) 100%)",
+                        clipPath:
+                          "polygon(28px 0, 100% 0, 100% 100%, 0 100%, 0 28px)",
                       }}
                     />
-                    {/* caption */}
-                    <div className="absolute inset-x-0 bottom-0 p-3">
-                      <span className="block text-[8px] font-bold uppercase tracking-[0.25em] text-yellow-400">
-                        {img.sub}
-                      </span>
-                      <span className="mt-0.5 block text-xs font-black uppercase leading-tight text-white">
-                        {img.caption}
-                      </span>
+
+                    {/* Image face */}
+                    <div
+                      className="relative h-full w-full overflow-hidden"
+                      style={{
+                        clipPath:
+                          "polygon(26px 0, 100% 0, 100% 100%, 0 100%, 0 26px)",
+                      }}
+                    >
+                      <Image
+                        src={img.src}
+                        alt={img.caption}
+                        fill
+                        className="object-cover"
+                      />
+
+                      {/* Bottom gradient */}
+                      <span
+                        aria-hidden
+                        className="absolute inset-x-0 bottom-0 h-1/2"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, transparent 0%, rgba(30,58,138,0.92) 100%)",
+                        }}
+                      />
+
+                      {/* Caption */}
+                      <div className="absolute inset-x-0 bottom-0 p-3">
+                        <span className="block text-[8px] font-bold uppercase tracking-[0.25em] text-yellow-400">
+                          {img.sub}
+                        </span>
+                        <span className="mt-0.5 block text-xs font-black uppercase leading-tight text-white">
+                          {img.caption}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
               ))}
-            </div>
-
-            {/* floating year badge — bottom right of grid */}
-            <div className="absolute -right-3 -top-3 bg-blue-900 px-4 py-2.5 -skew-x-[20deg] shadow-[5px_5px_0_0_#facc15]">
-              <span className="block text-[10px] font-bold uppercase tracking-[0.25em] text-yellow-400 skew-x-[20deg]">
-                Since 2019
-              </span>
             </div>
           </motion.div>
 
@@ -185,7 +184,7 @@ const AboutSection = () => {
               </p>
             </motion.div>
 
-            {/* verse block */}
+            {/* Verse block */}
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}

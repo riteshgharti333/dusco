@@ -16,6 +16,5 @@ export default function Home() {
     <LeadershipSection />
     <Testimonials />
     <WhatWeDo />
-    <JoinCTA />
   </div>;
 }

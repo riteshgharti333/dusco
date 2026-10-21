@@ -21,64 +21,71 @@ const Button = ({
   className = "",
 }: ButtonProps) => {
   const sizes = {
-    sm: "px-6 py-2.5 text-[11px] gap-2",
-    md: "px-7 py-3.5 text-sm gap-2",
-    lg: "px-8 py-4 text-sm gap-3 md:px-12 md:py-5 md:text-base",
+    sm: { cls: "px-6 py-2.5 text-[11px] gap-2", diag: 10 },
+    md: { cls: "px-7 py-3.5 text-sm gap-2", diag: 12 },
+    lg: { cls: "px-8 py-4 text-sm gap-3 md:px-12 md:py-5 md:text-base", diag: 14 },
   };
-
-  // Logic for Primary buttons (Yellow face, White shadow if onBlue)
-  const primaryShadow = onBlue
-    ? "shadow-[4px_4px_0_0_#ffffff] md:shadow-[6px_6px_0_0_#ffffff] hover:shadow-[4px_4px_0_0_#facc15] md:hover:shadow-[6px_6px_0_0_#facc15]"
-    : "shadow-[4px_4px_0_0_#facc15] md:shadow-[6px_6px_0_0_#facc15]";
-
-  // Logic for Secondary buttons (Blue face, Yellow shadow)
-  // HOVER: Shadow turns Blue to match the top layer contrast
-  const secondaryShadow =
-    "shadow-[4px_4px_0_0_#facc15] md:shadow-[6px_6px_0_0_#facc15] hover:shadow-[4px_4px_0_0_#1e3a8a] md:hover:shadow-[6px_6px_0_0_#1e3a8a]";
 
   const variants = {
     primary: {
       base: "bg-yellow-400 text-blue-900",
       hoverBg: "bg-white",
       hoverText: "group-hover:text-blue-900",
-      shadow: primaryShadow,
+      // Literal classes so Tailwind generates them
+      shadow: onBlue
+        ? "bg-white group-hover:bg-yellow-400"
+        : "bg-yellow-400",
     },
     secondary: {
       base: "bg-blue-900 text-yellow-400",
       hoverBg: "bg-yellow-400",
       hoverText: "group-hover:text-blue-900",
-      shadow: secondaryShadow,
+      // Yellow shadow → turns blue on hover
+      shadow: "bg-yellow-400 group-hover:bg-blue-900",
     },
     outline: {
-      base: "border-2 border-white/20 text-white",
+      base: "border-2 border-white/20 text-white bg-transparent",
       hoverBg: "",
       hoverText: "group-hover:text-yellow-400 group-hover:border-yellow-400",
-      shadow: "shadow-none",
+      shadow: "",
     },
   };
 
   const isOutline = variant === "outline";
   const config = variants[variant];
+  const sizeCfg = sizes[size];
+
+  const slantShape = `polygon(${sizeCfg.diag}px 0, 100% 0, calc(100% - ${sizeCfg.diag}px) 100%, 0 100%)`;
 
   return (
-    <Link
-      href={href}
-      className={`group relative inline-flex overflow-hidden -skew-x-[20deg] transition-all duration-300 ${config.base} ${sizes[size]} ${config.shadow} ${className}`}
-    >
-      {/* Sliding background */}
+    <div className={`group relative inline-flex ${className}`}>
+      {/* Shadow block — all class names are literal */}
       {!isOutline && (
         <span
-          className={`absolute inset-0 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100 ${config.hoverBg}`}
+          aria-hidden
+          className={`pointer-events-none absolute inset-0 translate-x-1 translate-y-1 transition-colors duration-300 md:translate-x-1.5 md:translate-y-1.5 ${config.shadow}`}
+          style={{ clipPath: slantShape }}
         />
       )}
 
-      {/* Text */}
-      <span
-        className={`relative inline-flex items-center skew-x-[20deg] font-black uppercase tracking-wider transition-colors duration-300 ${config.hoverText}`}
+      {/* Button face */}
+      <Link
+        href={href}
+        className={`relative inline-flex transition-colors duration-300 ${config.base} ${sizeCfg.cls}`}
+        style={{ clipPath: slantShape }}
       >
-        {children}
-      </span>
-    </Link>
+        {!isOutline && (
+          <span
+            className={`absolute inset-0 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100 ${config.hoverBg}`}
+          />
+        )}
+        <span
+          className={`relative inline-flex items-center font-black uppercase tracking-wider transition-colors duration-300 ${config.hoverText}`}
+        >
+          {children}
+        </span>
+      </Link>
+    </div>
   );
 };
 

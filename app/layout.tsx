@@ -17,11 +17,27 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "University Christian Society",
-  description: "Official website of the University Christian Society",
+  title: {
+    default: "DUCSO — Dhaka University Christian Students' Organisation",
+    template: "%s | DUCSO",
+  },
+  description:
+    "The official website of the Dhaka University Christian Students' Organisation (DUCSO) — a community of believers gathering weekly to worship, grow, and serve on campus.",
+  icons: {
+    icon: "/dusco-logo.jpg",
+    shortcut: "/dusco-logo.jpg",
+    apple: "/dusco-logo.jpg",
+  },
+  openGraph: {
+    title: "DUCSO — Dhaka University Christian Students' Organisation",
+    description:
+      "A community of believers at Dhaka University gathering weekly to worship, grow, and serve.",
+    images: ["/dusco-logo.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  
   return (
     <html
       lang="en"
