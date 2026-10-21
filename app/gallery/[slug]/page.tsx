@@ -1,4 +1,6 @@
 "use client";
+export const dynamic = "force-dynamic";
+
 
 /*
   Place at:  app/gallery/[slug]/page.tsx
