@@ -11,7 +11,6 @@ const JoinCTA = () => {
     <section className="relative w-full overflow-hidden bg-white">
       {/* Container with a fixed minimum height for the banner */}
       <div className="relative min-h-[550px] w-full md:min-h-[650px]">
-        
         {/* 1. Background Image (Full Width) */}
         <div className="absolute inset-0">
           <Image
@@ -26,21 +25,21 @@ const JoinCTA = () => {
 
         {/* 2. The Massive Diagonal Blue Block */}
         {/* On mobile, it's a simple bottom block. On desktop, it cuts diagonally. */}
-        <div 
+        <div
           className="absolute inset-0 z-10 flex flex-col justify-center px-6 py-16 md:w-[60%] md:py-0 md:pl-12 lg:pl-24"
           style={{
             // Adjusted the slant to be more pronounced and leave room for the yellow line
-            clipPath: "polygon(0 0, 100% 0, 75% 100%, 0 100%)"
+            clipPath: "polygon(0 0, 100% 0, 75% 100%, 0 100%)",
           }}
         >
           {/* 3. The Yellow Diagonal Accent Line */}
-          <div 
+          <div
             aria-hidden
             className="absolute inset-y-0 right-0 w-[10px] bg-yellow-400 hidden md:block"
-            style={{ 
+            style={{
               // Matched the slant of the blue block (100% to 75% is a -25% shift)
               // transform applies to the yellow line itself
-              transform: "translateX(10px)" 
+              transform: "translateX(10px)",
             }}
           />
 
@@ -88,7 +87,12 @@ const JoinCTA = () => {
 
               {/* CTA Button */}
               <div className="mt-10">
-                <Button href="/contact" variant="primary" size="lg" onBlue={true}>
+                <Button
+                  href="/contact"
+                  variant="primary"
+                  size="lg"
+                  onBlue={true}
+                >
                   Join Us
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     →
@@ -103,11 +107,9 @@ const JoinCTA = () => {
                   A place to belong. A people to grow with.
                 </p>
               </div>
-
             </motion.div>
           </div>
         </div>
-
       </div>
     </section>
   );

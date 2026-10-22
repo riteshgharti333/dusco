@@ -53,25 +53,25 @@ const PageBanner = ({
         {/* ═══ Massive headline wall ═══ */}
         <div className="relative mt-10 grid gap-8 md:grid-cols-12">
           <div className="md:col-span-8">
-        <h1 className="text-[4.5rem] font-black tracking-tighter text-white sm:text-[6rem] md:text-[8rem] lg:text-[10rem]">
-  <motion.span
-    initial={{ opacity: 0, y: 80 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-    className="block leading-[0.78]"
-  >
-    {titleFirst}
-  </motion.span>
-  <motion.span
-    initial={{ opacity: 0, y: 80 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1, ease: EASE, delay: 0.35 }}
-    className="mt-2 block leading-[0.78]"
-  >
-    {titleSecond}
-    <span className="text-yellow-400">.</span>
-  </motion.span>
-</h1>
+            <h1 className="text-[4.5rem] font-black tracking-tighter text-white sm:text-[6rem] md:text-[8rem] lg:text-[10rem]">
+              <motion.span
+                initial={{ opacity: 0, y: 80 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: EASE, delay: 0.15 }}
+                className="block leading-[0.78]"
+              >
+                {titleFirst}
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 80 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: EASE, delay: 0.35 }}
+                className="mt-2 block leading-[0.78]"
+              >
+                {titleSecond}
+                <span className="text-yellow-400">.</span>
+              </motion.span>
+            </h1>
           </div>
 
           {/* Photo strip */}

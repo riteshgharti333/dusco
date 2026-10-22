@@ -23,7 +23,10 @@ const Button = ({
   const sizes = {
     sm: { cls: "px-6 py-2.5 text-[11px] gap-2", diag: 10 },
     md: { cls: "px-7 py-3.5 text-sm gap-2", diag: 12 },
-    lg: { cls: "px-8 py-4 text-sm gap-3 md:px-12 md:py-5 md:text-base", diag: 14 },
+    lg: {
+      cls: "px-8 py-4 text-sm gap-3 md:px-12 md:py-5 md:text-base",
+      diag: 14,
+    },
   };
 
   const variants = {
@@ -32,9 +35,7 @@ const Button = ({
       hoverBg: "bg-white",
       hoverText: "group-hover:text-blue-900",
       // Literal classes so Tailwind generates them
-      shadow: onBlue
-        ? "bg-white group-hover:bg-yellow-400"
-        : "bg-yellow-400",
+      shadow: onBlue ? "bg-white group-hover:bg-yellow-400" : "bg-yellow-400",
     },
     secondary: {
       base: "bg-blue-900 text-yellow-400",

@@ -1,6 +1,5 @@
 "use client";
 
-
 /*
   Place at:  app/gallery/[slug]/page.tsx
   Single album page — editorial photo wall + minimal lightbox.
@@ -97,7 +96,11 @@ const SHAPES = [
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export default function SingleGalleryPage({ params }: { params: { slug: string } }) {
+export default function SingleGalleryPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const idx = galleries.findIndex((g) => g.id === params?.slug);
   const [open, setOpen] = useState<number | null>(null);
   const [dir, setDir] = useState(1);
@@ -111,7 +114,7 @@ export default function SingleGalleryPage({ params }: { params: { slug: string }
       setDir(d);
       setOpen((o) => (o === null ? o : (o + d + total) % total));
     },
-    [total]
+    [total],
   );
 
   /* lock scroll + keyboard controls */
@@ -213,7 +216,11 @@ export default function SingleGalleryPage({ params }: { params: { slug: string }
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.8, ease: EASE, delay: (i % 3) * 0.08 }}
+                transition={{
+                  duration: 0.8,
+                  ease: EASE,
+                  delay: (i % 3) * 0.08,
+                }}
                 className="group relative mb-3 block w-full break-inside-avoid overflow-hidden bg-blue-900/5 md:mb-5 lg:mb-6"
                 aria-label={`Open photo ${i + 1}`}
               >

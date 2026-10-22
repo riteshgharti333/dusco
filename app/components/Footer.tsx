@@ -16,7 +16,6 @@ const socials = [
 const Footer = () => {
   return (
     <footer className="relative w-full overflow-hidden bg-blue-900 pt-24 pb-0 text-white">
-      
       {/* Background slanted accent */}
       <span
         aria-hidden
@@ -32,10 +31,8 @@ const Footer = () => {
       </span>
 
       <div className="relative mx-auto max-w-7xl px-6 md:pl-24 lg:px-10 lg:pl-28 z-10">
-        
         {/* ── TOP SECTION: Editorial Split ── */}
         <div className="grid gap-16 border-b border-white/10 pb-16 md:grid-cols-12 md:gap-12">
-          
           {/* LEFT: Big Headline & Socials */}
           <div className="md:col-span-5 lg:col-span-6">
             <motion.div
@@ -98,7 +95,6 @@ const Footer = () => {
 
           {/* RIGHT: Links Grid */}
           <div className="grid grid-cols-2 gap-8 md:col-span-7 md:grid-cols-3 lg:col-span-6">
-            
             {/* Column 1 */}
             <motion.div
               initial={{ y: 40, opacity: 0 }}
@@ -112,7 +108,10 @@ const Footer = () => {
               <ul className="mt-6 space-y-3 text-sm text-white/60">
                 {["Home", "About Us", "Our Events", "Gallery"].map((item) => (
                   <li key={item}>
-                    <Link href="#" className="group flex items-center gap-2 transition-colors hover:text-white">
+                    <Link
+                      href="#"
+                      className="group flex items-center gap-2 transition-colors hover:text-white"
+                    >
                       <span className="h-px w-0 bg-yellow-400 transition-all duration-300 group-hover:w-3" />
                       {item}
                     </Link>
@@ -132,14 +131,19 @@ const Footer = () => {
                 Community
               </h4>
               <ul className="mt-6 space-y-3 text-sm text-white/60">
-                {["Join Us", "Small Groups", "Leadership", "Testimonies"].map((item) => (
-                  <li key={item}>
-                    <Link href="#" className="group flex items-center gap-2 transition-colors hover:text-white">
-                      <span className="h-px w-0 bg-yellow-400 transition-all duration-300 group-hover:w-3" />
-                      {item}
-                    </Link>
-                  </li>
-                ))}
+                {["Join Us", "Small Groups", "Leadership", "Testimonies"].map(
+                  (item) => (
+                    <li key={item}>
+                      <Link
+                        href="#"
+                        className="group flex items-center gap-2 transition-colors hover:text-white"
+                      >
+                        <span className="h-px w-0 bg-yellow-400 transition-all duration-300 group-hover:w-3" />
+                        {item}
+                      </Link>
+                    </li>
+                  ),
+                )}
               </ul>
             </motion.div>
 
@@ -159,7 +163,10 @@ const Footer = () => {
                   <span className="block text-[10px] font-bold uppercase tracking-widest text-white/30">
                     Email
                   </span>
-                  <a href="mailto:hello@ducso.org" className="transition-colors hover:text-white">
+                  <a
+                    href="mailto:hello@ducso.org"
+                    className="transition-colors hover:text-white"
+                  >
                     hello@ducso.org
                   </a>
                 </li>
@@ -168,18 +175,22 @@ const Footer = () => {
                     Campus
                   </span>
                   <span className="text-white/80">
-                    Dhaka University<br />Student Center
+                    Dhaka University
+                    <br />
+                    Student Center
                   </span>
                 </li>
               </ul>
             </motion.div>
-
           </div>
         </div>
 
         {/* ── MIDDLE: Logo & Big Text ── */}
         <div className="flex flex-col items-center justify-between gap-6 py-10 md:flex-row">
-          <Link href="/" className="text-3xl font-black tracking-tighter text-white">
+          <Link
+            href="/"
+            className="text-3xl font-black tracking-tighter text-white"
+          >
             DUCSO<span className="text-yellow-400">.</span>
           </Link>
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">
@@ -193,12 +204,15 @@ const Footer = () => {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-blue-900 md:flex-row">
           <p>© 2026 DUCSO. All Rights Reserved.</p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
-            <Link href="/terms" className="hover:underline">Terms of Use</Link>
+            <Link href="/privacy" className="hover:underline">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:underline">
+              Terms of Use
+            </Link>
           </div>
         </div>
       </div>
-
     </footer>
   );
 };

@@ -117,55 +117,54 @@ export default function TermsPage() {
         />
 
         <div className="section-container relative">
-          
-         {/* Header */}
-<motion.div
-  initial={{ opacity: 0, y: 30 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, amount: 0.3 }}
-  transition={{ duration: 0.9, ease: EASE }}
-  className="mx-auto max-w-3xl text-center md:mx-0 md:text-left"
->
-  <div className="flex items-center justify-center gap-3 md:justify-start">
-    <span className="relative inline-block h-4 w-3" aria-hidden>
-      <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
-      <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
-    </span>
-    <span className="text-[11px] font-black uppercase tracking-[0.28em] text-blue-900">
-      Legal · Terms
-    </span>
-  </div>
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.9, ease: EASE }}
+            className="mx-auto max-w-3xl text-center md:mx-0 md:text-left"
+          >
+            <div className="flex items-center justify-center gap-3 md:justify-start">
+              <span className="relative inline-block h-4 w-3" aria-hidden>
+                <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
+                <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
+              </span>
+              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-blue-900">
+                Legal · Terms
+              </span>
+            </div>
 
-  <h2 className="mt-6 text-5xl font-black leading-[0.85] tracking-tighter text-blue-900 sm:text-6xl md:text-7xl">
-    THE RULES
-    <br />
-    <span className="relative inline-block">
-      <span
-        aria-hidden
-        className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-      />
-      <span className="relative z-10 px-1 italic uppercase text-blue-900">
-        of the road.
-      </span>
-    </span>
-  </h2>
+            <h2 className="mt-6 text-5xl font-black leading-[0.85] tracking-tighter text-blue-900 sm:text-6xl md:text-7xl">
+              THE RULES
+              <br />
+              <span className="relative inline-block">
+                <span
+                  aria-hidden
+                  className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
+                />
+                <span className="relative z-10 px-1 italic uppercase text-blue-900">
+                  of the road.
+                </span>
+              </span>
+            </h2>
 
-  <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-blue-900/70 md:mx-0 md:text-base">
-    Plain language, no surprises. These terms exist to keep our community
-    clear, fair, and welcoming to everyone.
-  </p>
+            <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-blue-900/70 md:mx-0 md:text-base">
+              Plain language, no surprises. These terms exist to keep our
+              community clear, fair, and welcoming to everyone.
+            </p>
 
-  {/* Effective date */}
-  <div className="mt-6 flex items-center justify-center gap-3 border-t-2 border-blue-900/10 pt-4 md:justify-start">
-    <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
-      Effective Date
-    </span>
-    <span className="h-[2px] w-6 bg-yellow-400" />
-    <span className="text-[11px] font-black uppercase tracking-[0.28em] text-blue-900">
-      January 1, 2025
-    </span>
-  </div>
-</motion.div>
+            {/* Effective date */}
+            <div className="mt-6 flex items-center justify-center gap-3 border-t-2 border-blue-900/10 pt-4 md:justify-start">
+              <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
+                Effective Date
+              </span>
+              <span className="h-[2px] w-6 bg-yellow-400" />
+              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-blue-900">
+                January 1, 2025
+              </span>
+            </div>
+          </motion.div>
 
           {/* Sections */}
           <div className="mt-16 grid gap-0 md:mt-24">
@@ -272,7 +271,8 @@ export default function TermsPage() {
             className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t-2 border-blue-900/10 pt-8"
           >
             <p className="text-sm italic text-blue-900/55">
-              &ldquo;Let all that you do be done in love.&rdquo; — 1 Corinthians 16:14
+              &ldquo;Let all that you do be done in love.&rdquo; — 1 Corinthians
+              16:14
             </p>
             <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
               — DUCSO

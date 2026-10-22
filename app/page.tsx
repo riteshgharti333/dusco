@@ -8,13 +8,15 @@ import Testimonials from "./components/Testimonials";
 import WhatWeDo from "./components/WhatWeDo";
 
 export default function Home() {
-  return <div className="">
-    <Hero />
-    <AboutSection />
-    <EventsSection />
-    <GallerySection />
-    <LeadershipSection />
-    <Testimonials />
-    <WhatWeDo />
-  </div>;
+  return (
+    <div className="">
+      <Hero />
+      <AboutSection />
+      <EventsSection />
+      <GallerySection />
+      <LeadershipSection />
+      <Testimonials />
+      <WhatWeDo />
+    </div>
+  );
 }

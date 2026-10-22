@@ -264,16 +264,12 @@ const Navbar = () => {
                   <span className="relative flex h-4 w-4 items-center justify-center">
                     <RiMenu4Fill
                       className={`absolute h-4 w-4 will-change-transform transition-all duration-300 ease-out ${
-                        isOpen
-                          ? "rotate-90 opacity-0"
-                          : "rotate-0 opacity-100"
+                        isOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"
                       }`}
                     />
                     <LuX
                       className={`absolute h-4 w-4 will-change-transform transition-all duration-300 ease-out ${
-                        isOpen
-                          ? "rotate-0 opacity-100"
-                          : "-rotate-90 opacity-0"
+                        isOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"
                       }`}
                     />
                   </span>

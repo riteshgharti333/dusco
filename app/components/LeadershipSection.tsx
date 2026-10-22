@@ -11,7 +11,8 @@ const president = {
   name: "Payel Paul Mrong",
   role: "President",
   quote: "Leading with faith, serving with love.",
-  image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
+  image:
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
 };
 
 const coreTeam = [
@@ -19,13 +20,15 @@ const coreTeam = [
     name: "Ronald Aurunavo Das",
     role: "General Secretary",
     quote: "Organized in Christ.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
   },
   {
     name: "Liton Tripura",
     role: "Organising Secretary",
     quote: "Building the body together.",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
   },
 ];
 
@@ -76,7 +79,7 @@ const LeadershipSection = () => {
           <div className="relative w-full md:w-[45%] pr-2 pb-2">
             {/* Yellow offset block — fills the padded area (peeks 16px bottom-right) */}
             <div className="absolute inset-0 bg-yellow-400 ml-3 mt-3" />
-            
+
             {/* Image sits inside the padding at the original dimensions */}
             <div className="relative aspect-square w-full overflow-hidden bg-blue-900">
               <Image
@@ -94,7 +97,7 @@ const LeadershipSection = () => {
             <span className="text-[10px] font-black uppercase tracking-[0.35em] text-yellow-600">
               Message from the President
             </span>
-            
+
             <p className="mt-5 text-xl font-light italic leading-snug text-blue-900 md:text-2xl">
               "{president.quote}"
             </p>
@@ -102,7 +105,9 @@ const LeadershipSection = () => {
             <div className="mt-6 h-[2px] w-12 bg-blue-900/20" />
 
             <p className="mt-5 text-sm leading-relaxed text-blue-900/70">
-              Leading the student body this year, Payel is passionate about creating a space where every student can encounter God and find a true community on campus.
+              Leading the student body this year, Payel is passionate about
+              creating a space where every student can encounter God and find a
+              true community on campus.
             </p>
 
             {/* The Slanted Name & Role Tags */}
@@ -159,7 +164,7 @@ const LeadershipSection = () => {
                 <span className="text-[9px] font-black uppercase tracking-[0.3em] text-yellow-600">
                   {member.quote}
                 </span>
-                
+
                 {/* The Slanted Name & Role Tags */}
                 <div className="mt-4 pl-2">
                   <div className="inline-grid gap-1.5">
@@ -191,12 +196,7 @@ const LeadershipSection = () => {
           transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
           className="mt-20 flex justify-center"
         >
-          <Button
-            href="/team"
-            variant="secondary"
-            size="md"
-            onBlue={false}
-          >
+          <Button href="/team" variant="secondary" size="md" onBlue={false}>
             Explore All Members
             <span className="transition-transform duration-300 group-hover:translate-x-1">
               →

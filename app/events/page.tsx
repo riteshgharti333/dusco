@@ -318,13 +318,13 @@ export default function EventsPage() {
       />
 
       <section className="relative w-full overflow-hidden bg-white py-20 md:py-28">
-          <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-    <div className="flex h-full items-center justify-center">
-      <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-blue-900/30">
-        Signature Events · DUCSO
-      </span>
-    </div>
-  </div>
+        <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
+          <div className="flex h-full items-center justify-center">
+            <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-blue-900/30">
+              Signature Events · DUCSO
+            </span>
+          </div>
+        </div>
         <div className="section-container">
           <SectionHeader
             dark={false}

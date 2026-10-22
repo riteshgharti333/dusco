@@ -15,7 +15,8 @@ const alumni = [
     role: "Software Engineer",
     batch: "Batch of 2024",
     designation: "Former President",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
   },
   {
     id: 2,
@@ -23,7 +24,8 @@ const alumni = [
     role: "Medical Student",
     batch: "Batch of 2023",
     designation: "Former Worship Lead",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
   },
   {
     id: 3,
@@ -31,7 +33,8 @@ const alumni = [
     role: "Civil Engineer",
     batch: "Batch of 2023",
     designation: "Former General Secretary",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
   },
   {
     id: 4,
@@ -39,7 +42,8 @@ const alumni = [
     role: "Graphic Designer",
     batch: "Batch of 2022",
     designation: "Former Creative Lead",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&q=80",
   },
   {
     id: 5,
@@ -47,7 +51,8 @@ const alumni = [
     role: "Teacher",
     batch: "Batch of 2022",
     designation: "Former Outreach Lead",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
   },
   {
     id: 6,
@@ -55,7 +60,8 @@ const alumni = [
     role: "Psychologist",
     batch: "Batch of 2021",
     designation: "Former Care Lead",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
   },
   {
     id: 7,
@@ -63,7 +69,8 @@ const alumni = [
     role: "Pastor",
     batch: "Batch of 2021",
     designation: "Former Prayer Lead",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80",
   },
   {
     id: 8,
@@ -71,7 +78,8 @@ const alumni = [
     role: "Doctor",
     batch: "Batch of 2020",
     designation: "Former Vice President",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
+    image:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
   },
 ];
 
@@ -80,13 +88,7 @@ type Alumnus = (typeof alumni)[0];
 /* ═══════════════════════════════════════════════
    ALUMNI CARD — no border, no shadow, no modal
 ═══════════════════════════════════════════════ */
-const AlumniCard = ({
-  person,
-  index,
-}: {
-  person: Alumnus;
-  index: number;
-}) => {
+const AlumniCard = ({ person, index }: { person: Alumnus; index: number }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}

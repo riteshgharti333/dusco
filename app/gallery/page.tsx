@@ -118,13 +118,7 @@ const Print = ({
 /* ═══════════════════════════════════════════════
    ALBUM CARD
 ═══════════════════════════════════════════════ */
-const AlbumCard = ({
-  folder,
-  index,
-}: {
-  folder: Gallery;
-  index: number;
-}) => {
+const AlbumCard = ({ folder, index }: { folder: Gallery; index: number }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -140,18 +134,8 @@ const AlbumCard = ({
           whileHover="hover"
           className="relative aspect-[4/5] w-full"
         >
-          <Print
-            src={folder.image}
-            alt=""
-            variants={backPrint}
-            tone="back"
-          />
-          <Print
-            src={folder.image}
-            alt=""
-            variants={midPrint}
-            tone="back"
-          />
+          <Print src={folder.image} alt="" variants={backPrint} tone="back" />
+          <Print src={folder.image} alt="" variants={midPrint} tone="back" />
           <Print
             src={folder.image}
             alt={folder.title}
