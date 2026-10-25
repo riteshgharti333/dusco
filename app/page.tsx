@@ -4,6 +4,7 @@ import GallerySection from "./components/GallerySection";
 import Hero from "./components/Hero";
 import JoinCTA from "./components/JoinCTA";
 import LeadershipSection from "./components/LeadershipSection";
+import NewsSection from "./components/NewsSection";
 import Testimonials from "./components/Testimonials";
 import WhatWeDo from "./components/WhatWeDo";
 
@@ -17,6 +18,7 @@ export default function Home() {
       <LeadershipSection />
       <Testimonials />
       <WhatWeDo />
+      <NewsSection />
     </div>
   );
 }

@@ -1,11 +1,8 @@
-````markdown
+```markdown
 # DUCSO — Dhaka University Christian Students' Organisation
 
 A fully responsive, animated website built for a university student organization. Includes multi-page navigation, image galleries, event listings, testimonials, contact form, and legal pages.
 
-## 🔗 Live Demo
-
-[ducso.org](#) _(replace with your deployed URL)_
 
 ## 📌 About This Project
 
@@ -40,7 +37,6 @@ I designed and developed this project end-to-end to give DUCSO a modern digital 
 npm install
 npm run dev
 ```
-````
 
 Open [http://localhost:3000](http://localhost:3000).
 
@@ -59,7 +55,4 @@ public/       → static assets
 - Shipped a complete production-ready website from design to deployment
 - Handled responsive layouts and cross-device accessibility
 - Created keyboard-navigable modals and image lightbox interactions
-
-```
-
 ```

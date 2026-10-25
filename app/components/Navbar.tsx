@@ -14,9 +14,10 @@ const links: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Events", href: "/events" },
+  { label: "Executive", href: "/executive" },
   { label: "Alumni", href: "/alumni" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Contact", href: "/contact" },
+  { label: "News", href: "/news" },
 ];
 
 const isActive = (pathname: string, href: string): boolean =>
