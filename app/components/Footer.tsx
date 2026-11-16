@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+const YEAR = 2025;
 
 const socials = [
   { name: "Facebook", icon: FaFacebookF, href: "#" },
@@ -175,8 +176,8 @@ const Footer = () => {
         {/* ── BOTTOM BAR ── */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 py-[1.7rem] text-[.74rem] tracking-[.04em] text-white/45">
           <p>
-            © {new Date().getFullYear()} Dhaka University Christian
-            Students&apos; Organization (DUCSO). All rights reserved.
+            © {YEAR} Dhaka University Christian Students&apos; Organization
+            (DUCSO). All rights reserved.
           </p>
           <p className="max-w-[62ch] text-[.68rem] tracking-[.05em] text-white/30">
             Items marked &ldquo;Placeholder&rdquo; or &ldquo;pending
