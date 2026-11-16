@@ -1,246 +1,211 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import SectionHeader from "./SectionHeader";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-const DURATION = 7000; // ms per testimonial
+/* gentler curve — ease-in-out, not snappy ease-out */
+const EASE = [0.45, 0, 0.55, 1] as const;
+const DURATION = 7000;
 
-/* Replace with real words from your members */
 const testimonials = [
   {
-    name: "Sneha Biswas",
-    role: "Member · Dept. of English",
+    name: "Member Name",
+    role: "Alumnus / Member · Placeholder",
     quote:
-      "I came to campus knowing no one. DUCSO gave me a table to sit at, people who prayed for me, and a place that finally felt like home.",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80",
+      "Testimonial text placeholder. A verified reflection from a current or former DUCSO member will appear here — describing their experience of fellowship, growth and community within the organization.",
   },
   {
-    name: "Joel Rozario",
-    role: "Alumnus · Batch of 2024",
+    name: "Member Name",
+    role: "Student Member · Placeholder",
     quote:
-      "Leading a small group taught me more about service and patience than any lecture. The friendships I made here outlasted graduation.",
-    image:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80",
+      "Testimonial text placeholder. Replace with an authentic, consented statement from a DUCSO student member reflecting on worship, Bible study or service.",
   },
   {
-    name: "Mitali Chakma",
-    role: "Member · Dept. of Sociology",
+    name: "Member Name",
+    role: "Former Committee Member · Placeholder",
     quote:
-      "In the middle of exam stress, this community checked on me, fed me, and reminded me I was not alone. That is rare on a big campus.",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&q=80",
-  },
-  {
-    name: "Samuel Gomes",
-    role: "Volunteer · Outreach Team",
-    quote:
-      "Faith here is not only on Sundays. It is in how we show up for each other and for the city around us, week after week.",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80",
+      "Testimonial text placeholder. Replace with a verified quote from a former executive committee member about leadership and discipleship at DUCSO.",
   },
 ];
 
-const Testimonials = () => {
-  const [active, setActive] = useState(0);
+const variants = {
+  enter: (d: number) => ({
+    opacity: 0,
+    y: 12 * d,
+  }),
+  center: { opacity: 1, y: 0 },
+  exit: (d: number) => ({
+    opacity: 0,
+    y: -12 * d,
+  }),
+};
 
-  /* auto-advance; restarts whenever the active one changes */
+const pad = (n: number) => String(n).padStart(2, "0");
+
+const Testimonials = () => {
+  const reduce = useReducedMotion();
+  const [{ active, dir }, setSlide] = useState({ active: 0, dir: 1 });
+  const [paused, setPaused] = useState(false);
+
+  const go = useCallback((d: 1 | -1) => {
+    setSlide((s) => ({
+      active: (s.active + d + testimonials.length) % testimonials.length,
+      dir: d,
+    }));
+  }, []);
+
+  /* auto-advance */
   useEffect(() => {
-    const t = setTimeout(
-      () => setActive((a) => (a + 1) % testimonials.length),
-      DURATION,
-    );
+    if (paused || reduce) return;
+    const t = setTimeout(() => go(1), DURATION);
     return () => clearTimeout(t);
-  }, [active]);
+  }, [active, paused, reduce, go]);
 
   const current = testimonials[active];
+  const custom = reduce ? 0 : dir;
 
   return (
-    <section className="relative w-full overflow-hidden bg-blue-900 py-20 md:py-28">
-      {/* NEW: Giant Faded DUCSO Background Wordmark */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 right-0 select-none whitespace-nowrap text-[30vw] font-black leading-none tracking-tighter text-white/[0.03] md:-bottom-10 md:text-[18vw]"
-      >
-        DUCSO
-      </span>
-
-      {/* NEW: Subtle background slanted accent (like footer) */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -left-32 top-0 h-full w-64 bg-yellow-400/5 -skew-x-[20deg]"
-      />
-
-      {/* ── ROTATED SIDE RAIL ── */}
-      <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-        <div className="flex h-full items-center justify-center">
-          <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-white/20">
-            Testimonies · DUSCO
-          </span>
-        </div>
-      </div>
-
-      <div className="section-container relative z-10">
-        <SectionHeader
-          dark
-          label="Testimonials"
-          description="Words from the students and alumni who make up the DUCSO community. These are real stories of faith, friendship, and finding a home away from home."
-          title={
-            <>
-              IN THEIR
-              <br />
-              <span className="relative inline-block">
-                <span
-                  aria-hidden
-                  className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-                />
-                <span className="relative z-10 px-1 italic uppercase text-blue-900">
-                  words.
-                </span>
-              </span>
-            </>
-          }
-        />
-
-        <div className="mt-16 grid gap-12 md:mt-24 md:grid-cols-12 md:gap-16">
-          {/* ── INDEX (acts like a table of contents) ── */}
-          <motion.ul
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: EASE }}
-            className="-mx-1 flex gap-6 overflow-x-auto px-1 md:col-span-4 md:mx-0 md:flex-col md:gap-0 md:overflow-visible md:px-0"
-          >
-            {testimonials.map((t, i) => {
-              const on = i === active;
-              return (
-                <li key={t.name} className="shrink-0 md:shrink">
-                  <button
-                    type="button"
-                    onClick={() => setActive(i)}
-                    aria-current={on}
-                    className="group relative block w-full py-4 text-left md:py-6"
-                  >
-                    <div className="flex items-baseline gap-4">
-                      <span
-                        className={`font-mono text-[11px] tracking-widest transition-colors duration-500 ${
-                          on ? "text-yellow-400" : "text-white/35"
-                        }`}
-                      >
-                        0{i + 1}
-                      </span>
-                      <span
-                        className={`text-lg font-light transition-all duration-500 md:text-2xl ${
-                          on
-                            ? "translate-x-1 text-white"
-                            : "text-white/40 group-hover:text-white/70"
-                        }`}
-                      >
-                        {t.name}
-                      </span>
-                    </div>
-
-                    {/* hairline + progress */}
-                    <span className="absolute bottom-0 left-0 hidden h-px w-full bg-white/15 md:block" />
-                    {on && (
-                      <motion.span
-                        key={active}
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{
-                          duration: DURATION / 1000,
-                          ease: "linear",
-                        }}
-                        className="absolute bottom-0 left-0 hidden h-px w-full origin-left bg-yellow-400 md:block"
-                      />
-                    )}
-                    {on && (
-                      <motion.span
-                        key={`m-${active}`}
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{
-                          duration: DURATION / 1000,
-                          ease: "linear",
-                        }}
-                        className="absolute bottom-0 left-0 block h-px w-full origin-left bg-yellow-400 md:hidden"
-                      />
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </motion.ul>
-
-          {/* ── FEATURED QUOTE ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+    <section
+      id="testimonials"
+      className="relative w-full overflow-hidden bg-navy py-[clamp(80px,10vw,150px)]"
+    >
+      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
+        <div
+          className="mx-auto max-w-[960px] text-center"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocusCapture={() => setPaused(true)}
+          onBlurCapture={() => setPaused(false)}
+        >
+          {/* eyebrow */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-            className="relative md:col-span-8"
+            transition={{ duration: 0.7, ease: EASE }}
+            className="mb-8 inline-flex items-center gap-4 text-[.7rem] font-semibold uppercase tracking-[.3em] text-gold"
           >
-            {/* Off-White Quote Mark (No Slant) */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -top-8 -left-2 select-none font-serif text-[10rem] leading-none text-white/20 md:-top-12 md:-left-3 md:text-[16rem]"
+            <span aria-hidden className="block h-px w-10 bg-gold" />
+            Voices of DUCSO
+            <span aria-hidden className="block h-px w-10 bg-gold" />
+          </motion.p>
+
+          {/* big serif quote mark */}
+          <motion.span
+            aria-hidden
+            initial={{ opacity: 0, scale: 0.85 }}
+            whileInView={{ opacity: 0.6, scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+            className="mb-6 block font-serif text-[clamp(5rem,10vw,8rem)] leading-[.55] text-gold"
+          >
+            &ldquo;
+          </motion.span>
+
+          {/* quote — reserved height so nothing jumps */}
+          <div
+            className="relative flex min-h-[clamp(260px,34vw,320px)] items-center justify-center"
+            aria-live="polite"
+          >
+            <AnimatePresence mode="wait" custom={custom} initial={false}>
+              <motion.figure
+                key={active}
+                custom={custom}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  duration: reduce ? 0 : 1.1,
+                  ease: EASE,
+                }}
+                className="m-0 w-full"
+              >
+                <blockquote className="m-0 text-balance font-serif text-[clamp(1.45rem,2.9vw,2.3rem)] font-light italic leading-[1.45] tracking-[-.005em] text-white">
+                  {current.quote}
+                </blockquote>
+
+                <figcaption className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[.72rem] uppercase tracking-[.2em] text-white/70">
+                  <span
+                    aria-hidden
+                    className="hidden h-px w-8 bg-gold sm:block"
+                  />
+                  <span className="font-semibold text-gold">
+                    {current.name}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="h-1 w-1 rounded-full bg-gold/70"
+                  />
+                  <span>{current.role}</span>
+                  <span
+                    aria-hidden
+                    className="hidden h-px w-8 bg-gold sm:block"
+                  />
+                </figcaption>
+              </motion.figure>
+            </AnimatePresence>
+          </div>
+
+          {/* nav */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
+            className="mt-[clamp(36px,4vw,56px)] flex items-center justify-center gap-7"
+          >
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Previous testimonial"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-gold/40 bg-transparent text-gold transition-all duration-300 hover:-translate-x-0.5 hover:border-gold hover:bg-gold hover:text-navy"
             >
-              “
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 3L5 8l5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            <span className="min-w-[72px] text-center text-[.72rem] font-semibold uppercase tracking-[.26em] text-white/50">
+              <span className="text-gold">{pad(active + 1)}</span>
+              <span className="mx-2 text-white/30">/</span>
+              {pad(testimonials.length)}
             </span>
 
-            <div className="relative min-h-[360px] pt-16 md:min-h-[420px] md:pt-24">
-              <AnimatePresence mode="wait">
-                <motion.figure
-                  key={active}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={{ duration: 0.6, ease: EASE }}
-                >
-                  <blockquote className="text-2xl font-light leading-[1.35] text-white md:text-4xl md:leading-[1.3]">
-                    {current.quote}
-                  </blockquote>
-
-                  <figcaption className="mt-10 flex items-center gap-5 md:mt-14">
-                    {/* small framed portrait */}
-                    <div className="relative h-16 w-16 shrink-0">
-                      <span
-                        aria-hidden
-                        className="absolute inset-0 translate-x-1.5 translate-y-1.5 border border-yellow-400"
-                      />
-                      <div className="absolute inset-0 overflow-hidden bg-blue-800">
-                        <Image
-                          src={current.image}
-                          alt={current.name}
-                          fill
-                          sizes="64px"
-                          className="object-cover grayscale"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <p className="text-base font-medium text-white">
-                        {current.name}
-                      </p>
-                      <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/50">
-                        {current.role}
-                      </p>
-                    </div>
-                  </figcaption>
-                </motion.figure>
-              </AnimatePresence>
-            </div>
-
-            {/* counter */}
-            <div className="mt-8 flex items-center gap-4 font-mono text-[11px] tracking-widest text-white/40">
-              <span className="text-yellow-400">0{active + 1}</span>
-              <span className="h-px w-12 bg-white/20" />
-              <span>0{testimonials.length}</span>
-            </div>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Next testimonial"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-gold/40 bg-transparent text-gold transition-all duration-300 hover:translate-x-0.5 hover:border-gold hover:bg-gold hover:text-navy"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 3l5 5-5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
           </motion.div>
         </div>
       </div>

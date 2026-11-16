@@ -1,52 +1,64 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MarqueeStrip from "./components/MarqueeStrip";
 import JoinCTA from "./components/JoinCTA";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "DUCSO — Dhaka University Christian Students' Organisation",
+    default: "DUCSO — Dhaka University Christian Students' Organization",
     template: "%s | DUCSO",
   },
   description:
-    "The official website of the Dhaka University Christian Students' Organisation (DUCSO) — a community of believers gathering weekly to worship, grow, and serve on campus.",
+    "Dhaka University Christian Students' Organization (DUCSO) — a community of faith, fellowship, learning and service at the University of Dhaka.",
   icons: {
-    icon: "/dusco-logo.jpg",
-    shortcut: "/dusco-logo.jpg",
-    apple: "/dusco-logo.jpg",
+    icon: "/ducso-logo.jpg",
+    shortcut: "/ducso-logo.jpg",
+    apple: "/ducso-logo.jpg",
   },
   openGraph: {
-    title: "DUCSO — Dhaka University Christian Students' Organisation",
+    title: "DUCSO — Dhaka University Christian Students' Organization",
     description:
-      "A community of believers at Dhaka University gathering weekly to worship, grow, and serve.",
-    images: ["/dusco-logo.jpg"],
+      "A community of faith, fellowship, learning and service at the University of Dhaka.",
+    images: ["/ducso-logo.jpg"],
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export const viewport = {
+  themeColor: "#0b2137",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-white text-gray-900">
+    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+      <body className="min-h-full flex flex-col">
         <Navbar />
-        <main className="flex-1">{children}</main>
+
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+
         <JoinCTA />
-        <MarqueeStrip />
+        {/* <MarqueeStrip /> */}
         <Footer />
       </body>
     </html>

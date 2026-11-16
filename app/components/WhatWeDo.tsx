@@ -1,129 +1,201 @@
 "use client";
 
 import { motion } from "framer-motion";
-import SectionHeader from "./SectionHeader";
-import Button from "./Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const pillars = [
+const items = [
   {
     num: "01",
-    title: "Bio",
-    desc: "Discovering our identity in Christ. We study the Word, grow in faith, and build a foundation that lasts.",
+    title: "Christian Fellowship",
+    desc: "Regular gatherings where students worship together, share meals and build lasting friendships across departments and years.",
+    icon: (
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 2v9M8 5.5h8" />
+        <circle cx="12" cy="16" r="3.2" />
+        <path d="M5.5 21c1.5-2 4-3 6.5-3s5 1 6.5 3" />
+      </svg>
+    ),
   },
   {
     num: "02",
-    title: "Education",
-    desc: "Equipping students for life. We host workshops, mentor students, and encourage academic excellence.",
+    title: "Bible Study",
+    desc: "Structured study and discussion groups that help students read Scripture thoughtfully and apply it to daily campus life.",
+    icon: (
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 6.5C10 5 7 4.6 4 5.2v13c3-.6 6-.2 8 1.3 2-1.5 5-1.9 8-1.3v-13c-3-.6-6-.2-8 1.3z" />
+        <path d="M12 6.5v13" />
+      </svg>
+    ),
   },
   {
     num: "03",
-    title: "Peace",
-    desc: "Creating a safe haven. A place where students can find rest, healing, and a community that cares.",
+    title: "Spiritual Development",
+    desc: "Teaching, mentoring and retreats designed to deepen discipleship and encourage a mature, reflective faith.",
+    icon: (
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 2.5c3.2 3.6 5.6 6.4 5.6 9.7A5.6 5.6 0 0 1 12 18a5.6 5.6 0 0 1-5.6-5.8c0-3.3 2.4-6.1 5.6-9.7z" />
+        <path d="M12 18v3.5" />
+      </svg>
+    ),
   },
   {
     num: "04",
-    title: "Progress",
-    desc: "Moving forward together. We serve the campus, lead outreach, and step into our God-given purpose.",
+    title: "Student Leadership",
+    desc: "Opportunities to serve on committees, organize programmes and develop the character and competence of Christian leadership.",
+    icon: (
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="9" />
+        <path d="M15.4 8.6l-2 5.4-5.4 2 2-5.4 5.4-2z" />
+      </svg>
+    ),
+  },
+  {
+    num: "05",
+    title: "Prayer Meetings",
+    desc: "Dedicated times of intercession for students, the university, the church and the nation.",
+    icon: (
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 2.5c1.6 2 2.4 3.2 2.4 4.4A2.4 2.4 0 0 1 12 9.3a2.4 2.4 0 0 1-2.4-2.4c0-1.2.8-2.4 2.4-4.4z" />
+        <rect x="8.5" y="11.5" width="7" height="9" rx="0.8" />
+        <path d="M10.5 20.5h3" />
+      </svg>
+    ),
+  },
+  {
+    num: "06",
+    title: "Community Service",
+    desc: "Outreach initiatives and practical service that express Christian love through action within and beyond the campus.",
+    icon: (
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M3 14.5l3.5-3.5a2 2 0 0 1 2.8 0L12 13.7l2.7-2.7a2 2 0 0 1 2.8 0L21 14.5" />
+        <path d="M12 13.7V20" />
+        <path d="M7.5 20.5h9" />
+        <circle cx="12" cy="5.5" r="2.6" />
+      </svg>
+    ),
   },
 ];
 
 const WhatWeDo = () => {
   return (
-    <section className="relative w-full overflow-hidden bg-white py-20 md:py-28">
-      {/* Rotated side rail */}
-      <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-        <div className="flex h-full items-center justify-center">
-          <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-blue-900/30">
-            Our Pillars · DUCSO
-          </span>
-        </div>
-      </div>
-
-      <div className="section-container relative">
+    <section
+      id="what-we-do"
+      className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]"
+    >
+      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
         {/* ── HEADER ── */}
-        <SectionHeader
-          dark={false}
-          label="What We Do"
-          description="Four core pillars shape everything we do at DUCSO. We aren't just a club — we are a community built on purpose."
-          title={
-            <>
-              OUR
-              <br />
-              <span className="relative inline-block">
-                <span
-                  aria-hidden
-                  className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-                />
-                <span className="relative z-10 px-1 italic uppercase text-blue-900">
-                  pillars.
-                </span>
-              </span>
-            </>
-          }
-        />
-
-        {/* ── PILLARS GRID ── */}
-        <div className="mt-16 grid gap-12 border-t-2 border-blue-900 pt-16 sm:grid-cols-2 md:mt-24 lg:grid-cols-4 lg:gap-0 lg:divide-x-2 lg:divide-blue-900/10">
-          {pillars.map((pillar, i) => (
-            <motion.div
-              key={pillar.num}
-              initial={{ y: 40, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: EASE, delay: i * 0.1 }}
-              className="group relative flex flex-col lg:px-8"
-            >
-              {/* Huge Number */}
-              <span className="text-7xl font-black leading-none text-blue-900/10 transition-colors duration-500 group-hover:text-yellow-400 md:text-8xl">
-                {pillar.num}
-              </span>
-
-              {/* Title with Slanted Highlight & Extra Padding */}
-              <div className="relative mt-8 inline-block self-start  py-2">
-                <span
-                  aria-hidden
-                  className="absolute -inset-x-4 inset-y-0 bg-yellow-400 -skew-x-[10deg] scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"
-                />
-                <h3 className="relative z-10  text-3xl font-black uppercase tracking-tight text-blue-900 md:text-3xl">
-                  {pillar.title}
-                </h3>
-              </div>
-
-              {/* Description */}
-              <p className="mt-4 text-sm leading-relaxed text-blue-900/60 md:pr-6">
-                {pillar.desc}
-              </p>
-
-              {/* Arrow indicator
-              <div className="mt-8 hidden lg:block">
-                <span className="inline-flex h-10 w-10 items-center justify-center border-2 border-blue-900/10 text-blue-900 transition-all duration-300 group-hover:border-yellow-400 group-hover:bg-yellow-400 group-hover:text-blue-900">
-                  <span className="text-lg">→</span>
-                </span>
-              </div> */}
-            </motion.div>
-          ))}
-        </div>
-
-        {/* ── BOTTOM CTA ── */}
         <motion.div
-          initial={{ y: 20, opacity: 0 }}
+          initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
-          className="mt-20 flex flex-col items-center justify-center gap-6 md:flex-row"
+          transition={{ duration: 0.8, ease: EASE }}
+          className="mb-[clamp(40px,5vw,68px)] flex flex-wrap items-end justify-between gap-10"
         >
-          <p className="text-sm font-bold uppercase tracking-widest text-blue-900/50">
-            Ready to grow with us?
+          <div className="max-w-[660px]">
+            <p className="mb-[1.35rem] inline-flex items-center gap-3 text-[.685rem] font-semibold uppercase tracking-[.26em] text-gold">
+              <span aria-hidden className="block h-px w-9 bg-gold" />
+              What We Do
+            </p>
+            <h2 className="max-w-[22ch] font-serif text-[clamp(2rem,3.5vw,3.05rem)] font-normal leading-[1.1] text-navy">
+              Faith expressed through fellowship, learning and service
+            </h2>
+          </div>
+
+          <p className="mb-[.4rem] max-w-[34ch] text-[clamp(1rem,1.15vw,1.09rem)] leading-[1.78] text-grey-600">
+            Six commitments shape the rhythm of DUCSO&apos;s life together
+            throughout the academic year.
           </p>
-          <Button href="/join" variant="secondary" size="md" onBlue={false}>
-            Join the Community
-            <span className="transition-transform duration-300 group-hover:translate-x-1">
-              →
-            </span>
-          </Button>
         </motion.div>
+
+        {/* ── 6-ITEM GRID ── */}
+        <div className="grid grid-cols-1 gap-x-[clamp(28px,4vw,64px)] md:grid-cols-2 lg:grid-cols-3">
+          {items.map((item, i) => (
+            <motion.article
+              key={item.num}
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: EASE, delay: i * 0.08 }}
+              className="relative border-t border-black/10 py-[clamp(26px,3vw,40px)]"
+            >
+              {/* number top-right */}
+              <span
+                aria-hidden
+                className="absolute right-0 top-[clamp(26px,3vw,40px)] font-serif text-[.9rem] tracking-[.16em] text-black/25"
+              >
+                {item.num}
+              </span>
+
+              {/* icon */}
+              <span className="mb-[1.15rem] block text-gold">{item.icon}</span>
+
+              {/* title */}
+              <h3 className="mb-[.6rem] font-serif text-[1.4rem] font-normal leading-[1.22] text-navy">
+                {item.title}
+              </h3>
+
+              {/* desc */}
+              <p className="max-w-[40ch] text-[.9rem] leading-[1.76] text-grey-600">
+                {item.desc}
+              </p>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </section>
   );

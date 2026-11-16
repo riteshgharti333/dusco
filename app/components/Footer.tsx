@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
@@ -13,204 +14,175 @@ const socials = [
   { name: "TikTok", icon: FaTiktok, href: "#" },
 ];
 
+const navigate = [
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Events", href: "/events" },
+  { label: "Gallery", href: "/gallery" },
+];
+
+const organization = [
+  { label: "Leadership", href: "/executive" },
+  { label: "What We Do", href: "/#what-we-do" },
+  { label: "News", href: "/news" },
+  { label: "Get Involved", href: "/contact" },
+];
+
 const Footer = () => {
   return (
-    <footer className="relative w-full overflow-hidden bg-blue-900 pt-24 pb-0 text-white">
-      {/* Background slanted accent */}
+    <footer
+      id="contact"
+      className="relative w-full overflow-hidden bg-navy pt-[clamp(60px,7vw,96px)] text-white"
+    >
+      {/* gold hairline at top */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -left-32 top-0 h-full w-64 bg-yellow-400/5 -skew-x-[20deg]"
+        className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-55"
       />
 
-      {/* Giant background wordmark for depth */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -bottom-10 right-0 select-none whitespace-nowrap text-[18vw] font-black leading-none tracking-tighter text-white/[0.03]"
-      >
-        DUCSO
-      </span>
-
-      <div className="relative mx-auto max-w-7xl px-6 md:pl-24 lg:px-10 lg:pl-28 z-10">
-        {/* ── TOP SECTION: Editorial Split ── */}
-        <div className="grid gap-16 border-b border-white/10 pb-16 md:grid-cols-12 md:gap-12">
-          {/* LEFT: Big Headline & Socials */}
-          <div className="md:col-span-5 lg:col-span-6">
-            <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.9, ease: EASE }}
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
+        {/* ── TOP: 4-col grid ── */}
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: EASE }}
+          className="grid grid-cols-1 gap-[clamp(32px,4vw,64px)] pb-[clamp(48px,5.5vw,72px)] sm:grid-cols-2 lg:grid-cols-[1.55fr_.8fr_.95fr_1fr]"
+        >
+          {/* Brand column */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <Link
+              href="/"
+              aria-label="DUCSO — Home"
+              className="mb-[1.5rem] inline-flex items-center gap-[13.6px] no-underline"
             >
-              {/* Kicker */}
-              <div className="flex items-center gap-3">
-                <span className="relative inline-block h-4 w-3" aria-hidden>
-                  <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
-                  <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
+              <Image
+                src="/dusco-logo.jpg"
+                alt="DUCSO emblem"
+                width={46}
+                height={46}
+                priority
+                className="h-[46px] w-[46px] rounded-full object-cover"
+              />
+              <span className="flex flex-col leading-[1.1]">
+                <span className="font-serif text-[1.42rem] font-semibold tracking-[.1em] text-white">
+                  DUCSO
                 </span>
-                <span className="text-[11px] font-black uppercase tracking-[0.28em] text-yellow-400">
-                  Let's Connect
+                <span className="mt-[3px] text-[.54rem] font-medium uppercase tracking-[.19em] text-white/55">
+                  Dhaka University Christian Students&apos; Organization
                 </span>
-              </div>
+              </span>
+            </Link>
 
-              <h2 className="mt-6 text-5xl font-black leading-[0.95] tracking-tight text-white sm:text-6xl lg:text-7xl">
-                STAY
-                <br />
-                IN THE
-                <br />
-                <span className="relative inline-block">
-                  <span
-                    aria-hidden
-                    className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-                  />
-                  <span className="relative z-10 px-1 italic uppercase text-blue-900">
-                    loop.
-                  </span>
-                </span>
-              </h2>
+            <p className="max-w-[36ch] text-[.9rem] leading-[1.8] text-white/60">
+              A Christian student community at the University of Dhaka —
+              gathered for worship, discipleship and fellowship, and sent to
+              serve with humility and integrity.
+            </p>
 
-              <p className="mt-8 max-w-sm text-sm leading-relaxed text-white/60">
-                Follow us for updates, event reminders, and daily encouragement.
-                We're active on all platforms.
-              </p>
+            {/* Socials */}
+            <div className="mt-[1.6rem] flex gap-[.6rem]">
+              {socials.map(({ name, icon: Icon, href }) => (
+                <a
+                  key={name}
+                  href={href}
+                  aria-label={name}
+                  className="inline-flex h-[38px] w-[38px] items-center justify-center rounded-full border border-white/20 text-white/70 no-underline transition-colors duration-300 hover:border-gold hover:bg-gold/10 hover:text-gold"
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
+          </div>
 
-              {/* Social Icons */}
-              <div className="mt-10 flex flex-wrap gap-3">
-                {socials.map(({ name, icon: Icon, href }) => (
-                  <a
-                    key={name}
+          {/* Navigate */}
+          <div>
+            <h5 className="mb-[1.4rem] font-sans text-[.66rem] font-semibold uppercase tracking-[.22em] text-gold">
+              Navigate
+            </h5>
+            <ul className="flex flex-col gap-[.72rem]">
+              {navigate.map(({ label, href }) => (
+                <li key={label}>
+                  <Link
                     href={href}
-                    aria-label={name}
-                    className="group relative flex h-12 w-12 items-center justify-center border border-white/20 bg-transparent text-white/60 transition-all duration-300 hover:-translate-y-1 hover:border-yellow-400 hover:bg-yellow-400 hover:text-blue-900 hover:shadow-[4px_4px_0_0_#1e3a8a]"
+                    className="text-[.875rem] text-white/70 no-underline transition-[color,padding] duration-300 hover:pl-[5px] hover:text-gold"
                   >
-                    <Icon className="h-5 w-5" />
-                    {/* Tooltip */}
-                    <span className="pointer-events-none absolute -top-9 whitespace-nowrap bg-white px-2 py-1 text-[9px] font-black uppercase tracking-widest text-blue-900 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      {name}
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </motion.div>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* RIGHT: Links Grid */}
-          <div className="grid grid-cols-2 gap-8 md:col-span-7 md:grid-cols-3 lg:col-span-6">
-            {/* Column 1 */}
-            <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
-            >
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-400">
-                Explore
-              </h4>
-              <ul className="mt-6 space-y-3 text-sm text-white/60">
-                {["Home", "About Us", "Our Events", "Gallery"].map((item) => (
-                  <li key={item}>
-                    <Link
-                      href="#"
-                      className="group flex items-center gap-2 transition-colors hover:text-white"
-                    >
-                      <span className="h-px w-0 bg-yellow-400 transition-all duration-300 group-hover:w-3" />
-                      {item}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Column 2 */}
-            <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
-            >
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-400">
-                Community
-              </h4>
-              <ul className="mt-6 space-y-3 text-sm text-white/60">
-                {["Join Us", "Small Groups", "Leadership", "Testimonies"].map(
-                  (item) => (
-                    <li key={item}>
-                      <Link
-                        href="#"
-                        className="group flex items-center gap-2 transition-colors hover:text-white"
-                      >
-                        <span className="h-px w-0 bg-yellow-400 transition-all duration-300 group-hover:w-3" />
-                        {item}
-                      </Link>
-                    </li>
-                  ),
-                )}
-              </ul>
-            </motion.div>
-
-            {/* Column 3 */}
-            <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
-              className="col-span-2 md:col-span-1"
-            >
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-400">
-                Contact
-              </h4>
-              <ul className="mt-6 space-y-4 text-sm text-white/60">
-                <li>
-                  <span className="block text-[10px] font-bold uppercase tracking-widest text-white/30">
-                    Email
-                  </span>
-                  <a
-                    href="mailto:hello@ducso.org"
-                    className="transition-colors hover:text-white"
+          {/* Organization */}
+          <div>
+            <h5 className="mb-[1.4rem] font-sans text-[.66rem] font-semibold uppercase tracking-[.22em] text-gold">
+              Organization
+            </h5>
+            <ul className="flex flex-col gap-[.72rem]">
+              {organization.map(({ label, href }) => (
+                <li key={label}>
+                  <Link
+                    href={href}
+                    className="text-[.875rem] text-white/70 no-underline transition-[color,padding] duration-300 hover:pl-[5px] hover:text-gold"
                   >
-                    hello@ducso.org
-                  </a>
+                    {label}
+                  </Link>
                 </li>
-                <li>
-                  <span className="block text-[10px] font-bold uppercase tracking-widest text-white/30">
-                    Campus
-                  </span>
-                  <span className="text-white/80">
-                    Dhaka University
-                    <br />
-                    Student Center
-                  </span>
-                </li>
-              </ul>
-            </motion.div>
+              ))}
+            </ul>
           </div>
-        </div>
 
-        {/* ── MIDDLE: Logo & Big Text ── */}
-        <div className="flex flex-col items-center justify-between gap-6 py-10 md:flex-row">
-          <Link
-            href="/"
-            className="text-3xl font-black tracking-tighter text-white"
-          >
-            DUCSO<span className="text-yellow-400">.</span>
-          </Link>
-          <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30">
-            Dhaka University Christian Students' Organisation
+          {/* Contact */}
+          <div>
+            <h5 className="mb-[1.4rem] font-sans text-[.66rem] font-semibold uppercase tracking-[.22em] text-gold">
+              Contact
+            </h5>
+            <ul className="space-y-4">
+              <li>
+                <span className="mb-[.15rem] block text-[.6rem] font-semibold uppercase tracking-[.2em] text-white/40">
+                  Campus
+                </span>
+                <span className="text-[.875rem] leading-[1.7] text-white/70">
+                  University of Dhaka
+                  <br />
+                  Dhaka 1000, Bangladesh
+                </span>
+              </li>
+              <li>
+                <span className="mb-[.15rem] block text-[.6rem] font-semibold uppercase tracking-[.2em] text-white/40">
+                  Email
+                </span>
+                <a
+                  href="mailto:hello@ducso.org"
+                  className="text-[.875rem] text-white/70 no-underline transition-colors hover:text-gold"
+                >
+                  hello@ducso.org
+                </a>
+              </li>
+              <li>
+                <span className="mb-[.15rem] block text-[.6rem] font-semibold uppercase tracking-[.2em] text-white/40">
+                  Meeting
+                </span>
+                <span className="text-[.875rem] leading-[1.7] text-white/70">
+                  Venue &amp; schedule to be announced
+                </span>
+              </li>
+            </ul>
+          </div>
+        </motion.div>
+
+        {/* ── BOTTOM BAR ── */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 py-[1.7rem] text-[.74rem] tracking-[.04em] text-white/45">
+          <p>
+            © {new Date().getFullYear()} Dhaka University Christian
+            Students&apos; Organization (DUCSO). All rights reserved.
           </p>
-        </div>
-      </div>
-
-      {/* ── BOTTOM: Yellow Strip ── */}
-      <div className="relative mt-4 bg-yellow-400 px-6 py-5 md:px-12">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-blue-900 md:flex-row">
-          <p>© 2026 DUCSO. All Rights Reserved.</p>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="hover:underline">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="hover:underline">
-              Terms of Use
-            </Link>
-          </div>
+          <p className="max-w-[62ch] text-[.68rem] tracking-[.05em] text-white/30">
+            Items marked &ldquo;Placeholder&rdquo; or &ldquo;pending
+            confirmation&rdquo; are awaiting verified information from the DUCSO
+            executive committee.
+          </p>
         </div>
       </div>
     </footer>

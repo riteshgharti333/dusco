@@ -2,416 +2,422 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { RiMenu4Fill } from "react-icons/ri";
-import { LuX } from "react-icons/lu";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 
 type NavLink = { label: string; href: string };
 
 const links: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Events", href: "/events" },
-  { label: "Executive", href: "/executive" },
-  { label: "Alumni", href: "/alumni" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "News", href: "/news" },
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Events", href: "#events" },
+  { label: "Executive", href: "#leadership" },
+  { label: "Alumni", href: "#alumni" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "News", href: "#news" },
+];
+
+const socials = [
+  { name: "Facebook", icon: FaFacebookF, href: "#" },
+  { name: "Instagram", icon: FaInstagram, href: "#" },
+  { name: "YouTube", icon: FaYoutube, href: "#" },
 ];
 
 const isActive = (pathname: string, href: string): boolean =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-const SLANT = "-skew-x-[20deg]";
-const UNSLANT = "skew-x-[20deg]";
-
-const barShape = "polygon(21px 0, 100% 0, calc(100% - 21px) 100%, 0 100%)";
-const barShapeInner = "polygon(20px 0, 100% 0, calc(100% - 20px) 100%, 0 100%)";
-
-// The pill background now uses a polygon so it perfectly matches the slant
-const pillShape = "polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%)";
-
-const DESKTOP_QUERY = "(min-width: 1024px)";
-
-type PillState = { left: number; width: number; show: boolean };
-
 const Navbar = () => {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [hidden, setHidden] = useState<boolean>(false);
-  const [hovered, setHovered] = useState<number | null>(null);
-  const [hoverAccent, setHoverAccent] = useState<boolean>(false);
-  const [pill, setPill] = useState<PillState>({
-    left: 0,
-    width: 0,
-    show: false,
-  });
+  const [isSolid, setIsSolid] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const lastY = useRef(0);
 
-  const itemRefs = useRef<Array<HTMLAnchorElement | null>>([]);
-  const lastY = useRef<number>(0);
+  /* solid background + hide after 30% of the first screen / show on scroll up */
+  useEffect(() => {
+    let ticking = false;
+    let acc = 0; // scroll distance travelled in the current direction
+    lastY.current = window.scrollY;
 
-  const activeIndex = links.findIndex((l) => isActive(pathname, l.href));
-  const target = hovered !== null ? hovered : activeIndex;
+    const update = () => {
+      const y = Math.max(window.scrollY, 0);
+      const delta = y - lastY.current;
+      lastY.current = y;
+      const hideAfter = window.innerHeight * 0.3;
 
-  const { scrollY } = useScroll();
+      setIsSolid(y > 40);
 
-  useMotionValueEvent(scrollY, "change", (y) => {
-    const prev = lastY.current;
-    const delta = y - prev;
-
-    if (y > 200 && delta > 6) {
-      setHidden(true);
-    } else if (delta < -6 || y < 100) {
-      setHidden(false);
-    }
-
-    lastY.current = y;
-  });
-
-  useLayoutEffect(() => {
-    const measure = (): void => {
-      const el = itemRefs.current[target];
-      if (!el) {
-        setPill((p) => ({ ...p, show: false }));
-        return;
+      if (y <= hideAfter) {
+        acc = 0;
+        setIsHidden(false); // always visible in the top 30%
+      } else if (delta !== 0) {
+        if (delta > 0 !== acc > 0) acc = 0; // direction changed
+        acc += delta;
+        if (acc > 16)
+          setIsHidden(true); // scrolled down a little
+        else if (acc < -40) setIsHidden(false); // scrolled up on purpose
       }
-      // Add extra width on each side for the pill to bleed slightly around the link
-      setPill({
-        left: el.offsetLeft - 8,
-        width: el.offsetWidth + 16,
-        show: true,
-      });
+
+      ticking = false;
     };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [target]);
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
   useEffect(() => {
-    const mq = window.matchMedia(DESKTOP_QUERY);
-    const onChange = (e: MediaQueryListEvent): void => {
-      if (e.matches) setIsOpen(false);
-    };
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+    if (!isOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+    document.body.style.overflow = "hidden";
 
-  /* Escape closes menu */
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent): void => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpen(false);
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+    const onResize = () => {
+      if (window.innerWidth > 900) setIsOpen(false);
+    };
 
-  /* Body scroll lock — ONLY when opening, not on close */
-  useEffect(() => {
-    if (!isOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
     return () => {
-      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
-  const revealOrigin = "calc(100% - 3.5rem) 2.75rem";
-
   return (
     <>
-      <motion.header
-        initial={false}
-        animate={{
-          y: hidden && !isOpen ? "-160%" : "0%",
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 180,
-          damping: 26,
-          mass: 0.9,
-        }}
-        className="fixed inset-x-0 top-0 z-[9999] flex w-full max-w-[100vw] justify-center overflow-hidden px-3 pb-3 pr-5 pt-3 sm:px-4 sm:pr-6"
+      <header
+        className={`fixed inset-x-0 top-0 z-[100] border-b will-change-transform transition-[transform,opacity,background-color,border-color,box-shadow] duration-[800ms] ease-[cubic-bezier(.65,0,.35,1)] focus-within:translate-y-0 focus-within:opacity-100 ${
+          isOpen
+            ? "pointer-events-none opacity-0"
+            : isHidden
+              ? "-translate-y-full opacity-0"
+              : "translate-y-0 opacity-100"
+        } ${
+          isSolid
+            ? "border-black/10 bg-white/95 shadow-[0_10px_34px_-28px_rgba(7,24,43,.55)] backdrop-blur-md backdrop-saturate-150"
+            : "border-transparent bg-transparent"
+        }`}
       >
-        <div
-          className="relative w-full min-w-0 max-w-5xl"
-          onMouseEnter={() => setHoverAccent(true)}
-          onMouseLeave={() => setHoverAccent(false)}
-        >
-          <span
-            aria-hidden
-            className="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-yellow-400 sm:translate-x-2 sm:translate-y-2"
-            style={{ clipPath: barShape }}
-          />
-          <span
-            aria-hidden
-            className="absolute inset-0 bg-blue-900"
-            style={{ clipPath: barShape }}
-          />
-          <div
-            aria-hidden
-            className="absolute inset-[2px] overflow-hidden bg-white"
-            style={{ clipPath: barShapeInner }}
+        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-10">
+          <nav
+            aria-label="Primary"
+            className={`flex items-center justify-between gap-4 transition-[height] duration-[450ms] ease-[cubic-bezier(.22,.61,.36,1)] sm:gap-8 ${
+              isSolid ? "h-[64px] sm:h-[74px]" : "h-[72px] sm:h-[86px]"
+            }`}
           >
-            <span
-              className="absolute inset-x-0 bottom-0 h-[3px] origin-left bg-yellow-400 transition-transform duration-300"
-              style={{ transform: `scaleX(${hoverAccent ? 1 : 0})` }}
-            />
-          </div>
-
-          <div className="relative flex items-center justify-between gap-3 py-2 pl-7 pr-6 sm:gap-4 sm:py-2.5 sm:pl-9 sm:pr-8">
+            {/* Brand */}
             <Link
               href="/"
-              className="group flex min-w-0 items-center gap-2 sm:gap-2.5"
-              aria-label="DUSCO home"
+              aria-label="DUCSO — Home"
+              className="inline-flex min-w-0 flex-none items-center gap-2.5 no-underline sm:gap-[13.6px]"
             >
-              <span className="relative block h-9 w-10 shrink-0 sm:h-10 sm:w-11">
-                <span className="relative flex h-full w-full items-center justify-center overflow-hidden">
-                  <Image
-                    src="/dusco-logo.jpg"
-                    alt="DUSCO logo"
-                    width={50}
-                    height={50}
-                    className="h-full w-full object-contain"
-                    priority
-                  />
+              <Image
+                src="/dusco-logo.jpg"
+                alt="DUCSO emblem"
+                width={46}
+                height={46}
+                priority
+                className="h-9 w-9 rounded-full object-cover sm:h-[42px] sm:w-[42px] md:h-[46px] md:w-[46px]"
+              />
+              <span className="flex min-w-0 flex-col leading-[1.1]">
+                <span
+                  className={`font-serif text-[1.15rem] font-semibold tracking-[.1em] transition-colors duration-[450ms] sm:text-[1.3rem] md:text-[1.42rem] ${
+                    isSolid ? "text-navy" : "text-white"
+                  }`}
+                >
+                  DUCSO
                 </span>
-              </span>
-              <span className="flex min-w-0 flex-col leading-none">
-                <span className="text-sm font-black tracking-tight text-blue-900 sm:text-base">
-                  DUSCO
-                </span>
-                <span className="mt-0.5 truncate text-[8px] font-bold uppercase tracking-[0.18em] text-yellow-500 sm:text-[9px] sm:tracking-[0.2em]">
-                  Dahaka University
+                <span
+                  className={`mt-[3px] hidden truncate text-[.54rem] font-medium uppercase tracking-[.19em] transition-colors duration-[450ms] md:block ${
+                    isSolid ? "text-navy/60" : "text-white/62"
+                  }`}
+                >
+                  Dhaka University Christian Students&apos; Organization
                 </span>
               </span>
             </Link>
 
             {/* Desktop nav */}
-            <nav
-              className="relative hidden items-center lg:flex"
-              onMouseLeave={() => setHovered(null)}
-            >
-              {/* Sliding pill — now uses clipPath for perfect diagonal */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute bottom-0 top-0 bg-yellow-400 transition-all duration-300 ease-[cubic-bezier(0.65,0,0.35,1)] will-change-[left,width]"
-                style={{
-                  left: pill.left,
-                  width: pill.width,
-                  opacity: pill.show ? 1 : 0,
-                  clipPath: pillShape,
-                }}
-              />
-              {links.map((link, i) => {
-                const active = i === activeIndex;
-                return (
-                  <Fragment key={link.href}>
-                    {i > 0 && (
-                      <span
-                        aria-hidden
-                        className={`relative mx-0.5 h-5 w-0.5 bg-blue-900/25 ${SLANT}`}
-                      />
-                    )}
-                    <Link
-                      href={link.href}
-                      ref={(el) => {
-                        itemRefs.current[i] = el;
-                      }}
-                      onMouseEnter={() => setHovered(i)}
-                      onFocus={() => setHovered(i)}
-                      onBlur={() => setHovered(null)}
-                      aria-current={active ? "page" : undefined}
-                      className="relative px-3 py-2 text-xs font-black uppercase tracking-wider text-blue-900 xl:px-4"
-                    >
-                      {link.label}
-                    </Link>
-                  </Fragment>
-                );
-              })}
-            </nav>
+            <ul className="mx-auto hidden items-center gap-[clamp(.7rem,1.6vw,2.05rem)] min-[901px]:flex">
+              {links.map(({ href, label }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    aria-current={isActive(pathname, href) ? "page" : undefined}
+                    className={`group relative whitespace-nowrap py-2 text-[.755rem] font-medium uppercase tracking-[.13em] no-underline transition-colors duration-300 ${
+                      isSolid
+                        ? "text-navy hover:text-gold"
+                        : "text-white/86 hover:text-gold"
+                    } max-[1180px]:text-[.71rem] max-[1180px]:tracking-[.1em]`}
+                  >
+                    {label}
+                    <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gold transition-transform duration-[420ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:scale-x-100" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-            <div className="flex shrink-0 items-center gap-2">
+            {/* CTA */}
+            <div className="hidden flex-none min-[901px]:block">
               <Link
                 href="/join"
-                className={`group relative hidden overflow-hidden border-2 border-blue-900 bg-blue-900 lg:inline-flex ${SLANT}`}
+                className="group inline-flex items-center justify-center gap-[11px] whitespace-nowrap rounded-sm border border-gold bg-gold px-[16px] py-[9px] text-[.65rem] font-semibold uppercase tracking-[.14em] text-white no-underline transition-all duration-300 hover:-translate-y-px hover:opacity-90 lg:px-[21.6px] lg:py-[11.5px] lg:text-[.68rem] lg:tracking-[.16em]"
               >
-                <span className="absolute inset-0 origin-left scale-x-0 bg-yellow-400 transition-transform duration-300 group-hover:scale-x-100" />
-                <span
-                  className={`relative inline-flex items-center gap-1.5 px-5 py-2 text-xs font-black uppercase tracking-wider text-yellow-400 transition-colors duration-300 group-hover:text-blue-900 ${UNSLANT}`}
+                Get Involved
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-x-[3px]"
                 >
-                  Join Us
-                  <span className="transition-transform duration-300 group-hover:translate-x-0.5">
-                    →
-                  </span>
-                </span>
+                  <path
+                    d="M1 8h13M9 3l5 5-5 5"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </Link>
+            </div>
 
-              <button
-                onClick={() => setIsOpen((v) => !v)}
-                aria-label="Toggle menu"
-                aria-expanded={isOpen}
-                aria-controls="mobile-menu"
-                className={`shrink-0 border-2 border-blue-900 bg-yellow-400 lg:hidden ${SLANT}`}
-              >
-                <span
-                  className={`flex h-8 items-center gap-2 px-3 text-[10px] font-black uppercase tracking-widest text-blue-900 sm:h-9 sm:px-3.5 sm:text-[11px] ${UNSLANT}`}
+            {/* Mobile toggle */}
+            <button
+              type="button"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              aria-controls="mobileDrawer"
+              onClick={() => setIsOpen((v) => !v)}
+              className={`inline-flex h-10 w-10 flex-none items-center justify-center rounded-sm transition-colors duration-300 min-[901px]:hidden ${
+                isSolid ? "text-navy" : "text-white"
+              } hover:text-gold sm:h-11 sm:w-11`}
+            >
+              {isOpen ? (
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  aria-hidden="true"
                 >
-                  {isOpen ? "Close" : "Menu"}
-                  <span className="relative flex h-4 w-4 items-center justify-center">
-                    <RiMenu4Fill
-                      className={`absolute h-4 w-4 will-change-transform transition-all duration-300 ease-out ${
-                        isOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"
-                      }`}
-                    />
-                    <LuX
-                      className={`absolute h-4 w-4 will-change-transform transition-all duration-300 ease-out ${
-                        isOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"
-                      }`}
-                    />
-                  </span>
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </motion.header>
-
-      {/* Mobile menu — always mounted, only clipPath animates */}
-      <div
-        id="mobile-menu"
-        aria-hidden={!isOpen}
-        className={`fixed inset-0 z-40 h-[100dvh] w-full max-w-[100vw] overflow-hidden bg-blue-900 transition-[clip-path] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] lg:hidden ${
-          isOpen ? "pointer-events-auto" : "pointer-events-none"
-        }`}
-        style={{
-          clipPath: isOpen
-            ? `circle(150% at ${revealOrigin})`
-            : `circle(0% at ${revealOrigin})`,
-        }}
-      >
-        {/* Decorative slanted stripes */}
-        <span
-          aria-hidden
-          className={`pointer-events-none absolute -right-6 top-0 h-full w-14 bg-yellow-400 sm:w-20 ${SLANT}`}
-        />
-        <span
-          aria-hidden
-          className={`pointer-events-none absolute right-12 top-0 h-full w-2.5 bg-white/30 sm:right-16 ${SLANT}`}
-        />
-        <span
-          aria-hidden
-          className={`pointer-events-none absolute right-[5.25rem] top-0 h-full w-1 bg-white/20 sm:right-28 ${SLANT}`}
-        />
-
-        <div className="relative h-full overflow-y-auto overflow-x-hidden overscroll-contain">
-          <nav className="flex min-h-full flex-col justify-center pb-[max(2rem,env(safe-area-inset-bottom))] pl-5 pr-20 pt-28 sm:pl-10 sm:pr-28">
-            <p
-              className={`mb-4 pl-4 text-[10px] font-black uppercase tracking-[0.3em] text-yellow-400 transition-all duration-500 ${
-                isOpen
-                  ? "translate-x-0 opacity-100"
-                  : "-translate-x-6 opacity-0"
-              }`}
-              style={{ transitionDelay: isOpen ? "200ms" : "0ms" }}
-            >
-              Navigate
-            </p>
-
-            <div className="flex flex-col">
-              {links.map((link, i) => {
-                const active = isActive(pathname, link.href);
-                return (
-                  <div
-                    key={link.href}
-                    className={`border-b border-white/10 transition-all duration-500 last:border-b-0 ${
-                      isOpen
-                        ? "translate-x-0 opacity-100"
-                        : "-translate-x-10 opacity-0"
-                    }`}
-                    style={{
-                      transitionDelay: isOpen ? `${250 + i * 70}ms` : "0ms",
-                    }}
-                  >
-                    <Link
-                      href={link.href}
-                      tabIndex={isOpen ? 0 : -1}
-                      onClick={() => setIsOpen(false)}
-                      aria-current={active ? "page" : undefined}
-                      className="group relative flex items-center gap-3  px-4 py-3 sm:gap-4 sm:py-4"
-                    >
-                      <span
-                        aria-hidden
-                        className={`absolute inset-0 origin-left bg-yellow-400 ${SLANT} transition-transform duration-300 ${
-                          active
-                            ? "scale-x-100"
-                            : "scale-x-0 group-hover:scale-x-100 group-active:scale-x-100"
-                        }`}
-                      />
-                      <span
-                        className={`relative w-6 shrink-0 text-[11px] font-black tabular-nums tracking-widest transition-colors duration-300 ${
-                          active
-                            ? "text-blue-900"
-                            : "text-yellow-400 group-hover:text-blue-900 group-active:text-blue-900"
-                        }`}
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span
-                        className={`relative text-3xl font-black uppercase leading-none tracking-tight transition-all duration-300 group-hover:translate-x-1.5 sm:text-5xl ${
-                          active
-                            ? "text-blue-900"
-                            : "text-white group-hover:text-blue-900 group-active:text-blue-900"
-                        }`}
-                      >
-                        {link.label}
-                      </span>
-                      <span
-                        aria-hidden
-                        className={`relative ml-auto text-xl font-black text-blue-900 transition-all duration-300 ${
-                          active
-                            ? "translate-x-0 opacity-100"
-                            : "-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
-                        }`}
-                      >
-                        →
-                      </span>
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-
-            <Link
-              href="/contact"
-              tabIndex={isOpen ? 0 : -1}
-              onClick={() => setIsOpen(false)}
-              className={`mt-8 ml-4 w-fit border-2 border-yellow-400 bg-yellow-400 shadow-[5px_5px_0_0_#ffffff] ${SLANT} transition-all duration-500 active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_0_#ffffff] ${
-                isOpen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-              }`}
-              style={{ transitionDelay: isOpen ? "700ms" : "0ms" }}
-            >
-              <span
-                className={`inline-flex items-center gap-3 px-6 py-3.5 text-sm font-black uppercase tracking-wider text-blue-900 ${UNSLANT}`}
-              >
-                Join Us <span>→</span>
-              </span>
-            </Link>
-
-            <p
-              className={`mt-10 pl-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 transition-opacity duration-500 ${
-                isOpen ? "opacity-100" : "opacity-0"
-              }`}
-              style={{ transitionDelay: isOpen ? "800ms" : "0ms" }}
-            >
-              DUSCO · Dahaka University
-            </p>
+                  <path
+                    d="M3 3l12 12M15 3L3 15"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  width="19"
+                  height="19"
+                  viewBox="0 0 19 19"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2 5h15M2 9.5h15M2 14h15"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              )}
+            </button>
           </nav>
         </div>
-      </div>
+      </header>
+
+      {/* ── MODERN MOBILE DRAWER ── */}
+      {/* Backdrop */}
+      <div
+        aria-hidden
+        onClick={() => setIsOpen(false)}
+        className={`fixed inset-0 z-[110] bg-navy/60 backdrop-blur-sm transition-opacity duration-500 min-[901px]:hidden ${
+          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+
+      {/* Slide-in panel from right */}
+      <aside
+        id="mobileDrawer"
+        aria-hidden={!isOpen}
+        className={`fixed inset-y-0 right-0 z-[111] flex w-full max-w-[420px] flex-col overflow-y-auto bg-navy text-white shadow-[-20px_0_60px_-20px_rgba(0,0,0,0.5)] transition-transform duration-[520ms] ease-[cubic-bezier(.22,.61,.36,1)] min-[901px]:hidden ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        {/* Drawer header — brand + close */}
+        <div className="flex items-center justify-between px-5 py-4 sm:px-6">
+          <Link
+            href="/"
+            aria-label="DUCSO — Home"
+            tabIndex={isOpen ? 0 : -1}
+            onClick={() => setIsOpen(false)}
+            className="inline-flex items-center gap-2.5 no-underline"
+          >
+            <Image
+              src="/dusco-logo.jpg"
+              alt="DUCSO emblem"
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-full object-cover"
+            />
+            <span className="font-serif text-[1.05rem] font-semibold tracking-[.08em] text-white">
+              DUCSO
+            </span>
+          </Link>
+
+          <button
+            type="button"
+            tabIndex={isOpen ? 0 : -1}
+            onClick={() => setIsOpen(false)}
+            aria-label="Close menu"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/80 transition-colors duration-300 hover:bg-white/5 hover:text-gold"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 18 18"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 3l12 12M15 3L3 15"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Small label */}
+        <p className="px-5 pt-6 text-[.6rem] font-semibold uppercase tracking-[.3em] text-gold/80 sm:px-6">
+          Menu
+        </p>
+
+        {/* Nav links */}
+        <nav aria-label="Mobile" className="mt-3 flex flex-col px-3 sm:px-4">
+          {links.map(({ href, label }, i) => {
+            const active = isActive(pathname, href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                tabIndex={isOpen ? 0 : -1}
+                onClick={() => setIsOpen(false)}
+                aria-current={active ? "page" : undefined}
+                style={{
+                  transitionDelay: isOpen ? `${100 + i * 45}ms` : "0ms",
+                }}
+                className={`group relative flex items-center justify-between gap-3 rounded-lg px-3 py-3.5 text-[.95rem] font-medium no-underline transition-all duration-500 ease-[cubic-bezier(.22,.61,.36,1)] hover:bg-white/5 sm:px-4 ${
+                  isOpen
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-8 opacity-0"
+                } ${active ? "text-gold" : "text-white/85 hover:text-white"}`}
+              >
+                <span className="flex items-center gap-3">
+                  <span
+                    className={`text-[.6rem] font-semibold tracking-[.2em] transition-colors ${
+                      active ? "text-gold" : "text-white/40"
+                    }`}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-serif text-[1.15rem] leading-none tracking-[.01em]">
+                    {label}
+                  </span>
+                </span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                  className={`transition-all duration-300 ${
+                    active
+                      ? "translate-x-0 opacity-100 text-gold"
+                      : "-translate-x-1 opacity-0 text-white group-hover:translate-x-0 group-hover:opacity-60"
+                  }`}
+                >
+                  <path
+                    d="M1 8h13M9 3l5 5-5 5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* CTA + socials pinned to bottom */}
+        <div className="mt-auto px-5 py-6 sm:px-6">
+          <Link
+            href="/join"
+            tabIndex={isOpen ? 0 : -1}
+            onClick={() => setIsOpen(false)}
+            className="group inline-flex w-full items-center justify-center gap-3 rounded-sm border border-gold bg-gold px-6 py-3.5 text-[.7rem] font-semibold uppercase tracking-[.16em] text-white no-underline transition-all duration-300 hover:-translate-y-px hover:opacity-90"
+          >
+            Get Involved
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-[3px]"
+            >
+              <path
+                d="M1 8h13M9 3l5 5-5 5"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+
+          <div className="mt-5 flex items-center justify-center gap-3">
+            {socials.map(({ name, icon: Icon, href }) => (
+              <a
+                key={name}
+                href={href}
+                aria-label={name}
+                tabIndex={isOpen ? 0 : -1}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/60 no-underline transition-colors duration-300 hover:border-gold hover:text-gold"
+              >
+                <Icon className="h-3.5 w-3.5" />
+              </a>
+            ))}
+          </div>
+
+          <p className="mt-4 text-center text-[.6rem] uppercase tracking-[.24em] text-white/30">
+            Dhaka University · Since 1980
+          </p>
+        </div>
+      </aside>
     </>
   );
 };

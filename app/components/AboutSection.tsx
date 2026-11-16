@@ -1,230 +1,158 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import SectionHeader from "./SectionHeader";
-import Button from "./Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-const gallery = [
-  {
-    src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
-    caption: "Community Night",
-    sub: "Every Friday",
-    offset: "translate-y-0",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=800&q=80",
-    caption: "Worship",
-    sub: "Sunday Gatherings",
-    offset: "translate-y-8 md:translate-y-12",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&q=80",
-    caption: "Small Groups",
-    sub: "Weekly",
-    offset: "translate-y-0",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1517021897933-0e0319cfbc28?w=800&q=80",
-    caption: "Service",
-    sub: "Campus Outreach",
-    offset: "translate-y-8 md:translate-y-12",
-  },
-];
-
 const AboutSection = () => {
   return (
-    <section className="relative w-full overflow-hidden bg-white py-20 md:py-28">
-      {/* Rotated side rail */}
-      <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-        <div className="flex h-full items-center justify-center">
-          <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-blue-900/30">
-            Manifesto · DUSCO · Est. 2019
-          </span>
-        </div>
-      </div>
-
-      <div className="section-container">
-        <SectionHeader
-          label="Who We Are"
-          description="DUSCO is the Dahaka University Student Christian Organization — a family of believers pursuing God together on campus. Different backgrounds. One faith."
-          title={
-            <>
-              WE ARE
-              <br />
-              <span className="relative inline-block">
-                <span
-                  aria-hidden
-                  className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-                />
-                <span className="relative z-10 px-1 italic">ONE BODY</span>
-              </span>
-              <br />
-              <span className="text-blue-900">MANY STORIES</span>
-            </>
-          }
-        />
-
-        {/* ── IMAGE GRID + STORY ── */}
-        <div className="mt-16 grid gap-10 md:mt-20 md:grid-cols-12 md:gap-14">
-          {/* LEFT — 4 images in 2x2 diagonal cascade */}
+    <section
+      id="about"
+      className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]"
+    >
+      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
+        <div className="grid items-center gap-[clamp(40px,6vw,88px)] md:grid-cols-[1.02fr_.98fr]">
+          {/* ── LEFT: image collage ── */}
           <motion.div
             initial={{ x: -60, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 1, ease: EASE }}
-            className="relative md:col-span-6"
+            className="relative pr-0 pb-[68px] sm:pr-[56px]"
           >
-            <div className="grid grid-cols-2 gap-4 md:gap-5">
-              {gallery.map((img, i) => (
-                <motion.div
-                  key={img.caption}
-                  initial={{ y: 40, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{
-                    duration: 0.7,
-                    ease: EASE,
-                    delay: 0.15 + i * 0.1,
-                  }}
-                  className={`relative w-full pr-2 pb-2 ${img.offset}`}
-                >
-                  {/* Yellow shadow — fills the padded area (peeks 8px bottom-right) */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 bg-yellow-400 ml-3 mt-3"
-                    style={{
-                      clipPath:
-                        "polygon(28px 0, 100% 0, 100% 100%, 0 100%, 0 28px)",
-                    }}
-                  />
+            {/* gold frame outline */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -left-[18px] -top-[18px] right-[74px] bottom-[86px] border border-[rgba(185,145,73,0.38)]"
+            />
 
-                  {/* Card frame — sized to the aspect ratio, sits inside the padding */}
-                  <div className="relative aspect-[3/4] w-full">
-                    {/* Blue border layer */}
-                    <span
-                      aria-hidden
-                      className="absolute inset-0 bg-blue-900"
-                      style={{
-                        clipPath:
-                          "polygon(28px 0, 100% 0, 100% 100%, 0 100%, 0 28px)",
-                      }}
-                    />
+            {/* main image (4:5) */}
+            <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-navy shadow-[0_28px_70px_-36px_rgba(7,24,43,0.48)]">
+              <Image
+                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80"
+                alt="DUCSO students gathered together in fellowship"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover [filter:grayscale(.3)_contrast(1.04)]"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-gradient-to-b from-navy/15 to-navy/35 mix-blend-multiply"
+              />
+            </div>
 
-                    {/* Image face */}
-                    <div
-                      className="relative h-full w-full overflow-hidden"
-                      style={{
-                        clipPath:
-                          "polygon(26px 0, 100% 0, 100% 100%, 0 100%, 0 26px)",
-                      }}
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.caption}
-                        fill
-                        className="object-cover"
-                      />
-
-                      {/* Bottom gradient */}
-                      <span
-                        aria-hidden
-                        className="absolute inset-x-0 bottom-0 h-1/2"
-                        style={{
-                          background:
-                            "linear-gradient(180deg, transparent 0%, rgba(30,58,138,0.92) 100%)",
-                        }}
-                      />
-
-                      {/* Caption */}
-                      <div className="absolute inset-x-0 bottom-0 p-3">
-                        <span className="block text-[8px] font-bold uppercase tracking-[0.25em] text-yellow-400">
-                          {img.sub}
-                        </span>
-                        <span className="mt-0.5 block text-xs font-black uppercase leading-tight text-white">
-                          {img.caption}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+            {/* sub image (1:1) overlapping bottom-right */}
+            <div className="absolute bottom-0 right-0 aspect-square w-[56%] overflow-hidden rounded-sm border-8 border-ivory bg-navy shadow-[0_28px_70px_-36px_rgba(7,24,43,0.48)]">
+              <Image
+                src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&q=80"
+                alt="A moment of prayer during a DUCSO gathering"
+                fill
+                sizes="(max-width: 768px) 60vw, 30vw"
+                className="object-cover [filter:grayscale(.3)_contrast(1.04)]"
+              />
             </div>
           </motion.div>
 
-          {/* RIGHT — story paragraph + verse + CTA */}
-          <div className="flex flex-col justify-center md:col-span-6">
-            <motion.div
-              initial={{ x: 40, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
-            >
-              <div className="flex items-baseline gap-3">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-600">
-                  Our Story
-                </span>
-                <span className="h-[2px] flex-1 bg-blue-900/10" />
+          {/* ── RIGHT: text ── */}
+          <motion.div
+            initial={{ x: 40, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
+          >
+            {/* eyebrow */}
+            <p className="mb-[1.35rem] inline-flex items-center gap-3 text-[.685rem] font-semibold uppercase tracking-[.26em] text-gold">
+              <span aria-hidden className="block h-px w-9 bg-gold" />
+              About DUCSO
+            </p>
+
+            {/* title */}
+            <h2 className="max-w-[22ch] font-serif text-[clamp(2rem,3.5vw,3.05rem)] font-normal leading-[1.1] text-navy">
+              A community of faith and learning at the heart of Dhaka University
+            </h2>
+
+            {/* lead */}
+            <p className="mt-[1.4rem] max-w-[62ch] text-[clamp(1rem,1.15vw,1.09rem)] leading-[1.78] text-grey-600">
+              DUCSO exists to bring Christian students together for worship,
+              discipleship and mutual encouragement — and to serve the wider
+              university community with humility and integrity.
+            </p>
+
+            {/* note */}
+            <p className="mt-[1.15rem] text-grey-600">
+              For decades, students from across the University of Dhaka have
+              found in DUCSO a place to grow in faith while pursuing their
+              studies. The organization&apos;s history, milestones and founding
+              narrative will be published here once verified by the executive
+              committee.
+              <span className="ml-2 inline-block border border-[rgba(185,145,73,0.38)] px-2 py-[3px] align-middle text-[.6rem] font-semibold uppercase tracking-[.2em] text-gold">
+                Placeholder
+              </span>
+            </p>
+
+            {/* pillars */}
+            <div className="mt-[clamp(32px,4vw,46px)] grid gap-[1.6rem]">
+              <div className="border-l-2 border-gold pl-[1.4rem]">
+                <h4 className="mb-[.35rem] font-serif text-[1.32rem] text-navy">
+                  Vision
+                </h4>
+                <p className="max-w-[48ch] text-[.94rem] leading-[1.75] text-grey-600">
+                  To be a Christ-centred student community that shapes faithful,
+                  thoughtful and service-minded graduates for Bangladesh and
+                  beyond.
+                  <span className="ml-2 inline-block border border-[rgba(185,145,73,0.38)] px-2 py-[3px] align-middle text-[.6rem] font-semibold uppercase tracking-[.2em] text-gold">
+                    Draft
+                  </span>
+                </p>
               </div>
-
-              <p className="mt-6 text-base leading-relaxed text-blue-900/80">
-                What started as a handful of students praying in a dorm room has
-                grown into one of the largest Christian communities at Dahaka
-                University. Over five years, DUSCO has become a place where
-                faith is not just spoken — it is lived out.
-              </p>
-
-              <p className="mt-4 text-base leading-relaxed text-blue-900/70">
-                We worship together, study Scripture together, serve the campus
-                together, and carry each other through the hardest seasons of
-                university life. Every student has a place here — no matter
-                where their story begins.
-              </p>
-            </motion.div>
-
-            {/* Verse block */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
-              className="mt-10 border-l-4 border-yellow-400 pl-5"
-            >
-              <p className="text-lg font-light italic leading-snug text-blue-900/80">
-                “For where two or three gather in my name, there am I with
-                them.”
-              </p>
-              <div className="mt-3 flex items-center gap-2">
-                <span className="h-[2px] w-6 bg-yellow-400" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-yellow-600">
-                  Matthew 18:20
-                </span>
+              <div className="border-l-2 border-gold pl-[1.4rem]">
+                <h4 className="mb-[.35rem] font-serif text-[1.32rem] text-navy">
+                  Mission
+                </h4>
+                <p className="max-w-[48ch] text-[.94rem] leading-[1.75] text-grey-600">
+                  To nurture spiritual growth through worship, Bible study and
+                  prayer; to build genuine fellowship; and to serve the
+                  university and its surrounding community with compassion.
+                  <span className="ml-2 inline-block border border-[rgba(185,145,73,0.38)] px-2 py-[3px] align-middle text-[.6rem] font-semibold uppercase tracking-[.2em] text-gold">
+                    Draft
+                  </span>
+                </p>
               </div>
-            </motion.div>
+            </div>
+
+            {/* signature strip */}
+            <div className="mt-[2.6rem] flex items-center gap-4 border-t border-black/10 pt-[1.6rem] text-[.72rem] uppercase tracking-[.16em] text-grey-600">
+              Dhaka University Christian Students&apos; Organization
+            </div>
 
             {/* CTA */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, ease: EASE, delay: 0.45 }}
-              className="mt-10"
-            >
-              <Button
+            <div className="mt-8">
+              <Link
                 href="/about"
-                variant="secondary"
-                size="md"
-                onBlue={false}
+                className="group inline-flex items-center gap-2 border-b border-[rgba(185,145,73,0.38)] pb-[5px] text-[.735rem] font-semibold uppercase tracking-[.16em] text-navy transition-colors hover:border-gold hover:text-gold"
               >
-                Our Full Story
-                <span className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
-              </Button>
-            </motion.div>
-          </div>
+                Read our full story
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  <path
+                    d="M1 8h13M9 3l5 5-5 5"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
