@@ -77,9 +77,16 @@ const CountUp = ({
   );
 };
 
-const Hero = () => {
+/* ---------- Client-only wrapper ---------- */
+
+const HeroInner = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -106,46 +113,64 @@ const Hero = () => {
         style={{ y: bgY }}
         className="absolute inset-x-0 -top-[8%] bottom-[-8%] z-0"
       >
-        <Swiper
-          modules={[Autoplay, EffectFade]}
-          effect="fade"
-          fadeEffect={{ crossFade: true }}
-          autoplay={{ delay: SLIDE_DELAY, disableOnInteraction: false }}
-          loop
-          speed={1600}
-          allowTouchMove={false}
-          onSlideChange={(s) => setActive(s.realIndex)}
-          className="h-full w-full"
-        >
-          {HERO_IMAGES.map((src, i) => (
-            <SwiperSlide key={src}>
-              <div className="relative h-full w-full overflow-hidden">
-                <motion.div
-                  className="absolute inset-0"
-                  initial={false}
-                  animate={{ scale: active === i ? 1.16 : 1.04 }}
-                  transition={{
-                    duration: active === i ? SLIDE_DELAY / 1000 + 2 : 1.6,
-                    ease: "linear",
-                  }}
-                >
-                  <Image
-                    src={src}
-                    alt=""
-                    fill
-                    priority={i === 0}
-                    sizes="100vw"
-                    className="object-cover"
-                    style={{
-                      filter:
-                        "grayscale(0.15) contrast(1.02) brightness(0.95) saturate(1.05)",
+        {mounted ? (
+          <Swiper
+            modules={[Autoplay, EffectFade]}
+            effect="fade"
+            fadeEffect={{ crossFade: true }}
+            autoplay={{ delay: SLIDE_DELAY, disableOnInteraction: false }}
+            loop
+            speed={1600}
+            allowTouchMove={false}
+            onSlideChange={(s) => setActive(s.realIndex)}
+            className="h-full w-full"
+          >
+            {HERO_IMAGES.map((src, i) => (
+              <SwiperSlide key={src}>
+                <div className="relative h-full w-full overflow-hidden">
+                  <motion.div
+                    className="absolute inset-0"
+                    initial={false}
+                    animate={{ scale: active === i ? 1.16 : 1.04 }}
+                    transition={{
+                      duration: active === i ? SLIDE_DELAY / 1000 + 2 : 1.6,
+                      ease: "linear",
                     }}
-                  />
-                </motion.div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+                  >
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      priority={i === 0}
+                      sizes="100vw"
+                      className="object-cover"
+                      style={{
+                        filter:
+                          "grayscale(0.15) contrast(1.02) brightness(0.95) saturate(1.05)",
+                      }}
+                    />
+                  </motion.div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          /* Static fallback until client mounts — matches the SSR background */
+          <div className="relative h-full w-full">
+            <Image
+              src={HERO_IMAGES[0]}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              style={{
+                filter:
+                  "grayscale(0.15) contrast(1.02) brightness(0.95) saturate(1.05)",
+              }}
+            />
+          </div>
+        )}
       </motion.div>
 
       {/* Navy gradient overlay */}
@@ -235,7 +260,7 @@ const Hero = () => {
             {/* CTAs */}
             <motion.div {...fadeUp(0.7)} className="mt-11 flex flex-wrap gap-4">
               <Link
-                href="/about"
+                href="#about"
                 className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-sm border border-gold bg-gold px-[1.85rem] py-[0.95rem] text-[.735rem] font-semibold uppercase tracking-[.16em] text-white no-underline shadow-[0_10px_40px_-10px_rgba(185,145,73,0.7)] transition-all duration-300 hover:-translate-y-px hover:opacity-90"
               >
                 <span className="relative inline-flex items-center gap-3">
@@ -260,7 +285,7 @@ const Hero = () => {
               </Link>
 
               <Link
-                href="/events"
+                href="#events"
                 className="inline-flex items-center justify-center gap-3 rounded-sm border border-white/40 bg-white/5 px-[1.85rem] py-[0.95rem] text-[.735rem] font-semibold uppercase tracking-[.16em] text-white no-underline backdrop-blur-md transition-all duration-300 hover:-translate-y-px hover:border-gold hover:bg-white/10 hover:text-gold"
               >
                 Upcoming Events
@@ -336,6 +361,23 @@ const Hero = () => {
       </motion.div>
     </section>
   );
+};
+
+/* ---------- Public export: skips SSR entirely ---------- */
+
+const Hero = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    // Render nothing during SSR / first paint to guarantee no server execution
+    return null;
+  }
+
+  return <HeroInner />;
 };
 
 export default Hero;
