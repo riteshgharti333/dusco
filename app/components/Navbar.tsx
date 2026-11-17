@@ -4,13 +4,30 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+  FaBars,
+  FaTimes,
+  FaChevronDown,
+  FaArrowRight,
+} from "react-icons/fa";
+import Button from "./Button";
+import { FaArrowRightLong } from "react-icons/fa6";
 
-type NavLink = { label: string; href: string };
+type NavLink = { label: string; href: string; children?: NavLink[] };
 
 const links: NavLink[] = [
   { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
+  {
+    label: "About",
+    href: "#about",
+    children: [
+      { label: "What We Do", href: "#what-we-do" },
+      { label: "Testimonials", href: "#testimonials" },
+    ],
+  },
   { label: "Events", href: "#events" },
   { label: "Executive", href: "#leadership" },
   { label: "Alumni", href: "#alumni" },
@@ -24,6 +41,11 @@ const socials = [
   { name: "YouTube", icon: FaYoutube, href: "#" },
 ];
 
+const NAV_MOVE_MS = 800;
+const NAV_EASE = "cubic-bezier(.4,0,.2,1)";
+const HIDE_DISTANCE = 90;
+const SHOW_DISTANCE = 30;
+
 const isActive = (pathname: string, href: string): boolean =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -32,12 +54,13 @@ const Navbar = () => {
   const [isSolid, setIsSolid] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openMobileSub, setOpenMobileSub] = useState<string | null>(null);
   const lastY = useRef(0);
 
-  /* solid background + hide after 30% of the first screen / show on scroll up */
   useEffect(() => {
     let ticking = false;
-    let acc = 0; // scroll distance travelled in the current direction
+    let acc = 0;
     lastY.current = window.scrollY;
 
     const update = () => {
@@ -50,13 +73,12 @@ const Navbar = () => {
 
       if (y <= hideAfter) {
         acc = 0;
-        setIsHidden(false); // always visible in the top 30%
+        setIsHidden(false);
       } else if (delta !== 0) {
-        if (delta > 0 !== acc > 0) acc = 0; // direction changed
+        if (delta > 0 !== acc > 0) acc = 0;
         acc += delta;
-        if (acc > 16)
-          setIsHidden(true); // scrolled down a little
-        else if (acc < -40) setIsHidden(false); // scrolled up on purpose
+        if (acc > HIDE_DISTANCE) setIsHidden(true);
+        else if (acc < -SHOW_DISTANCE) setIsHidden(false);
       }
 
       ticking = false;
@@ -75,11 +97,13 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsOpen(false);
+    setOpenDropdown(null);
   }, [pathname]);
 
   useEffect(() => {
     if (!isOpen) {
       document.body.style.overflow = "";
+      setOpenMobileSub(null);
       return;
     }
     document.body.style.overflow = "hidden";
@@ -88,7 +112,7 @@ const Navbar = () => {
       if (e.key === "Escape") setIsOpen(false);
     };
     const onResize = () => {
-      if (window.innerWidth > 900) setIsOpen(false);
+      if (window.innerWidth >= 1100) setIsOpen(false);
     };
 
     document.addEventListener("keydown", onKey);
@@ -103,30 +127,54 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-[100] border-b will-change-transform transition-[transform,opacity,background-color,border-color,box-shadow] duration-[800ms] ease-[cubic-bezier(.65,0,.35,1)] focus-within:translate-y-0 focus-within:opacity-100 ${
-          isOpen
-            ? "pointer-events-none opacity-0"
-            : isHidden
-              ? "-translate-y-full opacity-0"
-              : "translate-y-0 opacity-100"
+        style={{
+          transform:
+            isHidden && !isOpen
+              ? "translate3d(0,-100%,0)"
+              : "translate3d(0,0,0)",
+          opacity: isOpen ? 0 : 1,
+          willChange: "transform",
+          transition: isOpen
+            ? "opacity 300ms ease"
+            : `transform ${NAV_MOVE_MS}ms ${NAV_EASE}, background-color 450ms ease, border-color 450ms ease, box-shadow 450ms ease, opacity 300ms ease`,
+        }}
+        className={`fixed inset-x-0 top-0 z-[100] border-b ${
+          isOpen ? "pointer-events-none" : ""
         } ${
           isSolid
             ? "border-black/10 bg-white/95 shadow-[0_10px_34px_-28px_rgba(7,24,43,.55)] backdrop-blur-md backdrop-saturate-150"
             : "border-transparent bg-transparent"
         }`}
       >
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-10">
+        <div className="mx-auto w-full max-w-[1280px] px-3 min-[400px]:px-4 sm:px-6 min-[1100px]:px-10">
           <nav
             aria-label="Primary"
-            className={`flex items-center justify-between gap-4 transition-[height] duration-[450ms] ease-[cubic-bezier(.22,.61,.36,1)] sm:gap-8 ${
-              isSolid ? "h-[64px] sm:h-[74px]" : "h-[72px] sm:h-[86px]"
+            className={`flex items-center justify-between gap-2 transition-[height] duration-[600ms] ease-[cubic-bezier(.4,0,.2,1)] min-[400px]:gap-3 sm:gap-6 ${
+              isSolid ? "h-[60px] sm:h-[72px]" : "h-[68px] sm:h-[84px]"
             }`}
           >
-            {/* Brand */}
+            {/* Burger — now on the LEFT of the logo (mobile / tablet only) */}
+            <button
+              type="button"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
+              aria-controls="mobileDrawer"
+              onClick={() => setIsOpen((v) => !v)}
+              className={`inline-flex h-10 w-10 flex-none items-center justify-center rounded-sm transition-colors duration-300 min-[1100px]:hidden ${
+                isSolid ? "text-navy" : "text-white"
+              } hover:text-gold`}
+            >
+              {isOpen ? (
+                <FaTimes className="h-[18px] w-[18px]" />
+              ) : (
+                <FaBars className="h-[19px] w-[19px]" />
+              )}
+            </button>
+
             <Link
               href="/"
               aria-label="DUCSO — Home"
-              className="inline-flex min-w-0 flex-none items-center gap-2.5 no-underline sm:gap-[13.6px]"
+              className="inline-flex min-w-0 flex-1 items-center gap-2.5 no-underline min-[1100px]:flex-none sm:gap-3"
             >
               <Image
                 src="/dusco-logo.jpg"
@@ -134,156 +182,137 @@ const Navbar = () => {
                 width={46}
                 height={46}
                 priority
-                className="h-9 w-9 rounded-full object-cover sm:h-[42px] sm:w-[42px] md:h-[46px] md:w-[46px]"
+                className="h-9 w-9 flex-none rounded-full object-cover sm:h-[42px] sm:w-[42px] md:h-[46px] md:w-[46px]"
               />
-              <span className="flex min-w-0 flex-col leading-[1.1]">
+
+              {/* Full name on every screen size (wraps on small phones) */}
+              <span className="flex min-w-0 flex-col leading-[1.15]">
                 <span
-                  className={`font-serif text-[1.15rem] font-semibold tracking-[.1em] transition-colors duration-[450ms] sm:text-[1.3rem] md:text-[1.42rem] ${
+                  className={`font-serif text-[.66rem] font-semibold leading-[1.15] tracking-[.01em] transition-colors duration-[450ms] min-[400px]:text-[.74rem] sm:text-[.88rem] sm:tracking-[.02em] md:text-[.95rem] min-[1100px]:text-[1rem] ${
                     isSolid ? "text-navy" : "text-white"
-                  }`}
-                >
-                  DUCSO
-                </span>
-                <span
-                  className={`mt-[3px] hidden truncate text-[.54rem] font-medium uppercase tracking-[.19em] transition-colors duration-[450ms] md:block ${
-                    isSolid ? "text-navy/60" : "text-white/62"
                   }`}
                 >
                   Dhaka University Christian Students&apos; Organization
                 </span>
+                <span
+                  className={`pt-[2px] font-serif text-[.58rem] font-semibold leading-[1.2] tracking-[.01em] transition-colors duration-[450ms] min-[400px]:text-[.66rem] sm:pt-[3px] sm:text-[.74rem] md:text-[.82rem] ${
+                    isSolid ? "text-navy/70" : "text-white/70"
+                  }`}
+                >
+                  ঢাকা বিশ্ববিদ্যালয় খ্রিস্টান ছাত্র সংগঠন
+                </span>
               </span>
             </Link>
 
-            {/* Desktop nav */}
-            <ul className="mx-auto hidden items-center gap-[clamp(.7rem,1.6vw,2.05rem)] min-[901px]:flex">
-              {links.map(({ href, label }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    aria-current={isActive(pathname, href) ? "page" : undefined}
-                    className={`group relative whitespace-nowrap py-2 text-[.755rem] font-medium uppercase tracking-[.13em] no-underline transition-colors duration-300 ${
-                      isSolid
-                        ? "text-navy hover:text-gold"
-                        : "text-white/86 hover:text-gold"
-                    } max-[1180px]:text-[.71rem] max-[1180px]:tracking-[.1em]`}
-                  >
-                    {label}
-                    <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gold transition-transform duration-[420ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:scale-x-100" />
-                  </Link>
+            {/* Desktop links */}
+            <ul className="mx-auto hidden items-center gap-[clamp(.7rem,1.4vw,2.05rem)] min-[1100px]:flex">
+              {links.map(({ href, label, children }) => (
+                <li key={href} className="relative">
+                  {children ? (
+                    <div
+                      className="relative"
+                      onMouseEnter={() => setOpenDropdown(href)}
+                      onMouseLeave={() => setOpenDropdown(null)}
+                    >
+                      <button
+                        type="button"
+                        className={`group relative flex items-center gap-1.5 whitespace-nowrap py-2 text-[.71rem] font-medium uppercase tracking-[.1em] transition-colors duration-300 min-[1280px]:text-[.755rem] min-[1280px]:tracking-[.13em] ${
+                          isSolid
+                            ? "text-navy hover:text-gold"
+                            : "text-white/90 hover:text-gold"
+                        }`}
+                      >
+                        {label}
+                        <FaChevronDown
+                          className={`h-2.5 w-2.5 transition-transform duration-300 ${
+                            openDropdown === href ? "rotate-180" : ""
+                          }`}
+                        />
+                        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gold transition-transform duration-[420ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:scale-x-100" />
+                      </button>
+
+                      <div
+                        className={`absolute left-0 top-full min-w-[180px] pt-2 transition-all duration-300 ${
+                          openDropdown === href
+                            ? "pointer-events-auto translate-y-0 opacity-100"
+                            : "pointer-events-none -translate-y-1 opacity-0"
+                        }`}
+                      >
+                        <div className="overflow-hidden rounded-sm border border-black/10 bg-white shadow-[0_20px_40px_-20px_rgba(7,24,43,0.4)]">
+                          {children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className="block whitespace-nowrap px-4 py-2.5 text-[.72rem] font-medium uppercase tracking-[.1em] text-navy no-underline transition-colors duration-200 hover:bg-ivory hover:text-gold"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      href={href}
+                      aria-current={
+                        isActive(pathname, href) ? "page" : undefined
+                      }
+                      className={`group relative whitespace-nowrap py-2 text-[.71rem] font-medium uppercase tracking-[.1em] no-underline transition-colors duration-300 min-[1280px]:text-[.755rem] min-[1280px]:tracking-[.13em] ${
+                        isSolid
+                          ? "text-navy hover:text-gold"
+                          : "text-white/90 hover:text-gold"
+                      }`}
+                    >
+                      {label}
+                      <span className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gold transition-transform duration-[420ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:scale-x-100" />
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
 
-            {/* CTA */}
-            <div className="hidden flex-none min-[901px]:block">
-              <Link
-                href="/join"
-                className="group inline-flex items-center justify-center gap-[11px] whitespace-nowrap rounded-sm border border-gold bg-gold px-[16px] py-[9px] text-[.65rem] font-semibold uppercase tracking-[.14em] text-white no-underline transition-all duration-300 hover:-translate-y-px hover:opacity-90 lg:px-[21.6px] lg:py-[11.5px] lg:text-[.68rem] lg:tracking-[.16em]"
-              >
+            <div className="hidden flex-none min-[1100px]:block">
+              <Button href="/join" variant="primary" size="lg">
                 Get Involved
-                <svg
-                  width="13"
-                  height="13"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-x-[3px]"
-                >
-                  <path
-                    d="M1 8h13M9 3l5 5-5 5"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
+                <FaArrowRightLong className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
             </div>
-
-            {/* Mobile toggle */}
-            <button
-              type="button"
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isOpen}
-              aria-controls="mobileDrawer"
-              onClick={() => setIsOpen((v) => !v)}
-              className={`inline-flex h-10 w-10 flex-none items-center justify-center rounded-sm transition-colors duration-300 min-[901px]:hidden ${
-                isSolid ? "text-navy" : "text-white"
-              } hover:text-gold sm:h-11 sm:w-11`}
-            >
-              {isOpen ? (
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M3 3l12 12M15 3L3 15"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  width="19"
-                  height="19"
-                  viewBox="0 0 19 19"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M2 5h15M2 9.5h15M2 14h15"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              )}
-            </button>
           </nav>
         </div>
       </header>
 
-      {/* ── MODERN MOBILE DRAWER ── */}
       {/* Backdrop */}
       <div
         aria-hidden
         onClick={() => setIsOpen(false)}
-        className={`fixed inset-0 z-[110] bg-navy/60 backdrop-blur-sm transition-opacity duration-500 min-[901px]:hidden ${
+        className={`fixed inset-0 z-[110] bg-navy/60 backdrop-blur-sm transition-opacity duration-500 min-[1100px]:hidden ${
           isOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       />
 
-      {/* Slide-in panel from right */}
+      {/* Mobile drawer — slides in from the LEFT, matching the burger */}
       <aside
         id="mobileDrawer"
         aria-hidden={!isOpen}
-        className={`fixed inset-y-0 right-0 z-[111] flex w-full max-w-[420px] flex-col overflow-y-auto bg-navy text-white shadow-[-20px_0_60px_-20px_rgba(0,0,0,0.5)] transition-transform duration-[520ms] ease-[cubic-bezier(.22,.61,.36,1)] min-[901px]:hidden ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-y-0 left-0 z-[111] flex h-[100dvh] w-[88%] max-w-[400px] flex-col overflow-y-auto overscroll-contain bg-navy pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)] text-white shadow-[20px_0_60px_-20px_rgba(0,0,0,0.5)] transition-transform duration-[520ms] ease-[cubic-bezier(.22,.61,.36,1)] min-[1100px]:hidden ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Drawer header — brand + close */}
         <div className="flex items-center justify-between px-5 py-4 sm:px-6">
           <Link
             href="/"
             aria-label="DUCSO — Home"
             tabIndex={isOpen ? 0 : -1}
             onClick={() => setIsOpen(false)}
-            className="inline-flex items-center gap-2.5 no-underline"
+            className="inline-flex min-w-0 items-center gap-2.5 pr-3 no-underline"
           >
             <Image
               src="/dusco-logo.jpg"
               alt="DUCSO emblem"
               width={36}
               height={36}
-              className="h-9 w-9 rounded-full object-cover"
+              className="h-9 w-9 flex-none rounded-full object-cover"
             />
-            <span className="font-serif text-[1.05rem] font-semibold tracking-[.08em] text-white">
-              DUCSO
-            </span>
           </Link>
 
           <button
@@ -291,113 +320,121 @@ const Navbar = () => {
             tabIndex={isOpen ? 0 : -1}
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/80 transition-colors duration-300 hover:bg-white/5 hover:text-gold"
+            className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-full text-white/80 transition-colors duration-300 hover:bg-white/5 hover:text-gold"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 18 18"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M3 3l12 12M15 3L3 15"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-            </svg>
+            <FaTimes className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Small label */}
-        <p className="px-5 pt-6 text-[.6rem] font-semibold uppercase tracking-[.3em] text-gold/80 sm:px-6">
+        <p className="px-5 pt-4 text-[.6rem] font-semibold uppercase tracking-[.3em] text-gold/80 sm:px-6">
           Menu
         </p>
 
-        {/* Nav links */}
         <nav aria-label="Mobile" className="mt-3 flex flex-col px-3 sm:px-4">
-          {links.map(({ href, label }, i) => {
+          {links.map(({ href, label, children }, i) => {
             const active = isActive(pathname, href);
             return (
-              <Link
-                key={href}
-                href={href}
-                tabIndex={isOpen ? 0 : -1}
-                onClick={() => setIsOpen(false)}
-                aria-current={active ? "page" : undefined}
-                style={{
-                  transitionDelay: isOpen ? `${100 + i * 45}ms` : "0ms",
-                }}
-                className={`group relative flex items-center justify-between gap-3 rounded-lg px-3 py-3.5 text-[.95rem] font-medium no-underline transition-all duration-500 ease-[cubic-bezier(.22,.61,.36,1)] hover:bg-white/5 sm:px-4 ${
-                  isOpen
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-8 opacity-0"
-                } ${active ? "text-gold" : "text-white/85 hover:text-white"}`}
-              >
-                <span className="flex items-center gap-3">
-                  <span
-                    className={`text-[.6rem] font-semibold tracking-[.2em] transition-colors ${
-                      active ? "text-gold" : "text-white/40"
+              <div key={href}>
+                <div className="flex items-center">
+                  <Link
+                    href={href}
+                    tabIndex={isOpen ? 0 : -1}
+                    onClick={() => setIsOpen(false)}
+                    aria-current={active ? "page" : undefined}
+                    style={{
+                      transitionDelay: isOpen ? `${100 + i * 45}ms` : "0ms",
+                    }}
+                    className={`group relative flex min-w-0 flex-1 items-center justify-between gap-3 rounded-lg px-3 py-3 text-[.95rem] font-medium no-underline transition-all duration-500 ease-[cubic-bezier(.22,.61,.36,1)] hover:bg-white/5 sm:px-4 sm:py-3.5 ${
+                      isOpen
+                        ? "translate-x-0 opacity-100"
+                        : "-translate-x-8 opacity-0"
+                    } ${active ? "text-gold" : "text-white/85 hover:text-white"}`}
+                  >
+                    <span className="flex items-center gap-3">
+                      <span
+                        className={`text-[.6rem] font-semibold tracking-[.2em] transition-colors ${
+                          active ? "text-gold" : "text-white/40"
+                        }`}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="font-serif text-[1.1rem] leading-none tracking-[.01em] sm:text-[1.15rem]">
+                        {label}
+                      </span>
+                    </span>
+                    {!children && (
+                      <FaArrowRight
+                        className={`h-3.5 w-3.5 transition-all duration-300 ${
+                          active
+                            ? "translate-x-0 text-gold opacity-100"
+                            : "-translate-x-1 text-white opacity-0 group-hover:translate-x-0 group-hover:opacity-60"
+                        }`}
+                      />
+                    )}
+                  </Link>
+
+                  {children && (
+                    <button
+                      type="button"
+                      tabIndex={isOpen ? 0 : -1}
+                      aria-label={`${openMobileSub === href ? "Collapse" : "Expand"} ${label}`}
+                      aria-expanded={openMobileSub === href}
+                      onClick={() =>
+                        setOpenMobileSub((v) => (v === href ? null : href))
+                      }
+                      className="ml-1 inline-flex h-10 w-10 flex-none items-center justify-center rounded-full  text-white/70 transition-colors duration-300 hover:border-gold hover:text-gold"
+                    >
+                      <FaChevronDown
+                        className={`h-3 w-3 transition-transform duration-300 ${
+                          openMobileSub === href ? "rotate-180 text-gold" : ""
+                        }`}
+                      />
+                    </button>
+                  )}
+                </div>
+
+                {children && (
+                  <div
+                    className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(.4,0,.2,1)] ${
+                      openMobileSub === href
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0"
                     }`}
                   >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="font-serif text-[1.15rem] leading-none tracking-[.01em]">
-                    {label}
-                  </span>
-                </span>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  aria-hidden="true"
-                  className={`transition-all duration-300 ${
-                    active
-                      ? "translate-x-0 opacity-100 text-gold"
-                      : "-translate-x-1 opacity-0 text-white group-hover:translate-x-0 group-hover:opacity-60"
-                  }`}
-                >
-                  <path
-                    d="M1 8h13M9 3l5 5-5 5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
+                    <div className="overflow-hidden">
+                      <div className="ml-8 flex flex-col border-l border-white/10 pl-3">
+                        {children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            tabIndex={isOpen && openMobileSub === href ? 0 : -1}
+                            onClick={() => setIsOpen(false)}
+                            className="py-2 text-[.82rem] text-white/60 no-underline transition-colors hover:text-gold"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>
 
-        {/* CTA + socials pinned to bottom */}
         <div className="mt-auto px-5 py-6 sm:px-6">
-          <Link
+          <Button
             href="/join"
+            variant="primary"
+            size="lg"
             tabIndex={isOpen ? 0 : -1}
             onClick={() => setIsOpen(false)}
-            className="group inline-flex w-full items-center justify-center gap-3 rounded-sm border border-gold bg-gold px-6 py-3.5 text-[.7rem] font-semibold uppercase tracking-[.16em] text-white no-underline transition-all duration-300 hover:-translate-y-px hover:opacity-90"
+            className="w-full"
           >
             Get Involved
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-[3px]"
-            >
-              <path
-                d="M1 8h13M9 3l5 5-5 5"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+            <FaArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+          </Button>
 
           <div className="mt-5 flex items-center justify-center gap-3">
             {socials.map(({ name, icon: Icon, href }) => (

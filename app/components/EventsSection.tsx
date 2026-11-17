@@ -3,6 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Button, { Arrow } from "./Button";
+import ArrowButton from "./ArrowButton";
+import Container from "./Container";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -45,32 +48,13 @@ const events = [
   },
 ];
 
-const Arrow = ({ size = 14 }: { size?: number }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 16 16"
-    fill="none"
-    aria-hidden="true"
-  >
-    <path
-      d="M1 8h13M9 3l5 5-5 5"
-      stroke="currentColor"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 const EventsSection = () => {
   return (
     <section
       id="events"
-      className="relative w-full overflow-hidden bg-ivory py-[clamp(80px,10vw,150px)]"
+      className="relative w-full overflow-hidden bg-ivory pt-25"
     >
-      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
-        {/* ── HEADER ── */}
+      <Container className="relative">
         <div className="mb-[clamp(44px,5.5vw,76px)] flex flex-wrap items-end justify-between gap-10">
           <div className="max-w-[680px]">
             <motion.p
@@ -119,19 +103,10 @@ const EventsSection = () => {
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.24 }}
           >
-            <Link
-              href="/events"
-              className="group mb-1 inline-flex items-center gap-3 border-b border-[rgba(185,145,73,0.38)] pb-[6px] text-[.75rem] font-semibold uppercase tracking-[.16em] text-navy no-underline transition-all duration-300 hover:gap-4 hover:border-gold hover:text-gold"
-            >
-              View all events
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                <Arrow />
-              </span>
-            </Link>
+            <ArrowButton href="/events">View all events</ArrowButton>
           </motion.div>
         </div>
 
-        {/* ── FEATURED EVENT ── */}
         <motion.article
           initial={{ y: 44, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -145,7 +120,7 @@ const EventsSection = () => {
               alt={featured.title}
               fill
               sizes="(max-width: 768px) 100vw, 55vw"
-              className="object-cover [filter:grayscale(.22)_saturate(.92)_contrast(1.03)] transition-[transform,filter] duration-[1100ms] ease-out group-hover/feat:scale-[1.06] group-hover/feat:[filter:grayscale(0)_saturate(1)_contrast(1.03)]"
+              className="object-cover [filter:grayscale(.22)_saturate(.92)_contrast(1.03)] transition-transform duration-[1400ms] ease-out will-change-transform group-hover/feat:scale-[1.06]"
             />
             <span
               aria-hidden
@@ -167,19 +142,15 @@ const EventsSection = () => {
               {featured.desc}
             </p>
 
-            <Link
-              href={`/events/${featured.id}`}
-              className="group mt-9 inline-flex w-fit items-center gap-3 rounded-sm border border-black/20 bg-transparent px-9 py-[1.05rem] text-[.75rem] font-semibold uppercase tracking-[.16em] text-navy no-underline transition-all duration-300 hover:-translate-y-0.5 hover:border-navy hover:bg-navy hover:text-white"
-            >
-              Event details
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
+            <div className="mt-9">
+              <Button href={`/events/${featured.id}`} variant="ghost" size="md">
+                Event details
                 <Arrow />
-              </span>
-            </Link>
+              </Button>
+            </div>
           </div>
         </motion.article>
 
-        {/* ── EVENT CARDS ── */}
         <div className="mt-[clamp(28px,3.4vw,44px)] grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {events.map((ev, i) => (
             <motion.div
@@ -194,15 +165,12 @@ const EventsSection = () => {
                 href={`/events/${ev.id}`}
                 className="group relative flex h-full flex-col overflow-hidden border border-black/10 bg-ivory no-underline shadow-[0_1px_2px_rgba(7,24,43,0.05),0_14px_34px_-20px_rgba(7,24,43,0.3)]"
               >
-                {/* shadow layer — fades in on hover (cheap, GPU-composited) */}
                 <span
                   aria-hidden
                   className="pointer-events-none absolute inset-0 z-0 opacity-0 shadow-[0_2px_4px_rgba(7,24,43,0.06),0_24px_48px_-24px_rgba(7,24,43,0.35)] transition-opacity duration-300 ease-out group-hover:opacity-100"
                 />
 
-                {/* content wrapper — transform only, GPU layer */}
                 <div className="relative z-[1] flex h-full flex-col transition-transform duration-300 ease-out will-change-transform group-hover:-translate-y-1.5">
-                  {/* image + date badge */}
                   <div className="relative aspect-[4/3] overflow-hidden bg-navy">
                     <Image
                       src={ev.image}
@@ -225,7 +193,6 @@ const EventsSection = () => {
                     </div>
                   </div>
 
-                  {/* body */}
                   <div className="flex flex-1 flex-col p-[clamp(22px,2.4vw,32px)]">
                     <h3 className="font-serif text-[clamp(1.3rem,1.9vw,1.65rem)] leading-[1.22] text-navy transition-colors duration-300 group-hover:text-gold">
                       {ev.title}
@@ -236,14 +203,11 @@ const EventsSection = () => {
 
                     <span className="mt-auto inline-flex items-center gap-3 pt-7 text-[.72rem] font-semibold uppercase tracking-[.16em] text-navy transition-colors duration-300 group-hover:text-gold">
                       Event details
-                      <span className="transition-transform duration-300 group-hover:translate-x-1">
-                        <Arrow size={13} />
-                      </span>
+                      <Arrow size={13} />
                     </span>
                   </div>
                 </div>
 
-                {/* gold line that draws on hover */}
                 <span
                   aria-hidden
                   className="pointer-events-none absolute bottom-0 left-0 z-[2] h-[2px] w-full origin-left scale-x-0 bg-gold transition-transform duration-500 ease-out group-hover:scale-x-100"
@@ -252,7 +216,7 @@ const EventsSection = () => {
             </motion.div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
+import Container from "./Container";
+import ArrowButton from "./ArrowButton";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -37,10 +38,9 @@ const LeadershipSection = () => {
   return (
     <section
       id="leadership"
-      className="relative w-full overflow-hidden bg-neutral py-[clamp(72px,9vw,132px)]"
+      className="relative w-full overflow-hidden bg-neutral pt-25"
     >
-      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
-        {/* ── HEADER ── */}
+      <Container>
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -63,7 +63,6 @@ const LeadershipSection = () => {
           </div>
         </motion.div>
 
-        {/* ── 4-UP LEADER GRID ── */}
         <div className="grid grid-cols-1 gap-[clamp(24px,4vw,38px)] sm:grid-cols-2 lg:grid-cols-4">
           {leaders.map((member, i) => (
             <motion.div
@@ -74,7 +73,6 @@ const LeadershipSection = () => {
               transition={{ duration: 0.8, ease: EASE, delay: 0.1 + i * 0.09 }}
               className="group"
             >
-              {/* photo 3:4 */}
               <div className="relative mb-[1.25rem] aspect-[3/4] w-full overflow-hidden rounded-sm bg-navy">
                 <Image
                   src={member.image}
@@ -89,17 +87,14 @@ const LeadershipSection = () => {
                 />
               </div>
 
-              {/* name */}
               <h3 className="mb-[.32rem] font-serif text-[1.28rem] leading-[1.25] text-navy transition-colors duration-300 group-hover:text-gold">
                 {member.name}
               </h3>
 
-              {/* role */}
               <p className="text-[.66rem] font-semibold uppercase tracking-[.2em] text-gold">
                 {member.role}
               </p>
 
-              {/* underline grows on hover */}
               <span
                 aria-hidden
                 className="mt-[.85rem] block h-px w-7 bg-black/25 transition-[width,background] duration-500 group-hover:w-[52px] group-hover:bg-gold"
@@ -108,7 +103,6 @@ const LeadershipSection = () => {
           ))}
         </div>
 
-        {/* ── BOTTOM CTA ── */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -116,30 +110,9 @@ const LeadershipSection = () => {
           transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
           className="mt-16 flex justify-center"
         >
-          <Link
-            href="/team"
-            className="group inline-flex items-center gap-2 border-b border-[rgba(185,145,73,0.38)] pb-[5px] text-[.735rem] font-semibold uppercase tracking-[.16em] text-navy transition-colors hover:border-gold hover:text-gold"
-          >
-            Explore all members
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            >
-              <path
-                d="M1 8h13M9 3l5 5-5 5"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+          <ArrowButton href="/team">Explore all members</ArrowButton>
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 };

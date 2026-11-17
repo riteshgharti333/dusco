@@ -1,93 +1,103 @@
-"use client";
-
 import Link from "next/link";
-import React from "react";
+import type { ReactNode, ButtonHTMLAttributes } from "react";
 
-interface ButtonProps {
-  href: string;
-  children: React.ReactNode;
-  variant?: "primary" | "secondary" | "outline";
-  size?: "sm" | "md" | "lg";
-  onBlue?: boolean;
+type Variant = "primary" | "outline" | "ghost";
+type Size = "sm" | "md" | "lg";
+
+type CommonProps = {
+  variant?: Variant;
+  size?: Size;
   className?: string;
-}
-
-const Button = ({
-  href,
-  children,
-  variant = "primary",
-  size = "md",
-  onBlue = false,
-  className = "",
-}: ButtonProps) => {
-  const sizes = {
-    sm: { cls: "px-6 py-2.5 text-[11px] gap-2", diag: 10 },
-    md: { cls: "px-7 py-3.5 text-sm gap-2", diag: 12 },
-    lg: {
-      cls: "px-8 py-4 text-sm gap-3 md:px-12 md:py-5 md:text-base",
-      diag: 14,
-    },
-  };
-
-  const variants = {
-    primary: {
-      base: "bg-yellow-400 text-blue-900",
-      hoverBg: "bg-white",
-      hoverText: "group-hover:text-blue-900",
-      // Literal classes so Tailwind generates them
-      shadow: onBlue ? "bg-white group-hover:bg-yellow-400" : "bg-yellow-400",
-    },
-    secondary: {
-      base: "bg-blue-900 text-yellow-400",
-      hoverBg: "bg-yellow-400",
-      hoverText: "group-hover:text-blue-900",
-      // Yellow shadow → turns blue on hover
-      shadow: "bg-yellow-400 group-hover:bg-blue-900",
-    },
-    outline: {
-      base: "border-2 border-white/20 text-white bg-transparent",
-      hoverBg: "",
-      hoverText: "group-hover:text-yellow-400 group-hover:border-yellow-400",
-      shadow: "",
-    },
-  };
-
-  const isOutline = variant === "outline";
-  const config = variants[variant];
-  const sizeCfg = sizes[size];
-
-  const slantShape = `polygon(${sizeCfg.diag}px 0, 100% 0, calc(100% - ${sizeCfg.diag}px) 100%, 0 100%)`;
-
-  return (
-    <div className={`group relative inline-flex ${className}`}>
-      {/* Shadow block — all class names are literal */}
-      {!isOutline && (
-        <span
-          aria-hidden
-          className={`pointer-events-none absolute inset-0 translate-x-1 translate-y-1 transition-colors duration-300 md:translate-x-1.5 md:translate-y-1.5 ${config.shadow}`}
-          style={{ clipPath: slantShape }}
-        />
-      )}
-
-      {/* Button face */}
-      <Link
-        href={href}
-        className={`relative inline-flex transition-colors duration-300 ${config.base} ${sizeCfg.cls}`}
-        style={{ clipPath: slantShape }}
-      >
-        {!isOutline && (
-          <span
-            className={`absolute inset-0 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100 ${config.hoverBg}`}
-          />
-        )}
-        <span
-          className={`relative inline-flex items-center font-black uppercase tracking-wider transition-colors duration-300 ${config.hoverText}`}
-        >
-          {children}
-        </span>
-      </Link>
-    </div>
-  );
+  children: ReactNode;
 };
 
-export default Button;
+type LinkButtonProps = CommonProps & {
+  href: string;
+  onClick?: () => void;
+  tabIndex?: number;
+};
+
+type NativeButtonProps = CommonProps & {
+  href?: undefined;
+  onClick?: () => void;
+  type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  disabled?: boolean;
+  tabIndex?: number;
+};
+
+type ButtonProps = LinkButtonProps | NativeButtonProps;
+
+const base =
+  "group inline-flex items-center justify-center gap-3 rounded-sm font-semibold uppercase no-underline transition-all duration-300";
+
+const variants: Record<Variant, string> = {
+  primary:
+    "border border-secondary bg-secondary text-white hover:-translate-y-px hover:opacity-90",
+  outline:
+    "border border-white/40 bg-white/5 text-white backdrop-blur-md hover:-translate-y-px hover:border-secondary hover:bg-white/10 hover:text-secondary",
+  ghost:
+    "border border-primary/20 bg-transparent text-primary hover:-translate-y-0.5 hover:border-primary hover:bg-primary hover:text-white",
+};
+
+const sizes: Record<Size, string> = {
+  sm: "px-5 py-2 text-[.68rem] tracking-[.14em]",
+  md: "px-[1.85rem] py-[0.95rem] text-[.735rem] tracking-[.16em]",
+  lg: "px-6 py-3.5 text-[.7rem] tracking-[.16em]",
+};
+
+export default function Button(props: ButtonProps) {
+  const {
+    variant = "primary",
+    size = "md",
+    className = "",
+    children,
+  } = props;
+
+  const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
+
+  if ("href" in props && props.href) {
+    return (
+      <Link
+        href={props.href}
+        onClick={props.onClick}
+        tabIndex={props.tabIndex}
+        className={classes}
+      >
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type={props.type ?? "button"}
+      onClick={props.onClick}
+      disabled={props.disabled}
+      tabIndex={props.tabIndex}
+      className={classes}
+    >
+      {children}
+    </button>
+  );
+}
+
+export function Arrow({ size = 14 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+      className="transition-transform duration-300 group-hover:translate-x-1"
+    >
+      <path
+        d="M1 8h13M9 3l5 5-5 5"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
+import Container from "./Container";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -34,14 +35,12 @@ const Footer = () => {
       id="contact"
       className="relative w-full overflow-hidden bg-navy pt-[clamp(60px,7vw,96px)] text-white"
     >
-      {/* gold hairline at top */}
       <span
         aria-hidden
         className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-55"
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
-        {/* ── TOP: 4-col grid ── */}
+      <Container className="relative z-10">
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -49,7 +48,6 @@ const Footer = () => {
           transition={{ duration: 0.8, ease: EASE }}
           className="grid grid-cols-1 gap-[clamp(32px,4vw,64px)] pb-[clamp(48px,5.5vw,72px)] sm:grid-cols-2 lg:grid-cols-[1.55fr_.8fr_.95fr_1fr]"
         >
-          {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link
               href="/"
@@ -64,12 +62,12 @@ const Footer = () => {
                 priority
                 className="h-[46px] w-[46px] rounded-full object-cover"
               />
-              <span className="flex flex-col leading-[1.1]">
-                <span className="font-serif text-[1.42rem] font-semibold tracking-[.1em] text-white">
-                  DUCSO
-                </span>
-                <span className="mt-[3px] text-[.54rem] font-medium uppercase tracking-[.19em] text-white/55">
+              <span className="flex min-w-0 flex-col leading-[1.15]">
+                <span className="font-serif text-[.82rem] font-semibold leading-[1.2] tracking-[.01em] text-white sm:text-[.9rem] md:text-[.95rem]">
                   Dhaka University Christian Students&apos; Organization
+                </span>
+                <span className="pt-[3px] font-serif text-[.68rem] font-semibold leading-[1.25] tracking-[.01em] text-white/70 sm:text-[.76rem] md:text-[.82rem]">
+                  ঢাকা বিশ্ববিদ্যালয় খ্রিস্টান ছাত্র সংগঠন
                 </span>
               </span>
             </Link>
@@ -80,7 +78,6 @@ const Footer = () => {
               serve with humility and integrity.
             </p>
 
-            {/* Socials */}
             <div className="mt-[1.6rem] flex gap-[.6rem]">
               {socials.map(({ name, icon: Icon, href }) => (
                 <a
@@ -95,7 +92,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Navigate */}
           <div>
             <h5 className="mb-[1.4rem] font-sans text-[.66rem] font-semibold uppercase tracking-[.22em] text-gold">
               Navigate
@@ -114,7 +110,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Organization */}
           <div>
             <h5 className="mb-[1.4rem] font-sans text-[.66rem] font-semibold uppercase tracking-[.22em] text-gold">
               Organization
@@ -133,7 +128,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
             <h5 className="mb-[1.4rem] font-sans text-[.66rem] font-semibold uppercase tracking-[.22em] text-gold">
               Contact
@@ -172,7 +166,6 @@ const Footer = () => {
           </div>
         </motion.div>
 
-        {/* ── BOTTOM BAR ── */}
         <div className="border-t border-white/10 py-[1.7rem]">
           <p className="max-w-[62ch] text-[.68rem] tracking-[.05em] text-white/30">
             Items marked &ldquo;Placeholder&rdquo; or &ldquo;pending
@@ -180,7 +173,7 @@ const Footer = () => {
             executive committee.
           </p>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 };

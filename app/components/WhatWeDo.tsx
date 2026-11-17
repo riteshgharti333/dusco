@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Container from "./Container";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -135,10 +136,9 @@ const WhatWeDo = () => {
   return (
     <section
       id="what-we-do"
-      className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]"
+      className="relative w-full overflow-hidden bg-ivory pt-25"
     >
-      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
-        {/* ── HEADER ── */}
+      <Container>
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -162,7 +162,6 @@ const WhatWeDo = () => {
           </p>
         </motion.div>
 
-        {/* ── 6-ITEM GRID ── */}
         <div className="grid grid-cols-1 gap-x-[clamp(28px,4vw,64px)] md:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => (
             <motion.article
@@ -173,7 +172,6 @@ const WhatWeDo = () => {
               transition={{ duration: 0.8, ease: EASE, delay: i * 0.08 }}
               className="relative border-t border-black/10 py-[clamp(26px,3vw,40px)]"
             >
-              {/* number top-right */}
               <span
                 aria-hidden
                 className="absolute right-0 top-[clamp(26px,3vw,40px)] font-serif text-[.9rem] tracking-[.16em] text-black/25"
@@ -181,22 +179,19 @@ const WhatWeDo = () => {
                 {item.num}
               </span>
 
-              {/* icon */}
               <span className="mb-[1.15rem] block text-gold">{item.icon}</span>
 
-              {/* title */}
               <h3 className="mb-[.6rem] font-serif text-[1.4rem] font-normal leading-[1.22] text-navy">
                 {item.title}
               </h3>
 
-              {/* desc */}
               <p className="max-w-[40ch] text-[.9rem] leading-[1.76] text-grey-600">
                 {item.desc}
               </p>
             </motion.article>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   motion,
   useMotionValue,
@@ -12,24 +11,26 @@ import {
 } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
+import { FaCalendarAlt } from "react-icons/fa";
+import Button from "./Button";
 import "swiper/css";
 import "swiper/css/effect-fade";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const SLIDE_DELAY = 6000;
 
-/* 5 university / campus / fellowship photos */
 const HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1900&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1900&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1900&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1900&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1900&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1900&auto=format&fit=crop",
 ];
 
 const stats = [
   { to: 150, suffix: "+", label: "Members" },
-  { to: 20, suffix: "", label: "Events / yr" },
+  { to: 20, suffix: "", label: "Events" },
   { to: 5, suffix: "", label: "Years" },
 ];
 
@@ -77,15 +78,14 @@ const CountUp = ({
   );
 };
 
-/* ---------- Client-only wrapper ---------- */
-
-const HeroInner = () => {
+const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
-  const [mounted, setMounted] = useState(false);
+  const [imageReady, setImageReady] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const t = setTimeout(() => setImageReady(true), 2500);
+    return () => clearTimeout(t);
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -100,20 +100,17 @@ const HeroInner = () => {
       ref={sectionRef}
       id="home"
       className="relative flex min-h-[min(100svh,980px)] items-end overflow-hidden bg-navy"
-      style={{
-        /* Instantly-painted first image (SSR, before Swiper mounts) */
-        backgroundImage: `url(${HERO_IMAGES[0]})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
     >
-      {/* Background slides */}
       <motion.div
         aria-hidden
         style={{ y: bgY }}
         className="absolute inset-x-0 -top-[8%] bottom-[-8%] z-0"
       >
-        {mounted ? (
+        <div
+          className={`h-full w-full transition-opacity duration-[1400ms] ease-out ${
+            imageReady ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <Swiper
             modules={[Autoplay, EffectFade]}
             effect="fade"
@@ -129,7 +126,7 @@ const HeroInner = () => {
               <SwiperSlide key={src}>
                 <div className="relative h-full w-full overflow-hidden">
                   <motion.div
-                    className="absolute inset-0"
+                    className="absolute inset-0 will-change-transform"
                     initial={false}
                     animate={{ scale: active === i ? 1.16 : 1.04 }}
                     transition={{
@@ -142,38 +139,20 @@ const HeroInner = () => {
                       alt=""
                       fill
                       priority={i === 0}
+                      loading={i === 0 ? undefined : "eager"}
+                      fetchPriority={i === 0 ? "high" : "low"}
+                      onLoad={i === 0 ? () => setImageReady(true) : undefined}
                       sizes="100vw"
                       className="object-cover"
-                      style={{
-                        filter:
-                          "grayscale(0.15) contrast(1.02) brightness(0.95) saturate(1.05)",
-                      }}
                     />
                   </motion.div>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
-        ) : (
-          /* Static fallback until client mounts — matches the SSR background */
-          <div className="relative h-full w-full">
-            <Image
-              src={HERO_IMAGES[0]}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-              style={{
-                filter:
-                  "grayscale(0.15) contrast(1.02) brightness(0.95) saturate(1.05)",
-              }}
-            />
-          </div>
-        )}
+        </div>
       </motion.div>
 
-      {/* Navy gradient overlay */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[1]"
@@ -192,11 +171,9 @@ const HeroInner = () => {
         }}
       />
 
-      {/* Content */}
       <motion.div style={{ y: contentY }} className="relative z-10 w-full">
         <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
           <div className="w-full pt-[clamp(140px,20vh,200px)]">
-            {/* eyebrow */}
             <motion.p
               {...fadeUp(0)}
               className="mb-8 inline-flex items-center gap-4 text-[0.68rem] font-semibold uppercase tracking-[0.3em] text-gold drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]"
@@ -208,10 +185,9 @@ const HeroInner = () => {
                 animate={{ width: 56 }}
                 transition={{ duration: 1.1, ease: EASE, delay: 0.2 }}
               />
-              University of Dhaka · Since 1980
+              University of Dhaka
             </motion.p>
 
-            {/* heading */}
             <h1 className="max-w-[18ch] font-serif text-[clamp(2.7rem,6.4vw,5.2rem)] font-normal leading-[1.04] tracking-[-0.02em] text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.7)]">
               {headingLines.map((line, i) => (
                 <span
@@ -241,7 +217,6 @@ const HeroInner = () => {
               ))}
             </h1>
 
-            {/* paragraph */}
             <motion.div
               {...fadeUp(0.55)}
               className="mt-9 flex max-w-[58ch] gap-5"
@@ -257,74 +232,43 @@ const HeroInner = () => {
               </p>
             </motion.div>
 
-            {/* CTAs */}
             <motion.div {...fadeUp(0.7)} className="mt-11 flex flex-wrap gap-4">
-              <Link
-                href="#about"
-                className="group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-sm border border-gold bg-gold px-[1.85rem] py-[0.95rem] text-[.735rem] font-semibold uppercase tracking-[.16em] text-white no-underline shadow-[0_10px_40px_-10px_rgba(185,145,73,0.7)] transition-all duration-300 hover:-translate-y-px hover:opacity-90"
-              >
-                <span className="relative inline-flex items-center gap-3">
-                  Explore DUCSO
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  >
-                    <path
-                      d="M1 8h13M9 3l5 5-5 5"
-                      stroke="currentColor"
-                      strokeWidth="1.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </Link>
+              <Button href="#about" variant="primary" size="md">
+                Explore DUCSO
+                <FaArrowRightLong className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
 
-              <Link
-                href="#events"
-                className="inline-flex items-center justify-center gap-3 rounded-sm border border-white/40 bg-white/5 px-[1.85rem] py-[0.95rem] text-[.735rem] font-semibold uppercase tracking-[.16em] text-white no-underline backdrop-blur-md transition-all duration-300 hover:-translate-y-px hover:border-gold hover:bg-white/10 hover:text-gold"
-              >
+              <Button href="#events" variant="outline" size="md">
                 Upcoming Events
-              </Link>
+                <FaCalendarAlt className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
             </motion.div>
 
-            {/* stats + slide controls */}
             <motion.div
               {...fadeUp(0.85)}
               className="mt-[clamp(48px,8vh,90px)] flex flex-col gap-6 pb-8 md:flex-row md:items-end md:justify-between md:pb-12"
             >
-              <div className="grid grid-cols-2 overflow-hidden rounded-sm bg-transparent md:grid-cols-3">
+              <div className="grid grid-cols-3 border-y border-white/20">
                 {stats.map((s, i) => (
                   <div
                     key={s.label}
-                    className="relative flex flex-col gap-2 px-6 py-5 md:px-8"
+                    className="flex flex-col items-start gap-3 px-6 py-5 md:px-8 md:py-6"
                   >
-                    {i > 0 && (
-                      <span
-                        aria-hidden
-                        className="absolute left-0 top-5 bottom-5 hidden w-px bg-white/25 md:block"
-                      />
-                    )}
-                    <span className="font-serif text-[clamp(2.2rem,3.4vw,3rem)] font-semibold leading-none tracking-[-0.01em] text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
+                    <span className="font-serif text-[clamp(2rem,3.2vw,2.75rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-white tabular-nums">
                       <CountUp
                         to={s.to}
                         suffix={s.suffix}
                         delay={0.9 + i * 0.15}
                       />
                     </span>
-                    <span className="text-[0.62rem] font-semibold uppercase tracking-[0.26em] text-gold">
+                    <span className="text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-gold">
                       {s.label}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* slide counter + progress */}
-              <div className="flex items-center gap-5" aria-hidden>
+              <div className="hidden items-center gap-5 md:flex" aria-hidden>
                 <span className="font-serif text-sm tracking-[0.2em] text-gold">
                   0{active + 1}
                   <span className="mx-2 text-gold/60">/</span>
@@ -361,23 +305,6 @@ const HeroInner = () => {
       </motion.div>
     </section>
   );
-};
-
-/* ---------- Public export: skips SSR entirely ---------- */
-
-const Hero = () => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    // Render nothing during SSR / first paint to guarantee no server execution
-    return null;
-  }
-
-  return <HeroInner />;
 };
 
 export default Hero;

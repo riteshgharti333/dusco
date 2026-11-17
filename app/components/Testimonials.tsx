@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Container from "./Container";
 
-/* gentler curve — ease-in-out, not snappy ease-out */
 const EASE = [0.45, 0, 0.55, 1] as const;
+const EASE_IN = [0.22, 1, 0.36, 1] as const;
+const EASE_OUT = [0.4, 0, 0.9, 0.6] as const;
 const DURATION = 7000;
 
 const testimonials = [
@@ -31,16 +33,48 @@ const testimonials = [
 const variants = {
   enter: (d: number) => ({
     opacity: 0,
-    y: 12 * d,
+    y: 20 * d,
   }),
-  center: { opacity: 1, y: 0 },
+  center: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: EASE_IN, delay: 0.1 },
+  },
   exit: (d: number) => ({
     opacity: 0,
-    y: -12 * d,
+    y: -14 * d,
+    transition: { duration: 0.4, ease: EASE_OUT },
   }),
 };
 
+const reducedVariants = {
+  enter: { opacity: 0 },
+  center: {
+    opacity: 1,
+    transition: { duration: 0.6, ease: EASE_IN, delay: 0.1 },
+  },
+  exit: { opacity: 0, transition: { duration: 0.35, ease: EASE_OUT } },
+};
+
 const pad = (n: number) => String(n).padStart(2, "0");
+
+type Testimonial = (typeof testimonials)[number];
+
+const Slide = ({ t }: { t: Testimonial }) => (
+  <>
+    <blockquote className="m-0 text-balance font-serif text-[clamp(1.45rem,2.9vw,2.3rem)] font-light italic leading-[1.45] tracking-[-.005em] text-white">
+      {t.quote}
+    </blockquote>
+
+    <figcaption className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[.72rem] uppercase tracking-[.2em] text-white/70">
+      <span aria-hidden className="hidden h-px w-8 bg-gold sm:block" />
+      <span className="font-semibold text-gold">{t.name}</span>
+      <span aria-hidden className="h-1 w-1 rounded-full bg-gold/70" />
+      <span>{t.role}</span>
+      <span aria-hidden className="hidden h-px w-8 bg-gold sm:block" />
+    </figcaption>
+  </>
+);
 
 const Testimonials = () => {
   const reduce = useReducedMotion();
@@ -54,7 +88,6 @@ const Testimonials = () => {
     }));
   }, []);
 
-  /* auto-advance */
   useEffect(() => {
     if (paused || reduce) return;
     const t = setTimeout(() => go(1), DURATION);
@@ -69,7 +102,7 @@ const Testimonials = () => {
       id="testimonials"
       className="relative w-full overflow-hidden bg-navy py-[clamp(80px,10vw,150px)]"
     >
-      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
+      <Container>
         <div
           className="mx-auto max-w-[960px] text-center"
           onMouseEnter={() => setPaused(true)}
@@ -77,7 +110,6 @@ const Testimonials = () => {
           onFocusCapture={() => setPaused(true)}
           onBlurCapture={() => setPaused(false)}
         >
-          {/* eyebrow */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -90,7 +122,6 @@ const Testimonials = () => {
             <span aria-hidden className="block h-px w-10 bg-gold" />
           </motion.p>
 
-          {/* big serif quote mark */}
           <motion.span
             aria-hidden
             initial={{ opacity: 0, scale: 0.85 }}
@@ -102,52 +133,32 @@ const Testimonials = () => {
             &ldquo;
           </motion.span>
 
-          {/* quote — reserved height so nothing jumps */}
-          <div
-            className="relative flex min-h-[clamp(260px,34vw,320px)] items-center justify-center"
-            aria-live="polite"
-          >
+          <div className="grid items-center" aria-live="polite">
+            {testimonials.map((t, i) => (
+              <div
+                key={i}
+                aria-hidden
+                className="pointer-events-none invisible col-start-1 row-start-1 select-none"
+              >
+                <Slide t={t} />
+              </div>
+            ))}
+
             <AnimatePresence mode="wait" custom={custom} initial={false}>
               <motion.figure
                 key={active}
                 custom={custom}
-                variants={variants}
+                variants={reduce ? reducedVariants : variants}
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{
-                  duration: reduce ? 0 : 1.1,
-                  ease: EASE,
-                }}
-                className="m-0 w-full"
+                className="col-start-1 row-start-1 m-0 w-full"
               >
-                <blockquote className="m-0 text-balance font-serif text-[clamp(1.45rem,2.9vw,2.3rem)] font-light italic leading-[1.45] tracking-[-.005em] text-white">
-                  {current.quote}
-                </blockquote>
-
-                <figcaption className="mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[.72rem] uppercase tracking-[.2em] text-white/70">
-                  <span
-                    aria-hidden
-                    className="hidden h-px w-8 bg-gold sm:block"
-                  />
-                  <span className="font-semibold text-gold">
-                    {current.name}
-                  </span>
-                  <span
-                    aria-hidden
-                    className="h-1 w-1 rounded-full bg-gold/70"
-                  />
-                  <span>{current.role}</span>
-                  <span
-                    aria-hidden
-                    className="hidden h-px w-8 bg-gold sm:block"
-                  />
-                </figcaption>
+                <Slide t={current} />
               </motion.figure>
             </AnimatePresence>
           </div>
 
-          {/* nav */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -208,7 +219,7 @@ const Testimonials = () => {
             </button>
           </motion.div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

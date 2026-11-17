@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
+import Container from "./Container";
+import Button from "./Button";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -10,19 +12,9 @@ const GallerySection = () => {
   return (
     <section
       id="gallery"
-      className="relative w-full overflow-hidden bg-navy py-[clamp(72px,9vw,132px)]"
+      className="relative w-full overflow-hidden bg-navy mt-25 py-25"
     >
-      {/* ── VERTICAL SIDE RAIL ── */}
-      <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-        <div className="flex h-full items-center justify-center">
-          <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.6em] text-white/25">
-            Gallery · DUCSO · 2024
-          </span>
-        </div>
-      </div>
-
-      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
-        {/* ── HEADER ── */}
+      <Container className="relative">
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -44,9 +36,7 @@ const GallerySection = () => {
           </p>
         </motion.div>
 
-        {/* ── SCATTER GRID (unchanged layout) ── */}
         <div className="relative mx-auto grid w-full max-w-5xl grid-cols-2 gap-4 md:block md:h-[950px] md:gap-0">
-          {/* 1. Top Left */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -73,7 +63,6 @@ const GallerySection = () => {
             </div>
           </motion.div>
 
-          {/* 2. Top Center */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -100,7 +89,6 @@ const GallerySection = () => {
             </div>
           </motion.div>
 
-          {/* 3. Top Right */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -127,7 +115,6 @@ const GallerySection = () => {
             </div>
           </motion.div>
 
-          {/* 4. Left Middle — gold border accent */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -154,7 +141,6 @@ const GallerySection = () => {
             </div>
           </motion.div>
 
-          {/* 5. Right Middle */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -181,7 +167,6 @@ const GallerySection = () => {
             </div>
           </motion.div>
 
-          {/* 6. Bottom Left */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -208,7 +193,6 @@ const GallerySection = () => {
             </div>
           </motion.div>
 
-          {/* 7. Bottom Center */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -235,7 +219,6 @@ const GallerySection = () => {
             </div>
           </motion.div>
 
-          {/* 8. Bottom Right */}
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -262,7 +245,6 @@ const GallerySection = () => {
             </div>
           </motion.div>
 
-          {/* ── CENTRAL CTA ── */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -275,18 +257,15 @@ const GallerySection = () => {
               Explore
             </span>
 
-            <Link
-              href="/gallery"
-              className="group relative z-10 inline-flex items-center justify-center gap-3 rounded-sm border border-gold bg-gold px-[1.85rem] py-[.95rem] text-[.735rem] font-semibold uppercase tracking-[.16em] text-white no-underline shadow-[0_10px_40px_-10px_rgba(185,145,73,0.7)] transition-all duration-300 hover:-translate-y-px hover:opacity-90 md:px-[2.2rem] md:py-[1.1rem] md:text-[.82rem]"
-            >
-              Full Gallery
-              <span className="transition-transform duration-300 group-hover:translate-x-1">
-                →
-              </span>
-            </Link>
+            <div className="relative z-10">
+              <Button href="/gallery" variant="primary" size="md">
+                Full Gallery
+                <FaArrowRightLong className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
+            </div>
           </motion.div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

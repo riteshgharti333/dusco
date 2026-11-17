@@ -1,12 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --navy: #0b2137;
-  --gold: #b99149;
-  --ivory: #fbf8f1;
-
-  --grey-600: #6a7078;
-  --grey-500: #8a9098;
+  --primary: #0b2137;
+  --secondary: #b99149;
+  --surface: #fbf8f1;
+  --text-muted: #6a7078;
+  --text-subtle: #8a9098;
 
   --font-serif: var(--font-cormorant), Georgia, "Times New Roman", serif;
   --font-sans:
@@ -14,16 +13,32 @@
 }
 
 @theme inline {
-  --color-navy: var(--navy);
-  --color-gold: var(--gold);
-  --color-ivory: var(--ivory);
-  --color-grey-600: var(--grey-600);
-  --color-grey-500: var(--grey-500);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-surface: var(--surface);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+
+  --color-navy: var(--primary);
+  --color-gold: var(--secondary);
+  --color-ivory: var(--surface);
+  --color-grey-600: var(--text-muted);
+  --color-grey-500: var(--text-subtle);
 
   --font-serif: var(--font-serif);
   --font-sans: var(--font-sans);
 }
 
 html {
-  /* scroll-behavior: smooth; */
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-surface);
+}
+
+@layer components {
+  .section-container {
+    @apply relative w-full mx-auto max-w-7xl px-2 sm:px-6 md:px-8 lg:px-10;
+  }
 }

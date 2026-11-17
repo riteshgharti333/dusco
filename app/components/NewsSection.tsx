@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Container from "./Container";
+import ArrowButton from "./ArrowButton";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -50,10 +52,9 @@ const NewsSection = () => {
   return (
     <section
       id="news"
-      className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]"
+      className="relative w-full overflow-hidden bg-ivory pt-25"
     >
-      <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
-        {/* ── HEADER ── */}
+      <Container>
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -71,33 +72,12 @@ const NewsSection = () => {
             </h2>
           </div>
 
-          <Link
-            href="/news"
-            className="group mb-[.4rem] inline-flex items-center gap-2 border-b border-[rgba(185,145,73,0.38)] pb-[5px] text-[.735rem] font-semibold uppercase tracking-[.16em] text-navy transition-colors hover:border-gold hover:text-gold"
-          >
-            View all news
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            >
-              <path
-                d="M1 8h13M9 3l5 5-5 5"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Link>
+          <div className="mb-[.4rem]">
+            <ArrowButton href="/news">View all news</ArrowButton>
+          </div>
         </motion.div>
 
-        {/* ── GRID: FEATURED + LIST ── */}
         <div className="grid gap-[clamp(34px,4.5vw,72px)] md:grid-cols-[1.12fr_.88fr]">
-          {/* FEATURED */}
           <motion.a
             href={`/news/${featured.id}`}
             initial={{ y: 40, opacity: 0 }}
@@ -133,7 +113,6 @@ const NewsSection = () => {
             </p>
           </motion.a>
 
-          {/* LIST */}
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
@@ -150,7 +129,7 @@ const NewsSection = () => {
                 <p className="mb-[.6rem] inline-flex items-center gap-[.65rem] text-[.64rem] font-semibold uppercase tracking-[.22em] text-gold after:h-px after:w-[22px] after:bg-[rgba(185,145,73,0.38)] after:content-['']">
                   {item.date}
                 </p>
-                <h4 className="mb-[.45rem] font-serif text-[1.22rem] leading-[1.3] text-navy transition-colors duration-300 group-hover:text-gold hover:text-gold">
+                <h4 className="mb-[.45rem] font-serif text-[1.22rem] leading-[1.3] text-navy transition-colors duration-300 hover:text-gold">
                   {item.title}
                 </h4>
                 <p className="text-[.86rem] leading-[1.65] text-grey-500">
@@ -160,7 +139,7 @@ const NewsSection = () => {
             ))}
           </motion.div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
