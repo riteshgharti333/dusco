@@ -73,137 +73,42 @@ const CountUp = ({
 };
 
 const OurStory = () => {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const yMain = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
-  const ySmall = useTransform(scrollYProgress, [0, 1], ["12%", "-12%"]);
-
   return (
-    <section
-      ref={ref}
-      className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]"
-    >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -left-4 top-4 select-none font-serif text-[clamp(9rem,26vw,24rem)] font-semibold leading-none text-navy/[0.04]"
-      >
-        2019
-      </span>
-
+    <section className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]">
       <Container>
-        <div className="relative grid items-center gap-[clamp(56px,7vw,104px)] md:grid-cols-[1fr_1.05fr]">
-          <div className="relative mx-auto w-full max-w-[560px] pb-14 md:pb-0">
-            <motion.div {...reveal()} className="relative w-[84%]">
-              <span
-                aria-hidden
-                className="absolute left-4 top-4 h-full w-full rounded-t-[999px] border border-gold/60"
-              />
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-t-[999px] bg-navy shadow-[0_30px_80px_-40px_rgba(7,24,43,0.55)]">
-                <motion.div
-                  style={{ y: yMain }}
-                  className="absolute inset-x-0 -inset-y-[10%]"
-                >
-                  <Image
-                    src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&q=80"
-                    alt="DUCSO worship gathering"
-                    fill
-                    sizes="(max-width: 768px) 80vw, 40vw"
-                    className="object-cover [filter:grayscale(.2)_saturate(.95)_contrast(1.03)]"
-                  />
-                </motion.div>
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent"
-                />
-                <div className="absolute inset-x-6 bottom-7 text-center">
-                  <p className="text-[.6rem] font-semibold uppercase tracking-[.28em] text-gold">
-                    Friday Fellowship
-                  </p>
-                  <p className="mt-1 font-serif text-[1.1rem] leading-[1.3] text-white">
-                    Where the week ends and worship begins.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+        <div className="mb-10 flex items-end justify-between border-b border-black/10 pb-6">
+          <Eyebrow>Our Story</Eyebrow>
+          {/* <span className="text-[.6rem] font-semibold uppercase tracking-[.28em] text-grey-500">
+            Chapter 01 · 2019
+          </span> */}
+        </div>
 
-            <motion.div
-              {...reveal(0.25)}
-              className="absolute -bottom-2 right-0 w-[46%]"
-            >
-              <div className="relative aspect-square w-full overflow-hidden rounded-full border-[6px] border-ivory bg-navy shadow-[0_24px_60px_-30px_rgba(7,24,43,0.6)]">
-                <motion.div
-                  style={{ y: ySmall }}
-                  className="absolute inset-x-0 -inset-y-[14%]"
-                >
-                  <Image
-                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80"
-                    alt="Students together on campus"
-                    fill
-                    sizes="(max-width: 768px) 40vw, 20vw"
-                    className="object-cover [filter:grayscale(.2)_saturate(.95)]"
-                  />
-                </motion.div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              {...reveal(0.4)}
-              className="absolute -right-1 top-8 h-[104px] w-[104px] rounded-full bg-ivory shadow-[0_14px_40px_-20px_rgba(7,24,43,0.5)] sm:h-[124px] sm:w-[124px]"
-            >
-              <motion.svg
-                viewBox="0 0 120 120"
-                className="absolute inset-0 h-full w-full"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 26, ease: "linear", repeat: Infinity }}
-                aria-hidden
-              >
-                <defs>
-                  <path
-                    id="storyRing"
-                    d="M60,60 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"
-                  />
-                </defs>
-                <text
-                  className="fill-navy font-semibold uppercase"
-                  style={{ fontSize: 9, letterSpacing: "1.2px" }}
-                >
-                  <textPath href="#storyRing">
-                    DUCSO · Since 2019 · Dhaka University ·
-                  </textPath>
-                </text>
-              </motion.svg>
-              <span className="absolute inset-0 grid place-items-center font-serif text-[1.5rem] font-semibold text-gold">
-                &rsquo;19
-              </span>
-            </motion.div>
-          </div>
-
-          <motion.div {...reveal(0.1)}>
-            <Eyebrow>Our Story · Since 2019</Eyebrow>
-            <h2 className="max-w-[18ch] font-serif text-[clamp(2.2rem,4.2vw,3.6rem)] font-normal leading-[1.08] tracking-[-.015em] text-navy">
-              Five students, one prayer, and a family that{" "}
-              <em className="italic text-gold">grew</em>
+        <div className="grid gap-[clamp(40px,5vw,72px)] md:grid-cols-[1.15fr_1fr]">
+          <motion.div {...reveal()}>
+            <h2 className="max-w-[16ch] font-serif text-[clamp(2.6rem,5.4vw,4.6rem)] font-normal leading-[1.02] tracking-[-.02em] text-navy">
+              Five students, one prayer, a family that{" "}
+              <em className="italic text-gold">grew.</em>
             </h2>
-            <p className="mt-7 max-w-[52ch] text-[clamp(1rem,1.15vw,1.09rem)] leading-[1.85] text-grey-600">
-              What began in a dorm room as a weekly prayer became a campus-wide
-              community of students learning to follow Christ together — across
-              faculties, years and backgrounds.
-            </p>
-            <p className="mt-5 max-w-[52ch] text-[.95rem] leading-[1.78] text-grey-600">
-              DUCSO exists to make room for that same story in every generation
-              of Dhaka University students: a place to belong, a people to grow
-              with, and a purpose to live for.
-            </p>
 
-            <figure className="relative mt-10 max-w-[52ch] border-l-2 border-gold bg-gradient-to-r from-gold/[0.07] to-transparent py-6 pl-7 pr-4">
-              <blockquote className="m-0 font-serif text-[clamp(1.2rem,1.8vw,1.5rem)] italic leading-[1.45] text-navy">
+            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+              <p className="text-[.98rem] leading-[1.82] text-grey-600">
+                What began in a dorm room as a weekly prayer became a
+                campus-wide community of students learning to follow Christ
+                together.
+              </p>
+              <p className="text-[.98rem] leading-[1.82] text-grey-600">
+                DUCSO exists to make room for that same story in every
+                generation — a place to belong, a people to grow with, a purpose
+                to live for.
+              </p>
+            </div>
+
+            <figure className="mt-10 border-l-2 border-gold pl-6">
+              <blockquote className="m-0 font-serif text-[clamp(1.15rem,1.7vw,1.4rem)] italic leading-[1.5] text-navy">
                 &ldquo;You were never meant to walk through university
                 alone.&rdquo;
               </blockquote>
-              <figcaption className="mt-3 text-[.66rem] font-semibold uppercase tracking-[.26em] text-gold">
+              <figcaption className="mt-3 text-[.64rem] font-semibold uppercase tracking-[.26em] text-gold">
                 — The Heart of DUCSO
               </figcaption>
             </figure>
@@ -212,6 +117,23 @@ const OurStory = () => {
               <ArrowButton href="/contact">
                 Become part of the story
               </ArrowButton>
+            </div>
+          </motion.div>
+
+          <motion.div {...reveal(0.15)} className="relative">
+            <div className="relative aspect-[3/4] overflow-hidden bg-navy">
+              <Image
+                src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&q=80"
+                alt="DUCSO worship"
+                fill
+                sizes="(max-width: 768px) 100vw, 45vw"
+                className="object-cover [filter:grayscale(.22)_saturate(.92)_contrast(1.03)]"
+              />
+            </div>
+            <div className="mt-3 flex items-center justify-between gap-4 text-[.6rem] font-semibold uppercase tracking-[.26em] text-grey-500">
+              <span>Photo · Friday Fellowship</span>
+              <span aria-hidden className="h-px flex-1 bg-black/10" />
+              <span>2019</span>
             </div>
           </motion.div>
         </div>

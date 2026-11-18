@@ -19,7 +19,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 type NavLink = { label: string; href: string; children?: NavLink[] };
 
 const links: NavLink[] = [
-  { label: "Home", href: "#home" },
+  { label: "Home", href: "/home" },
   {
     label: "About",
     href: "#about",
@@ -28,11 +28,11 @@ const links: NavLink[] = [
       { label: "Testimonials", href: "#testimonials" },
     ],
   },
-  { label: "Events", href: "#events" },
-  { label: "Executive", href: "#leadership" },
-  { label: "Alumni", href: "#alumni" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "News", href: "#news" },
+  { label: "Events", href: "/events" },
+  { label: "Executive", href: "/leadership" },
+  { label: "Alumni", href: "/alumni" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "News", href: "/news" },
 ];
 
 const socials = [
