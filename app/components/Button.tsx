@@ -28,7 +28,7 @@ type NativeButtonProps = CommonProps & {
 type ButtonProps = LinkButtonProps | NativeButtonProps;
 
 const base =
-  "group inline-flex items-center justify-center gap-3 rounded-sm font-semibold uppercase no-underline transition-all duration-300";
+  "group inline-flex items-center justify-center gap-3 rounded-sm font-semibold uppercase no-underline transition-all duration-300 cursor-pointer";
 
 const variants: Record<Variant, string> = {
   primary:
@@ -46,12 +46,7 @@ const sizes: Record<Size, string> = {
 };
 
 export default function Button(props: ButtonProps) {
-  const {
-    variant = "primary",
-    size = "md",
-    className = "",
-    children,
-  } = props;
+  const { variant = "primary", size = "md", className = "", children } = props;
 
   const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
 
@@ -68,11 +63,12 @@ export default function Button(props: ButtonProps) {
     );
   }
 
+  // Only NativeButtonProps have 'type', 'disabled'
   return (
     <button
-      type={props.type ?? "button"}
+      type={("type" in props ? props.type : "button") ?? "button"}
       onClick={props.onClick}
-      disabled={props.disabled}
+      disabled={"disabled" in props ? props.disabled : undefined}
       tabIndex={props.tabIndex}
       className={classes}
     >

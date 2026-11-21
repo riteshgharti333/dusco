@@ -4,11 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import PageBanner from "../components/PageBanner";
-import SectionHeader from "../components/SectionHeader";
+import Container from "../components/Container";
+import ArrowButton from "../components/ArrowButton";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/* ─── GALLERY FOLDERS ─── */
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <p className="mb-[1.35rem] inline-flex items-center gap-3 text-[.685rem] font-semibold uppercase tracking-[.26em] text-gold">
+    <span aria-hidden className="block h-px w-9 bg-gold" />
+    {children}
+  </p>
+);
+
 const galleries = [
   {
     id: "praise-night-2024",
@@ -68,7 +75,6 @@ const galleries = [
 
 type Gallery = (typeof galleries)[0];
 
-/* ─── prints fan-out variants ─── */
 const backPrint: Variants = {
   rest: { rotate: -4, x: -4, y: 4 },
   hover: { rotate: -11, x: -34, y: 6 },
@@ -96,18 +102,16 @@ const Print = ({
   <motion.div
     variants={variants}
     transition={{ duration: 0.7, ease: EASE }}
-    className="absolute inset-x-[9%] inset-y-[4%] bg-white p-2 shadow-[0_18px_40px_-18px_rgba(23,37,84,0.45)] md:p-2.5"
+    className="absolute inset-x-[9%] inset-y-[4%] bg-ivory p-2 shadow-[0_18px_40px_-18px_rgba(7,24,43,0.45)] md:p-2.5"
   >
-    <div className="relative h-full w-full overflow-hidden bg-blue-900">
+    <div className="relative h-full w-full overflow-hidden bg-navy">
       <Image
         src={src}
         alt={alt}
         fill
         sizes="(min-width: 1024px) 28vw, (min-width: 768px) 45vw, 90vw"
-        className={`object-cover transition-all duration-700 ${
-          tone === "front"
-            ? "grayscale group-hover:grayscale-0"
-            : "grayscale opacity-80"
+        className={`object-cover transition-all duration-700 [filter:grayscale(.4)_saturate(.9)_contrast(1.03)] group-hover:[filter:grayscale(0)_saturate(1)_contrast(1.03)] ${
+          tone === "back" ? "opacity-80" : ""
         }`}
         style={tone === "back" ? { objectPosition: "20% 40%" } : undefined}
       />
@@ -115,9 +119,6 @@ const Print = ({
   </motion.div>
 );
 
-/* ═══════════════════════════════════════════════
-   ALBUM CARD
-═══════════════════════════════════════════════ */
 const AlbumCard = ({ folder, index }: { folder: Gallery; index: number }) => {
   return (
     <motion.div
@@ -143,40 +144,48 @@ const AlbumCard = ({ folder, index }: { folder: Gallery; index: number }) => {
             tone="front"
           />
 
-          {/* count badge */}
-          <span className="absolute -right-1 top-6 z-10 bg-yellow-400 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.25em] text-blue-900 transition-transform duration-500 group-hover:translate-x-2 md:right-1">
+          <span className="absolute -right-1 top-6 z-10 border border-gold/40 bg-navy px-3 py-1.5 text-[.58rem] font-semibold uppercase tracking-[.24em] text-gold shadow-[0_10px_30px_-12px_rgba(7,24,43,0.5)] transition-transform duration-500 group-hover:translate-x-2 md:right-1">
             {folder.count} Photos
           </span>
         </motion.div>
 
-        {/* caption */}
         <div className="mt-10">
-          <div className="relative h-px w-full bg-blue-900/15">
-            <span className="absolute inset-0 origin-left scale-x-0 bg-yellow-400 transition-transform duration-700 group-hover:scale-x-100" />
+          <div className="relative h-px w-full bg-black/10">
+            <span className="absolute inset-0 origin-left scale-x-0 bg-gold transition-transform duration-700 group-hover:scale-x-100" />
           </div>
 
           <div className="mt-5 flex items-start justify-between gap-4">
             <div>
-              {/* Number — bold monospace */}
-              <span className="font-mono text-[11px] font-bold tracking-widest text-blue-900/40">
+              <span className="font-serif text-[.8rem] tracking-[.16em] text-black/30">
                 No. 0{index + 1}
               </span>
 
-              {/* Title — bold + yellow dot */}
-              <h3 className="mt-2 text-2xl font-black leading-[1.05] tracking-tight text-blue-900 transition-transform duration-500 group-hover:translate-x-1 md:text-3xl">
+              <h3 className="mt-2 font-serif text-[clamp(1.4rem,2.2vw,1.8rem)] font-normal leading-[1.15] tracking-[-.01em] text-navy transition-transform duration-500 group-hover:translate-x-1">
                 {folder.title}
-                <span className="text-yellow-400">.</span>
+                <span className="text-gold">.</span>
               </h3>
 
-              {/* Tag · Season — bold */}
-              <p className="mt-2 text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
+              <p className="mt-2 text-[.62rem] font-semibold uppercase tracking-[.26em] text-gold">
                 {folder.tag} · {folder.season}
               </p>
             </div>
 
-            {/* Arrow */}
-            <span className="mt-6 text-lg font-black text-blue-900 transition-transform duration-500 group-hover:translate-x-2">
-              →
+            <span className="mt-6 text-gold transition-transform duration-500 group-hover:translate-x-2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M1 8h13M9 3l5 5-5 5"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </span>
           </div>
         </div>
@@ -185,9 +194,6 @@ const AlbumCard = ({ folder, index }: { folder: Gallery; index: number }) => {
   );
 };
 
-/* ═══════════════════════════════════════════════
-   MAIN GALLERY PAGE
-═══════════════════════════════════════════════ */
 export default function GalleryPage() {
   return (
     <main className="flex flex-col">
@@ -199,63 +205,51 @@ export default function GalleryPage() {
         image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80"
       />
 
-      <section className="relative w-full overflow-hidden bg-white py-20 md:py-28">
-        {/* Rotated side rail */}
-        <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-          <div className="flex h-full items-center justify-center">
-            <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-blue-900/30">
-              Photo Albums · DUCSO
-            </span>
-          </div>
-        </div>
+      <section className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-32 top-0 h-full w-96 -skew-x-[20deg] bg-gold/[0.05]"
+        />
 
-        <div className="section-container">
-          <SectionHeader
-            dark={false}
-            label="Photo Albums"
-            description="Every moment tells a story. Browse our albums to see what God has been doing in and through DUCSO."
-            title={
-              <>
-                THE
-                <br />
-                <span className="relative inline-block">
-                  <span
-                    aria-hidden
-                    className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-                  />
-                  <span className="relative z-10 px-1 italic uppercase text-blue-900">
-                    moments.
-                  </span>
-                </span>
-                <br />
-                <span className="text-blue-900">CAPTURED.</span>
-              </>
-            }
-          />
+        <Container className="relative">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="mb-[clamp(40px,5vw,68px)] flex flex-wrap items-end justify-between gap-10"
+          >
+            <div className="max-w-[660px]">
+              <Eyebrow>Photo Albums</Eyebrow>
+              <h2 className="max-w-[20ch] font-serif text-[clamp(2.2rem,4.2vw,3.6rem)] font-normal leading-[1.08] tracking-[-.015em] text-navy">
+                The moments <em className="italic text-gold">captured.</em>
+              </h2>
+            </div>
+            <p className="max-w-[34ch] text-[clamp(1rem,1.15vw,1.09rem)] leading-[1.78] text-grey-600">
+              Every moment tells a story. Browse our albums to see what God has
+              been doing in and through DUCSO.
+            </p>
+          </motion.div>
 
-          {/* Albums */}
-          <div className="mt-20 grid gap-x-12 gap-y-24 md:mt-28 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-16">
+          <div className="grid gap-x-[clamp(32px,4vw,64px)] gap-y-[clamp(64px,6vw,96px)] md:grid-cols-2 lg:grid-cols-3">
             {galleries.map((folder, i) => (
               <AlbumCard key={folder.id} folder={folder} index={i} />
             ))}
           </div>
 
-          {/* Bottom note */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
-            className="mt-28 flex flex-wrap items-center justify-between gap-4 border-t-2 border-blue-900/10 pt-8"
+            className="mt-20 flex flex-wrap items-center justify-between gap-6 border-t border-black/10 pt-8"
           >
-            <p className="text-sm italic text-blue-900/55">
+            <p className="max-w-[62ch] text-[.95rem] italic leading-[1.78] text-grey-600">
               Every photo is a testimony. Every face is a story.
             </p>
-            <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
-              — DUCSO · 2019–24
-            </span>
+            <ArrowButton href="/contact">Share a memory</ArrowButton>
           </motion.div>
-        </div>
+        </Container>
       </section>
     </main>
   );

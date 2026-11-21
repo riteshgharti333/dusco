@@ -1,12 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import PageBanner from "../components/PageBanner";
-import SectionHeader from "../components/SectionHeader";
+import Container from "../components/Container";
+import ArrowButton from "../components/ArrowButton";
 import { news } from "../data/data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <p className="mb-[1.35rem] inline-flex items-center gap-3 text-[.685rem] font-semibold uppercase tracking-[.26em] text-gold">
+    <span aria-hidden className="block h-px w-9 bg-gold" />
+    {children}
+  </p>
+);
 
 export default function NewsPage() {
   const featured = news.find((n) => n.featured) ?? news[0];
@@ -22,160 +31,198 @@ export default function NewsPage() {
         image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80"
       />
 
-      <section className="relative w-full overflow-hidden bg-white py-20 md:py-28">
-        {/* Rotated side rail */}
-        <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-          <div className="flex h-full items-center justify-center">
-            <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-blue-900/30">
-              News · DUCSO
-            </span>
-          </div>
-        </div>
-
+      <section className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]">
         <span
           aria-hidden
-          className="pointer-events-none absolute -right-32 top-0 h-full w-96 bg-yellow-400/[0.05] -skew-x-[20deg]"
+          className="pointer-events-none absolute -right-32 top-0 h-full w-96 -skew-x-[20deg] bg-gold/[0.05]"
         />
 
-        <div className="section-container relative">
-          <SectionHeader
-            dark={false}
-            label="The Latest"
-            description="Everything happening in and around DUCSO — from leadership announcements to event recaps."
-            title={
-              <>
-                LATEST
-                <br />
-                <span className="relative inline-block">
-                  <span
-                    aria-hidden
-                    className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-                  />
-                  <span className="relative z-10 px-1 italic uppercase text-blue-900">
-                    News.
-                  </span>
-                </span>
-              </>
-            }
-          />
+        <Container className="relative">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="mb-[clamp(40px,5vw,68px)] flex flex-wrap items-end justify-between gap-10"
+          >
+            <div className="max-w-[660px]">
+              <Eyebrow>The Latest</Eyebrow>
+              <h2 className="max-w-[20ch] font-serif text-[clamp(2.2rem,4.2vw,3.6rem)] font-normal leading-[1.08] tracking-[-.015em] text-navy">
+                Latest <em className="italic text-gold">news.</em>
+              </h2>
+            </div>
+            <p className="max-w-[34ch] text-[clamp(1rem,1.15vw,1.09rem)] leading-[1.78] text-grey-600">
+              Everything happening in and around DUCSO — from leadership
+              announcements to event recaps.
+            </p>
+          </motion.div>
 
-          {/* ═══ FEATURED ═══ */}
+          {/* FEATURED — split editorial card with image */}
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.9, ease: EASE }}
-            className="group relative mt-12 md:mt-20"
           >
-            <span
-              aria-hidden
-              className="absolute inset-0 translate-x-3 translate-y-3 bg-yellow-400 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"
-            />
-
             <Link
               href={`/news/${featured.id}`}
-              className="relative block border-2 border-blue-900 bg-white p-8 md:p-12 lg:p-16"
+              className="group relative grid overflow-hidden border border-black/10 bg-ivory md:grid-cols-[1.1fr_.9fr]"
             >
-              <div className="grid gap-8 md:grid-cols-12 md:items-center md:gap-12">
-                <div className="md:col-span-8">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="bg-yellow-400 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-blue-900">
-                      {featured.tag}
-                    </span>
-                    <span className="h-px w-6 bg-blue-900/30" />
-                    <span className="font-mono text-[10px] font-bold tracking-widest text-blue-900/50">
-                      {featured.date}
-                    </span>
-                    <span className="ml-auto bg-blue-900 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.25em] text-yellow-400">
-                      Featured
-                    </span>
-                  </div>
+              {/* image side */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-navy md:aspect-auto md:min-h-[460px]">
+                <Image
+                  src={featured.image}
+                  alt={featured.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 55vw"
+                  className="object-cover [filter:grayscale(.22)_saturate(.92)_contrast(1.03)] transition-all duration-[1200ms] ease-out group-hover:scale-[1.04] group-hover:[filter:grayscale(0)_saturate(1)_contrast(1.03)]"
+                />
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent"
+                />
+                <span className="absolute left-5 top-5 bg-navy px-2.5 py-1 text-[.58rem] font-semibold uppercase tracking-[.24em] text-gold shadow-[0_4px_14px_-6px_rgba(7,24,43,0.6)]">
+                  Featured
+                </span>
+              </div>
 
-                  <h3 className="mt-6 text-3xl font-black leading-[1.05] tracking-tight text-blue-900 md:text-4xl lg:text-5xl">
-                    {featured.title}
-                    <span className="text-yellow-400">.</span>
-                  </h3>
-
-                  <p className="mt-5 max-w-2xl text-sm leading-relaxed text-blue-900/70 md:text-base">
-                    {featured.blurb}
-                  </p>
+              {/* text side */}
+              <div className="flex flex-col justify-center p-[clamp(28px,4vw,52px)]">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-[.66rem] font-semibold uppercase tracking-[.26em] text-gold">
+                    {featured.tag}
+                  </span>
+                  <span aria-hidden className="h-px w-6 bg-black/15" />
+                  <span className="text-[.62rem] font-semibold uppercase tracking-[.22em] text-grey-500">
+                    {featured.date}
+                  </span>
                 </div>
 
-                <div className="md:col-span-4 md:border-l-2 md:border-blue-900/10 md:pl-10">
-                  <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
-                    Read More
-                  </span>
-                  <p className="mt-3 text-sm leading-relaxed text-blue-900/60">
-                    The full story — behind the announcement and what's next.
-                  </p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-blue-900 transition-transform duration-300 group-hover:translate-x-2">
+                <h3 className="mt-5 font-serif text-[clamp(1.8rem,2.9vw,2.5rem)] font-normal leading-[1.15] tracking-[-.01em] text-navy">
+                  {featured.title}
+                  <span className="text-gold">.</span>
+                </h3>
+
+                <p className="mt-4 max-w-[46ch] text-[.95rem] leading-[1.78] text-grey-600">
+                  {featured.blurb}
+                </p>
+
+                <div className="mt-8 flex items-center gap-3 border-t border-black/10 pt-6">
+                  <span className="text-[.66rem] font-semibold uppercase tracking-[.26em] text-navy transition-all duration-300 group-hover:translate-x-1 group-hover:text-gold">
                     Read Article
-                    <span>→</span>
+                  </span>
+                  <span
+                    aria-hidden
+                    className="text-gold transition-transform duration-300 group-hover:translate-x-1"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M1 8h13M9 3l5 5-5 5"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                   </span>
                 </div>
               </div>
             </Link>
           </motion.div>
 
-          {/* ═══ GRID of other news ═══ */}
-          <div className="mt-12 grid gap-6 md:mt-16 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+          {/* GRID — cards with images, hairline caption blocks */}
+          <div className="mt-[clamp(32px,4vw,52px)] grid grid-cols-1 gap-[clamp(24px,3vw,36px)] sm:grid-cols-2 lg:grid-cols-3">
             {rest.map((item, i) => (
               <motion.div
                 key={item.id}
                 initial={{ y: 40, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.8, ease: EASE, delay: i * 0.1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.8,
+                  ease: EASE,
+                  delay: (i % 3) * 0.08,
+                }}
               >
                 <Link
                   href={`/news/${item.id}`}
-                  className="group flex h-full flex-col border-2 border-blue-900 bg-white p-6 transition-colors duration-300 hover:bg-blue-900 md:p-8"
+                  className="group flex h-full flex-col"
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 bg-yellow-400" />
-                    <span className="text-[9px] font-black uppercase tracking-[0.25em] text-yellow-600 transition-colors duration-300 group-hover:text-yellow-400">
+                  {/* image */}
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-navy">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover [filter:grayscale(.22)_saturate(.92)_contrast(1.03)] transition-all duration-700 group-hover:scale-[1.04] group-hover:[filter:grayscale(0)_saturate(1)_contrast(1.03)]"
+                    />
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-navy/70 to-transparent"
+                    />
+                    <span className="absolute left-4 top-4 bg-navy px-2.5 py-1 text-[.55rem] font-semibold uppercase tracking-[.22em] text-gold shadow-[0_4px_14px_-6px_rgba(7,24,43,0.6)]">
                       {item.tag}
                     </span>
                   </div>
 
-                  <span className="mt-3 font-mono text-[10px] font-bold tracking-widest text-blue-900/40 transition-colors duration-300 group-hover:text-white/50">
-                    {item.date}
-                  </span>
-
-                  <h4 className="mt-3 text-xl font-black leading-[1.1] tracking-tight text-blue-900 transition-colors duration-300 group-hover:text-white">
-                    {item.title}
-                    <span className="text-yellow-400">.</span>
-                  </h4>
-
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-blue-900/60 transition-colors duration-300 group-hover:text-white/60">
-                    {item.blurb}
-                  </p>
-
-                  <span className="mt-6 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-blue-900 transition-all duration-300 group-hover:translate-x-1 group-hover:text-yellow-400">
-                    Read More
-                    <span>→</span>
-                  </span>
+                  {/* caption */}
+                  <div className="flex flex-1 flex-col gap-1 border-t border-black/10 bg-ivory pt-4">
+                    <p className="text-[.6rem] font-semibold uppercase tracking-[.22em] text-grey-500">
+                      {item.date}
+                    </p>
+                    <h4 className="mt-1 font-serif text-[1.25rem] leading-[1.25] text-navy transition-colors duration-300 group-hover:text-gold">
+                      {item.title}
+                    </h4>
+                    <p className="mt-2 flex-1 text-[.88rem] leading-[1.7] text-grey-600">
+                      {item.blurb}
+                    </p>
+                    <span className="mt-4 inline-flex items-center gap-2.5 text-[.66rem] font-semibold uppercase tracking-[.24em] text-navy transition-colors duration-300 group-hover:text-gold">
+                      Read More
+                      <span
+                        aria-hidden
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      >
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                        >
+                          <path
+                            d="M1 8h13M9 3l5 5-5 5"
+                            stroke="currentColor"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                    <span
+                      aria-hidden
+                      className="mt-3 block h-px w-7 bg-black/20 transition-[width,background] duration-500 group-hover:w-12 group-hover:bg-gold"
+                    />
+                  </div>
                 </Link>
               </motion.div>
             ))}
           </div>
 
-          {/* Bottom note */}
+          {/* footer */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
-            className="mt-20 flex flex-wrap items-center justify-between gap-4 border-t-2 border-blue-900/10 pt-8"
+            className="mt-20 flex flex-wrap items-center justify-between gap-6 border-t border-black/10 pt-8"
           >
-            <p className="text-sm italic text-blue-900/55">
+            <p className="max-w-[62ch] text-[.95rem] italic leading-[1.78] text-grey-600">
               Every update is a chapter in the DUCSO story.
             </p>
-            <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
-              — DUCSO · 2019–24
-            </span>
+            <ArrowButton href="/contact">Stay in the loop</ArrowButton>
           </motion.div>
-        </div>
+        </Container>
       </section>
     </main>
   );

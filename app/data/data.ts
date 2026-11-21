@@ -47,7 +47,7 @@ export const news: NewsItem[] = [
     id: "small-groups-across-campus",
     date: "Nov 05, 2024",
     tag: "Update",
-    title: "Small Groups Now Meeting Across Campus",
+    title: "Small Groups Now Meeting Across Campus ",
     blurb:
       "12 new small groups launched this semester — find one near your hostel or faculty.",
     content: [

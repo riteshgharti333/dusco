@@ -19,17 +19,18 @@ import { FaArrowRightLong } from "react-icons/fa6";
 type NavLink = { label: string; href: string; children?: NavLink[] };
 
 const links: NavLink[] = [
-  { label: "Home", href: "/home" },
+  { label: "Home", href: "/" },
   {
     label: "About",
-    href: "#about",
+    href: "/about",
     children: [
+      { label: "About Us", href: "/about" },
       { label: "What We Do", href: "#what-we-do" },
       { label: "Testimonials", href: "#testimonials" },
     ],
   },
   { label: "Events", href: "/events" },
-  { label: "Executive", href: "/leadership" },
+  { label: "Executive", href: "/executive" },
   { label: "Alumni", href: "/alumni" },
   { label: "Gallery", href: "/gallery" },
   { label: "News", href: "/news" },
@@ -272,7 +273,7 @@ const Navbar = () => {
             </ul>
 
             <div className="hidden flex-none min-[1100px]:block">
-              <Button href="/join" variant="primary" size="lg">
+              <Button href="/contact" variant="primary" size="lg">
                 Get Involved
                 <FaArrowRightLong className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>

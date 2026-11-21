@@ -2,10 +2,18 @@
 
 import { motion } from "framer-motion";
 import PageBanner from "../components/PageBanner";
+import Container from "../components/Container";
+import Button, { Arrow } from "../components/Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/* ─── Terms sections ─── */
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <p className="mb-[1.35rem] inline-flex items-center gap-3 text-[.685rem] font-semibold uppercase tracking-[.26em] text-gold">
+    <span aria-hidden className="block h-px w-9 bg-gold" />
+    {children}
+  </p>
+);
+
 const sections = [
   {
     num: "01",
@@ -99,103 +107,75 @@ export default function TermsPage() {
         image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80"
       />
 
-      {/* ═════════ MAIN SECTION ═════════ */}
-      <section className="relative w-full overflow-hidden bg-white py-20 md:py-28">
-        {/* Rotated side rail */}
-        <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-          <div className="flex h-full items-center justify-center">
-            <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-blue-900/30">
-              Terms · DUCSO
-            </span>
-          </div>
-        </div>
-
-        {/* Slanted yellow accent */}
+      <section className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]">
         <span
           aria-hidden
-          className="pointer-events-none absolute -right-32 top-0 h-full w-96 bg-yellow-400/[0.06] -skew-x-[20deg]"
+          className="pointer-events-none absolute -right-32 top-0 h-full w-96 -skew-x-[20deg] bg-gold/[0.05]"
         />
 
-        <div className="section-container relative">
-          {/* Header */}
+        <Container className="relative">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.9, ease: EASE }}
-            className="mx-auto max-w-3xl text-center md:mx-0 md:text-left"
+            transition={{ duration: 0.8, ease: EASE }}
+            className="mb-[clamp(40px,5vw,68px)] flex flex-wrap items-end justify-between gap-10"
           >
-            <div className="flex items-center justify-center gap-3 md:justify-start">
-              <span className="relative inline-block h-4 w-3" aria-hidden>
-                <span className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2 bg-yellow-400" />
-                <span className="absolute left-0 top-[30%] h-[3px] w-full -translate-y-1/2 bg-yellow-400" />
-              </span>
-              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-blue-900">
-                Legal · Terms
-              </span>
+            <div className="max-w-[660px]">
+              <Eyebrow>Legal · Terms</Eyebrow>
+              <h2 className="max-w-[20ch] font-serif text-[clamp(2.2rem,4.2vw,3.6rem)] font-normal leading-[1.08] tracking-[-.015em] text-navy">
+                The rules <em className="italic text-gold">of the road.</em>
+              </h2>
             </div>
-
-            <h2 className="mt-6 text-5xl font-black leading-[0.85] tracking-tighter text-blue-900 sm:text-6xl md:text-7xl">
-              THE RULES
-              <br />
-              <span className="relative inline-block">
-                <span
-                  aria-hidden
-                  className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-                />
-                <span className="relative z-10 px-1 italic uppercase text-blue-900">
-                  of the road.
-                </span>
-              </span>
-            </h2>
-
-            <p className="mx-auto mt-6 max-w-md text-sm leading-relaxed text-blue-900/70 md:mx-0 md:text-base">
+            <p className="max-w-[34ch] text-[clamp(1rem,1.15vw,1.09rem)] leading-[1.78] text-grey-600">
               Plain language, no surprises. These terms exist to keep our
               community clear, fair, and welcoming to everyone.
             </p>
-
-            {/* Effective date */}
-            <div className="mt-6 flex items-center justify-center gap-3 border-t-2 border-blue-900/10 pt-4 md:justify-start">
-              <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
-                Effective Date
-              </span>
-              <span className="h-[2px] w-6 bg-yellow-400" />
-              <span className="text-[11px] font-black uppercase tracking-[0.28em] text-blue-900">
-                January 1, 2025
-              </span>
-            </div>
           </motion.div>
 
-          {/* Sections */}
-          <div className="mt-16 grid gap-0 md:mt-24">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.1 }}
+            className="mb-12 flex flex-wrap items-center gap-3 border-y border-black/10 py-4"
+          >
+            <span className="text-[.62rem] font-semibold uppercase tracking-[.26em] text-gold">
+              Effective Date
+            </span>
+            <span aria-hidden className="h-px w-6 bg-black/15" />
+            <span className="text-[.66rem] font-semibold uppercase tracking-[.24em] text-navy">
+              January 1, 2025
+            </span>
+          </motion.div>
+
+          <div className="border-t border-black/10">
             {sections.map((section, i) => (
               <motion.div
                 key={section.num}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ y: 30, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, ease: EASE, delay: i * 0.06 }}
-                className="group relative grid gap-6 border-t-2 border-blue-900/10 py-10 md:grid-cols-12 md:gap-12 md:py-14"
+                transition={{ duration: 0.8, ease: EASE, delay: i * 0.04 }}
+                className="group grid gap-6 border-b border-black/10 py-10 md:grid-cols-12 md:gap-12 md:py-14"
               >
-                {/* Number */}
                 <div className="md:col-span-2">
-                  <span className="font-mono text-[11px] font-bold tracking-widest text-yellow-600">
+                  <span className="font-serif text-[.9rem] tracking-[.16em] text-black/30">
                     {section.num}
                   </span>
                 </div>
 
-                {/* Content */}
                 <div className="md:col-span-10">
-                  <h3 className="text-2xl font-black leading-[1.05] tracking-tight text-blue-900 md:text-3xl">
+                  <h3 className="font-serif text-[clamp(1.5rem,2.4vw,2rem)] font-normal leading-[1.15] tracking-[-.01em] text-navy">
                     {section.title}
-                    <span className="text-yellow-400">.</span>
+                    <span className="text-gold">.</span>
                   </h3>
 
                   <div className="mt-5 space-y-4">
                     {section.content.map((para, j) => (
                       <p
                         key={j}
-                        className="max-w-2xl text-sm leading-relaxed text-blue-900/70 md:text-base"
+                        className="max-w-[64ch] text-[.95rem] leading-[1.85] text-grey-600 md:text-base"
                       >
                         {para}
                       </p>
@@ -204,81 +184,84 @@ export default function TermsPage() {
                 </div>
               </motion.div>
             ))}
-            {/* Closing border */}
-            <div className="border-t-2 border-blue-900/10" />
           </div>
 
-          {/* Contact card */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.2 }}
-            className="mt-20 relative"
+            className="relative mt-20 grid overflow-hidden border border-black/10 bg-ivory md:grid-cols-[1.2fr_1fr]"
           >
-            {/* Yellow offset shadow */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 translate-x-3 translate-y-3 bg-yellow-400"
-            />
-
-            <div className="relative border-2 border-blue-900 bg-white p-8 md:p-12">
+            <div className="p-[clamp(28px,4vw,52px)]">
               <div className="flex items-center gap-3">
-                <span className="h-[2px] w-8 bg-yellow-400" />
-                <span className="text-[10px] font-black uppercase tracking-[0.28em] text-blue-900">
+                <span aria-hidden className="h-px w-8 bg-gold" />
+                <span className="text-[.66rem] font-semibold uppercase tracking-[.26em] text-gold">
                   Questions?
                 </span>
               </div>
 
-              <h3 className="mt-5 text-3xl font-black leading-[0.95] tracking-tight text-blue-900 md:text-4xl">
-                LET&apos;S TALK
-                <br />
-                IT THROUGH.
+              <h3 className="mt-5 font-serif text-[clamp(1.9rem,3vw,2.6rem)] font-normal leading-[1.1] tracking-[-.01em] text-navy">
+                Let&apos;s talk it through.
               </h3>
 
-              <p className="mt-4 max-w-md text-sm leading-relaxed text-blue-900/70">
+              <p className="mt-4 max-w-[46ch] text-[.95rem] leading-[1.78] text-grey-600">
                 If anything here is unclear or you have concerns about these
                 terms, we&apos;re one email away. Real people, real answers.
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-6">
+              <div className="mt-8">
+                <Button
+                  href="mailto:hello@ducso.org"
+                  variant="primary"
+                  size="md"
+                >
+                  Email Us
+                  <Arrow />
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative flex flex-col justify-center border-t border-black/10 bg-navy p-[clamp(28px,4vw,52px)] md:border-l md:border-t-0">
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-24 -top-24 h-[140%] w-64 -skew-x-[20deg] bg-gold/[0.07]"
+              />
+              <div className="relative">
+                <p className="text-[.62rem] font-semibold uppercase tracking-[.26em] text-gold">
+                  Direct Email
+                </p>
                 <a
                   href="mailto:hello@ducso.org"
-                  className="group relative inline-flex overflow-hidden bg-blue-900 -skew-x-[20deg] shadow-[4px_4px_0_0_#facc15] md:shadow-[6px_6px_0_0_#facc15]"
+                  className="mt-3 block font-serif text-[clamp(1.2rem,2vw,1.6rem)] font-normal text-white transition-colors hover:text-gold"
                 >
-                  <span className="absolute inset-0 origin-left scale-x-0 bg-yellow-400 transition-transform duration-300 group-hover:scale-x-100" />
-                  <span className="relative inline-flex items-center gap-2 px-7 py-3.5 text-sm font-black uppercase tracking-wider text-yellow-400 transition-colors duration-300 group-hover:text-blue-900 skew-x-[20deg]">
-                    Email Us
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </span>
-                </a>
-
-                <span className="text-[11px] font-black uppercase tracking-[0.28em] text-blue-900/40">
                   hello@ducso.org
-                </span>
+                </a>
+                <p className="mt-6 text-[.86rem] leading-[1.7] text-white/60">
+                  We usually reply within 24 hours. For urgent matters, mark
+                  your subject line with{" "}
+                  <em className="italic text-gold">Urgent</em>.
+                </p>
               </div>
             </div>
           </motion.div>
 
-          {/* Bottom note */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
-            className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t-2 border-blue-900/10 pt-8"
+            className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-black/10 pt-8"
           >
-            <p className="text-sm italic text-blue-900/55">
+            <p className="max-w-[62ch] text-[.95rem] italic leading-[1.78] text-grey-600">
               &ldquo;Let all that you do be done in love.&rdquo; — 1 Corinthians
               16:14
             </p>
-            <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
+            <span className="text-[.62rem] font-semibold uppercase tracking-[.26em] text-gold">
               — DUCSO
             </span>
           </motion.div>
-        </div>
+        </Container>
       </section>
     </main>
   );

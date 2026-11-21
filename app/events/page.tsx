@@ -103,7 +103,7 @@ const Featured = ({
     viewport={{ once: true, amount: 0.2 }}
     transition={{ duration: 0.9, ease: EASE }}
     onClick={onClick}
-    className="group relative block h-[540px] w-full overflow-hidden bg-navy text-left md:h-[680px]"
+    className="group relative block h-[540px] w-full cursor-pointer overflow-hidden bg-navy text-left md:h-[680px]"
   >
     <Image
       src={event.image}
@@ -122,7 +122,7 @@ const Featured = ({
       <span className="text-[.66rem] font-semibold uppercase tracking-[.28em] text-gold">
         {event.season}
       </span>
-      <span className="border border-white/30 bg-white/5 px-3 py-1 text-[.6rem] font-semibold uppercase tracking-[.28em] text-white backdrop-blur-md">
+      <span className="bg-navy px-3 py-1 text-[.6rem] font-semibold uppercase tracking-[.28em] text-gold shadow-[0_4px_14px_-6px_rgba(7,24,43,0.6)]">
         {event.tag}
       </span>
     </div>
@@ -137,7 +137,7 @@ const Featured = ({
         <p className="max-w-lg text-[.95rem] leading-[1.78] text-white/75">
           {event.description}
         </p>
-        <span className="flex shrink-0 items-center gap-4 text-[.66rem] font-semibold uppercase tracking-[.28em] text-white">
+        <span className="flex shrink-0 cursor-pointer items-center gap-4 text-[.66rem] font-semibold uppercase tracking-[.28em] text-white">
           View Event
           <span className="flex h-11 w-11 items-center justify-center border border-gold/50 text-gold transition-all duration-500 group-hover:border-gold group-hover:bg-gold group-hover:text-navy">
             <Arrow size={13} />
@@ -164,7 +164,7 @@ const Tile = ({
     viewport={{ once: true, amount: 0.25 }}
     transition={{ duration: 0.8, ease: EASE, delay: (index % 2) * 0.1 }}
     onClick={onClick}
-    className={`group relative block h-[400px] w-full overflow-hidden bg-navy text-left md:h-[460px] ${SPANS[index]}`}
+    className={`group relative block h-[400px] w-full cursor-pointer overflow-hidden bg-navy text-left md:h-[460px] ${SPANS[index]}`}
   >
     <Image
       src={event.image}
@@ -179,7 +179,7 @@ const Tile = ({
       <span className="font-serif text-[.9rem] tracking-[.16em] text-white/80">
         0{index + 2}
       </span>
-      <span className="border border-gold/40 bg-gold/10 px-2.5 py-1 text-[.58rem] font-semibold uppercase tracking-[.24em] text-gold backdrop-blur-sm">
+      <span className="bg-navy px-2.5 py-1 text-[.58rem] font-semibold uppercase tracking-[.24em] text-gold shadow-[0_4px_14px_-6px_rgba(7,24,43,0.6)]">
         {event.tag}
       </span>
     </div>
@@ -205,7 +205,7 @@ const Tile = ({
             {event.description}
           </p>
         </div>
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-gold/40 text-gold">
+        <span className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center border border-gold/40 text-gold">
           <Arrow size={13} />
         </span>
       </div>
@@ -242,7 +242,7 @@ const EventModal = ({
       <button
         onClick={onClose}
         aria-label="Close"
-        className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center border border-gold/40 bg-ivory/90 text-gold backdrop-blur-sm transition-all hover:border-gold hover:bg-gold hover:text-navy"
+        className="absolute right-4 top-4 z-20 flex h-10 w-10 cursor-pointer items-center justify-center border border-gold/40 bg-ivory/90 text-gold backdrop-blur-sm transition-all hover:border-gold hover:bg-gold hover:text-navy"
       >
         ✕
       </button>
@@ -273,7 +273,7 @@ const EventModal = ({
           {event.longDescription}
         </p>
         <div className="mt-10">
-          <Button href="/join" variant="primary" size="md">
+          <Button href="/contact" variant="primary" size="md">
             Get Involved
             <Arrow />
           </Button>

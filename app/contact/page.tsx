@@ -4,11 +4,18 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok } from "react-icons/fa";
 import PageBanner from "../components/PageBanner";
-import SectionHeader from "../components/SectionHeader";
+import Container from "../components/Container";
+import Button, { Arrow } from "../components/Button";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/* ─── Contact info ─── */
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <p className="mb-[1.35rem] inline-flex items-center gap-3 text-[.685rem] font-semibold uppercase tracking-[.26em] text-gold">
+    <span aria-hidden className="block h-px w-9 bg-gold" />
+    {children}
+  </p>
+);
+
 const contactInfo = [
   { label: "Email", value: "hello@ducso.org", href: "mailto:hello@ducso.org" },
   { label: "Phone", value: "+880 1234 567 890", href: "tel:+8801234567890" },
@@ -19,7 +26,6 @@ const contactInfo = [
   },
 ];
 
-/* ─── Social media ─── */
 const socials = [
   { name: "Facebook", icon: FaFacebookF, href: "#" },
   { name: "Instagram", icon: FaInstagram, href: "#" },
@@ -27,15 +33,11 @@ const socials = [
   { name: "TikTok", icon: FaTiktok, href: "#" },
 ];
 
-/* ─── Meeting times ─── */
 const meetingTimes = [
   { day: "Fridays", time: "6:30 PM", location: "Main Auditorium" },
   { day: "Sundays", time: "10:00 AM", location: "Student Center" },
 ];
 
-/* ═══════════════════════════════════════════════
-   FORM FIELD
-═══════════════════════════════════════════════ */
 const FormField = ({
   label,
   id,
@@ -55,10 +57,10 @@ const FormField = ({
 }) => (
   <div className="group relative">
     <div className="flex items-center gap-3">
-      <span className="h-[2px] w-6 bg-yellow-400 transition-all duration-300 group-focus-within:w-10" />
+      <span className="h-px w-6 bg-gold transition-all duration-300 group-focus-within:w-10" />
       <label
         htmlFor={id}
-        className="text-[10px] font-black uppercase tracking-[0.28em] text-blue-900"
+        className="text-[.66rem] font-semibold uppercase tracking-[.26em] text-navy"
       >
         {label}
       </label>
@@ -70,14 +72,11 @@ const FormField = ({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="mt-3 w-full border-b-2 border-blue-900/20 bg-transparent pb-3 text-base font-medium text-blue-900 placeholder:text-blue-900/30 transition-colors duration-300 focus:border-yellow-400 focus:outline-none"
+      className="mt-3 w-full border-b border-black/15 bg-transparent pb-3 text-[.95rem] text-navy placeholder:text-grey-500 transition-colors duration-300 focus:border-gold focus:outline-none"
     />
   </div>
 );
 
-/* ═══════════════════════════════════════════════
-   CONTACT PAGE
-═══════════════════════════════════════════════ */
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
@@ -98,79 +97,62 @@ export default function ContactPage() {
         image="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80"
       />
 
-      {/* ═════════ MAIN SECTION (White) ═════════ */}
-      <section className="relative w-full overflow-hidden bg-white py-20 md:py-28">
-        {/* Rotated side rail */}
-        <div className="pointer-events-none absolute left-0 top-0 hidden h-full w-16 md:block">
-          <div className="flex h-full items-center justify-center">
-            <span className="rotate-[-90deg] whitespace-nowrap text-[10px] font-black uppercase tracking-[0.6em] text-blue-900/30">
-              Contact · DUCSO
-            </span>
-          </div>
-        </div>
-
-        {/* Subtle slanted accent */}
+      <section className="relative w-full overflow-hidden bg-ivory py-[clamp(72px,9vw,132px)]">
         <span
           aria-hidden
-          className="pointer-events-none absolute -right-32 top-0 h-full w-96 bg-yellow-400/[0.06] -skew-x-[20deg]"
+          className="pointer-events-none absolute -right-32 top-0 h-full w-96 -skew-x-[20deg] bg-gold/[0.05]"
         />
 
-        <div className="section-container relative">
-          <SectionHeader
-            dark={false}
-            label="Reach Out"
-            description="Whether you're new to campus, new to faith, or just curious — our inbox is always open. We usually reply within 24 hours."
-            title={
-              <>
-                LET&apos;S
-                <br />
-                <span className="relative inline-block">
-                  <span
-                    aria-hidden
-                    className="absolute -inset-x-3 inset-y-1 bg-yellow-400 -skew-x-[20deg]"
-                  />
-                  <span className="relative z-10 px-1 italic uppercase text-blue-900">
-                    talk.
-                  </span>
-                </span>
-              </>
-            }
-          />
+        <Container className="relative">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="mb-[clamp(40px,5vw,68px)] flex flex-wrap items-end justify-between gap-10"
+          >
+            <div className="max-w-[660px]">
+              <Eyebrow>Reach Out</Eyebrow>
+              <h2 className="max-w-[20ch] font-serif text-[clamp(2.2rem,4.2vw,3.6rem)] font-normal leading-[1.08] tracking-[-.015em] text-navy">
+                Let&apos;s <em className="italic text-gold">talk.</em>
+              </h2>
+            </div>
+            <p className="max-w-[34ch] text-[clamp(1rem,1.15vw,1.09rem)] leading-[1.78] text-grey-600">
+              Whether you&apos;re new to campus, new to faith, or just curious —
+              our inbox is always open. We usually reply within 24 hours.
+            </p>
+          </motion.div>
 
-          {/* ── Split card (info + form) ── */}
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
-            className="relative isolate mt-16 grid border-2 border-blue-900 bg-white md:mt-20 md:grid-cols-12"
+            className="relative grid overflow-hidden border border-black/10 bg-ivory md:grid-cols-12"
           >
-            {/* ═════════ LEFT: INFO ═════════ */}
-            <div className="relative border-b-2 border-blue-900/10 p-8 md:col-span-5 md:border-b-0 md:border-r-2 md:p-12 lg:p-14">
-              {/* Label */}
+            <div className="relative border-b border-black/10 p-8 md:col-span-5 md:border-b-0 md:border-r md:p-12 lg:p-14">
               <div className="flex items-center gap-3">
-                <span className="h-[2px] w-8 bg-yellow-400" />
-                <span className="text-[10px] font-black uppercase tracking-[0.28em] text-blue-900">
+                <span aria-hidden className="h-px w-8 bg-gold" />
+                <span className="text-[.66rem] font-semibold uppercase tracking-[.26em] text-gold">
                   Contact Details
                 </span>
               </div>
 
-              {/* Info list */}
               <div className="mt-8 space-y-6">
                 {contactInfo.map((item) => (
                   <div key={item.label}>
-                    <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
+                    <span className="text-[.62rem] font-semibold uppercase tracking-[.26em] text-gold">
                       {item.label}
                     </span>
                     {item.href ? (
                       <a
                         href={item.href}
-                        className="mt-1 block text-lg font-black leading-tight text-blue-900 transition-colors hover:text-yellow-600"
+                        className="mt-1 block font-serif text-[1.2rem] leading-tight text-navy transition-colors hover:text-gold"
                       >
                         {item.value}
                       </a>
                     ) : (
-                      <p className="mt-1 whitespace-pre-line text-lg font-black leading-tight text-blue-900">
+                      <p className="mt-1 whitespace-pre-line font-serif text-[1.2rem] leading-tight text-navy">
                         {item.value}
                       </p>
                     )}
@@ -178,9 +160,8 @@ export default function ContactPage() {
                 ))}
               </div>
 
-              {/* Social media icons */}
-              <div className="mt-12 border-t-2 border-blue-900/10 pt-8">
-                <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
+              <div className="mt-12 border-t border-black/10 pt-8">
+                <span className="text-[.62rem] font-semibold uppercase tracking-[.26em] text-gold">
                   Follow Us
                 </span>
                 <div className="mt-4 flex flex-wrap gap-3">
@@ -189,7 +170,7 @@ export default function ContactPage() {
                       key={name}
                       href={href}
                       aria-label={name}
-                      className="group relative flex h-11 w-11 items-center justify-center border-2 border-blue-900 text-blue-900 transition-all duration-300 hover:-translate-y-1 hover:border-yellow-400 hover:bg-yellow-400"
+                      className="group relative flex h-11 w-11 items-center justify-center border border-black/15 text-navy transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:bg-gold hover:text-navy"
                     >
                       <Icon className="h-4 w-4" />
                     </a>
@@ -197,52 +178,24 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Meeting times */}
-              <div className="mt-12 border-t-2 border-blue-900/10 pt-8">
-                <span className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600">
-                  When We Meet
-                </span>
-                <div className="mt-4 space-y-3">
-                  {meetingTimes.map((m) => (
-                    <div
-                      key={m.day}
-                      className="flex items-baseline justify-between gap-4 border-b border-blue-900/10 pb-3"
-                    >
-                      <span className="text-sm font-black uppercase tracking-wide text-blue-900">
-                        {m.day}
-                      </span>
-                      <span className="text-sm font-medium text-blue-900/60">
-                        {m.time} · {m.location}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Slanted accent at bottom */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute bottom-0 right-0 h-24 w-24 bg-blue-900/[0.04] -skew-x-[20deg]"
+                className="pointer-events-none absolute bottom-0 right-0 h-24 w-24 -skew-x-[20deg] bg-gold/[0.06]"
               />
             </div>
 
-            {/* ═════════ RIGHT: FORM ═════════ */}
             <div className="relative p-8 md:col-span-7 md:p-12 lg:p-16">
-              {/* Form kicker */}
-              <div className="flex items-center gap-3">
-                <span className="h-[2px] w-8 bg-yellow-400" />
-                <span className="text-[10px] font-black uppercase tracking-[0.28em] text-blue-900">
+              <div className="flex items-center gap-3 cursor-pointer">
+                <span aria-hidden className="h-px w-8 bg-gold" />
+                <span className="text-[.66rem] font-semibold uppercase tracking-[.26em] text-gold">
                   Send a Message
                 </span>
               </div>
 
-              {/* Form title */}
-              <h3 className="mt-5 text-3xl font-black leading-[0.95] tracking-tight text-blue-900 md:text-4xl">
-                DROP US
-                <br />A LINE.
+              <h3 className="mt-5 font-serif text-[clamp(1.9rem,3vw,2.6rem)] font-normal leading-[1.1] tracking-[-.01em] text-navy">
+                Drop us a line.
               </h3>
 
-              {/* Form */}
               <form onSubmit={handleSubmit} className="mt-10 space-y-8">
                 <FormField
                   label="Your Name"
@@ -266,10 +219,10 @@ export default function ContactPage() {
 
                 <div className="group relative">
                   <div className="flex items-center gap-3">
-                    <span className="h-[2px] w-6 bg-yellow-400 transition-all duration-300 group-focus-within:w-10" />
+                    <span className="h-px w-6 bg-gold transition-all duration-300 group-focus-within:w-10" />
                     <label
                       htmlFor="message"
-                      className="text-[10px] font-black uppercase tracking-[0.28em] text-blue-900"
+                      className="text-[.66rem] font-semibold uppercase tracking-[.26em] text-navy"
                     >
                       Your Message
                     </label>
@@ -283,30 +236,21 @@ export default function ContactPage() {
                       setForm({ ...form, message: e.target.value })
                     }
                     placeholder="Tell us what's on your heart..."
-                    className="mt-3 w-full resize-none border-b-2 border-blue-900/20 bg-transparent pb-3 text-base font-medium text-blue-900 placeholder:text-blue-900/30 transition-colors duration-300 focus:border-yellow-400 focus:outline-none"
+                    className="mt-3 w-full resize-none border-b border-black/15 bg-transparent pb-3 text-[.95rem] text-navy placeholder:text-grey-500 transition-colors duration-300 focus:border-gold focus:outline-none"
                   />
                 </div>
 
-                {/* Submit row */}
                 <div className="flex flex-wrap items-center gap-6 pt-4">
-                  <button
-                    type="submit"
-                    className="group relative inline-flex overflow-hidden bg-blue-900 -skew-x-[20deg] shadow-[4px_4px_0_0_#facc15] transition-all duration-300 hover:shadow-[4px_4px_0_0_#1e3a8a] md:shadow-[6px_6px_0_0_#facc15] md:hover:shadow-[6px_6px_0_0_#1e3a8a]"
-                  >
-                    <span className="absolute inset-0 origin-left scale-x-0 bg-yellow-400 transition-transform duration-300 group-hover:scale-x-100" />
-                    <span className="relative inline-flex items-center gap-2 px-7 py-3.5 text-sm font-black uppercase tracking-wider text-yellow-400 transition-colors duration-300 group-hover:text-blue-900 skew-x-[20deg]">
-                      Send Message
-                      <span className="transition-transform duration-300 group-hover:translate-x-1">
-                        →
-                      </span>
-                    </span>
-                  </button>
+                  <Button type="submit" variant="primary" size="md">
+                    Send Message
+                    <Arrow />
+                  </Button>
 
                   {sent && (
                     <motion.span
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-[10px] font-black uppercase tracking-[0.28em] text-yellow-600"
+                      className="text-[.66rem] font-semibold uppercase tracking-[.26em] text-gold"
                     >
                       ✓ Message Sent
                     </motion.span>
@@ -314,14 +258,13 @@ export default function ContactPage() {
                 </div>
               </form>
 
-              {/* Slanted accent */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute bottom-0 right-0 h-20 w-20 bg-yellow-400/10 -skew-x-[20deg]"
+                className="pointer-events-none absolute bottom-0 right-0 h-20 w-20 -skew-x-[20deg] bg-gold/[0.06]"
               />
             </div>
           </motion.div>
-        </div>
+        </Container>
       </section>
     </main>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   motion,
@@ -111,45 +111,47 @@ const Hero = () => {
             imageReady ? "opacity-100" : "opacity-0"
           }`}
         >
-          <Swiper
-            modules={[Autoplay, EffectFade]}
-            effect="fade"
-            fadeEffect={{ crossFade: true }}
-            autoplay={{ delay: SLIDE_DELAY, disableOnInteraction: false }}
-            loop
-            speed={1600}
-            allowTouchMove={false}
-            onSlideChange={(s) => setActive(s.realIndex)}
-            className="h-full w-full"
-          >
-            {HERO_IMAGES.map((src, i) => (
-              <SwiperSlide key={src}>
-                <div className="relative h-full w-full overflow-hidden">
-                  <motion.div
-                    className="absolute inset-0 will-change-transform"
-                    initial={false}
-                    animate={{ scale: active === i ? 1.16 : 1.04 }}
-                    transition={{
-                      duration: active === i ? SLIDE_DELAY / 1000 + 2 : 1.6,
-                      ease: "linear",
-                    }}
-                  >
-                    <Image
-                      src={src}
-                      alt=""
-                      fill
-                      priority={i === 0}
-                      loading={i === 0 ? undefined : "eager"}
-                      fetchPriority={i === 0 ? "high" : "low"}
-                      onLoad={i === 0 ? () => setImageReady(true) : undefined}
-                      sizes="100vw"
-                      className="object-cover"
-                    />
-                  </motion.div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <Suspense fallback={null}>
+            <Swiper
+              modules={[Autoplay, EffectFade]}
+              effect="fade"
+              fadeEffect={{ crossFade: true }}
+              autoplay={{ delay: SLIDE_DELAY, disableOnInteraction: false }}
+              loop
+              speed={1600}
+              allowTouchMove={false}
+              onSlideChange={(s) => setActive(s.realIndex)}
+              className="h-full w-full"
+            >
+              {HERO_IMAGES.map((src, i) => (
+                <SwiperSlide key={src}>
+                  <div className="relative h-full w-full overflow-hidden">
+                    <motion.div
+                      className="absolute inset-0 will-change-transform"
+                      initial={false}
+                      animate={{ scale: active === i ? 1.16 : 1.04 }}
+                      transition={{
+                        duration: active === i ? SLIDE_DELAY / 1000 + 2 : 1.6,
+                        ease: "linear",
+                      }}
+                    >
+                      <Image
+                        src={src}
+                        alt=""
+                        fill
+                        priority={i === 0}
+                        loading={i === 0 ? undefined : "eager"}
+                        fetchPriority={i === 0 ? "high" : "low"}
+                        onLoad={i === 0 ? () => setImageReady(true) : undefined}
+                        sizes="100vw"
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </Suspense>
         </div>
       </motion.div>
 
@@ -172,7 +174,7 @@ const Hero = () => {
       />
 
       <motion.div style={{ y: contentY }} className="relative z-10 w-full">
-        <div className="mx-auto w-full max-w-[1280px] px-5 sm:px-6 md:px-8 lg:px-10">
+        <div className="mx-auto w-full max-w-[1280px] px-2 sm:px-6 md:px-8 lg:px-10">
           <div className="w-full pt-[clamp(140px,20vh,200px)]">
             <motion.p
               {...fadeUp(0)}
@@ -233,12 +235,12 @@ const Hero = () => {
             </motion.div>
 
             <motion.div {...fadeUp(0.7)} className="mt-11 flex flex-wrap gap-4">
-              <Button href="#about" variant="primary" size="md">
+              <Button href="/about" variant="primary" size="md">
                 Explore DUCSO
                 <FaArrowRightLong className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
 
-              <Button href="#events" variant="outline" size="md">
+              <Button href="/events" variant="outline" size="md">
                 Upcoming Events
                 <FaCalendarAlt className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
