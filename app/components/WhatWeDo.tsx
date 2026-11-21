@@ -136,7 +136,7 @@ const WhatWeDo = () => {
   return (
     <section
       id="what-we-do"
-      className="relative w-full overflow-hidden bg-ivory pt-25"
+      className="relative w-full overflow-hidden bg-ivory py-25"
     >
       <Container>
         <motion.div
